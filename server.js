@@ -83,12 +83,12 @@ Führe eine Web-Suche durch um zu prüfen:
 1. Wie bekannt ist ${domain} in KI-Suchantworten (ChatGPT, Perplexity, Gemini)?
 2. Taucht die Website bei branchenrelevanten Fragen auf?
 3. Lokale/regionale Präsenz in KI?
-4. Finde 2 echte direkte Wettbewerber (mit echten Domains)
+4. Suche via Web nach 2 echten direkten Wettbewerbern - NUR Domains die du tatsächlich in den Suchergebnissen findest. Wenn du keine echten Wettbewerber findest, gib ein leeres Array zurück. ERFINDE NIEMALS Domains oder Firmennamen.
 
 Antworte NUR mit JSON (kein Markdown, keine Backticks):
 {"website_name":"Unternehmensname","website_desc":"2 Sätze was das Unternehmen macht","score":4.7,"rating":"kaum sichtbar","summary":"2 konkrete Sätze warum der Score so ist","competitor_warning":"Dein Hauptwettbewerber liegt in X von 10 Faktoren vor dir. domain.de wird von KI-Systemen bereits aktiv empfohlen. Jede Anfrage die dort landet fehlt dir.","geo_factors":[{"name":"Faktendichte","score":5.0,"status":"opt","finding":"Konkrete Beobachtung zur Domain","tip":"Konkreter Tipp"},{"name":"Aktualität & Frische","score":4.5,"status":"opt","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"},{"name":"Thematische Tiefe","score":6.0,"status":"mittel","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"},{"name":"Heading & Architektur","score":5.5,"status":"opt","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"},{"name":"Semantische Klarheit","score":5.0,"status":"opt","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"}],"competitors":[{"domain":"konkurrent1.at","score":7.4,"top_factor":"Schema Markup","ki":"Regelmäßig"},{"domain":"konkurrent2.at","score":6.8,"top_factor":"Answer-First Struktur","ki":"Oft"}],"comp_note":"Ein konkreter Satz warum diese Wettbewerber besser abschneiden.","lost_monthly":"6-9","lost_yearly":"~72","actions":[{"name":"Schema Markup","desc":"Implementiere Article, FAQPage, HowTo, Organization. Nutze Author-Markup und Breadcrumbs.","priority":"hoch"},{"name":"Answer-First Struktur","desc":"Stelle klare Antworten in den ersten 40–60 Wörtern. Nutze FAQ-Stil H2/H3 und TL;DR-Blöcke.","priority":"hoch"},{"name":"KI-Crawlbarkeit","desc":"Erlaube KI-Crawler in robots.txt. Füge llms.txt hinzu. Prüfe Sitemap und Core Web Vitals.","priority":"hoch"},{"name":"Externe Autorität","desc":"Aufbau von Erwähnungen auf Branchenportalen und Presseartikeln.","priority":"mittel"},{"name":"E-E-A-T Signale","desc":"Autorenprofile, Zertifizierungen und Referenzprojekte prominent darstellen.","priority":"mittel"}]}
 
-Scoring: score<3.5=kritisch, 3.5-4.9=opt (Optimierungsbedarf), 5-6.9=mittel, >=7=gut. Alles auf Deutsch. Sehr spezifisch zur Domain.`;
+Scoring: score<3.5=kritisch, 3.5-4.9=opt (Optimierungsbedarf), 5-6.9=mittel, >=7=gut. Alles auf Deutsch. Sehr spezifisch zur Domain. KRITISCH: Bei competitors NUR echte Domains eintragen die du via Websuche verifiziert hast. Keine erfundenen oder nicht-existierenden Domains. Wenn unsicher, lieber leeres Array [] zurückgeben.`;
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -124,6 +124,43 @@ Scoring: score<3.5=kritisch, 3.5-4.9=opt (Optimierungsbedarf), 5-6.9=mittel, >=7
 
   } catch (e) {
     res.status(500).json({ error: e.message || 'Interner Serverfehler' });
+  }
+});
+
+
+// ─── HubSpot Contact erstellen ───
+app.post('/api/subscribe', async (req, res) => {
+  const { email, domain, score } = req.body;
+  if (!email) return res.status(400).json({ error: 'email required' });
+
+  const apiKey = process.env.HUBSPOT_API_KEY;
+  if (!apiKey) return res.status(200).json({ ok: true, note: 'no hubspot key configured' });
+
+  try {
+    const response = await fetch('https://api.hubapi.com/crm/v3/objects/contacts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + apiKey
+      },
+      body: JSON.stringify({
+        properties: {
+          email: email,
+          website: domain || '',
+          hs_lead_source: 'KI-Sichtbarkeits-Check',
+          description: 'KI-Score: ' + (score || '?') + '/10 via ki-check Tool'
+        }
+      })
+    });
+    if (!response.ok) {
+      const err = await response.text();
+      // Kontakt existiert bereits - kein Fehler
+      if (response.status === 409) return res.json({ ok: true });
+      return res.status(200).json({ ok: false, error: err });
+    }
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(200).json({ ok: false, error: e.message });
   }
 });
 
