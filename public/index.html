@@ -589,7 +589,7 @@ function unlockResults(){
   rows.forEach(function(c,i){
     var isYou=c.you;var kiCls=c.ki==='Regelmäßig'?'ki-reg':c.ki==='Oft'?'ki-oft':'ki-sel';
     cbody.innerHTML+='<tr class="'+(isYou?'you':'')+'"><td style="text-align:center">'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1))+'</td>'+
-      '<td style="color:'+(isYou?'var(--teal)':'var(--text)');font-weight:'+(isYou?'600':'400')+'">'+
+      '<td style="color:'+(isYou?'var(--teal)':'var(--text)')+';">'+
       (isYou?'▶ ':'')+c.domain+(isYou?' (du)':'')+'</td>'+
       '<td style="font-weight:700;color:'+scoreColor(c.score||sc)+'">'+(c.score||parseFloat(sc).toFixed(1))+' / 10</td>'+
       '<td>'+(c.top_factor||'—')+'</td>'+
