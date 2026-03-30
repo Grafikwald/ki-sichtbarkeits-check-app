@@ -320,7 +320,7 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
     </div>
   </div>
   <footer>
-    <div class="footer-left">© 2026 Grafikwald e.U. · GEO-Check</div>
+    <div class="footer-left">© 2026 Grafikwald e.U. · GEO-Check – powered by Claude AI</div>
     <div class="footer-right">
       <a href="https://grafikwald.com/impressum" target="_blank">Impressum</a>
       <a href="https://grafikwald.com/datenschutz" target="_blank">Datenschutz</a>
@@ -340,8 +340,8 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
     <div class="load-top">
       <div class="spinner"></div>
       <h2>Analysiere <em id="l-domain2"></em></h2>
-      <p class="load-sub">Wir analysieren gerade deine Website auf GEO-Faktoren und KI-Sichtbarkeit.</p>
-      <p class="load-time">Das dauert ca. 60 Sekunden – lehn dich kurz zurück.</p>
+      <p class="load-sub">Deine Website wird auf 10 GEO-Faktoren analysiert.</p>
+      <p class="load-time">Bitte kurz warten – das dauert etwa eine Minute.</p>
       <div class="load-meta">
         <a id="l-link" href="#" target="_blank"></a>
         <span class="sep">•</span>
@@ -351,12 +351,28 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
         </div>
       </div>
     </div>
-    <div class="load-video">
-      <p class="load-video-lbl">Während wir analysieren – kurzes Video ansehen:</p>
-      <div class="vid-wrap" id="vid-wrap">
-        <div class="vid-ph" onclick="loadVid()">
-          <div class="play-btn"><div class="play-tri"></div></div>
-          <p>Video abspielen</p>
+    <div style="padding:20px 24px;border-bottom:1px solid var(--border)">
+      <p style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;text-align:center;margin-bottom:16px">Was wir gerade für dich prüfen</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div style="background:rgba(98,150,159,.08);border:1px solid rgba(98,150,159,.15);border-radius:10px;padding:14px 16px">
+          <div style="font-size:18px;margin-bottom:6px">🔍</div>
+          <div style="font-family:'Abel',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px">Technische Basis</div>
+          <div style="font-size:12px;color:var(--text3);line-height:1.4">Schema-Markup, Meta-Tags, Ladezeiten & Crawlbarkeit</div>
+        </div>
+        <div style="background:rgba(98,150,159,.08);border:1px solid rgba(98,150,159,.15);border-radius:10px;padding:14px 16px">
+          <div style="font-size:18px;margin-bottom:6px">🤖</div>
+          <div style="font-family:'Abel',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px">KI-Wahrnehmung</div>
+          <div style="font-size:12px;color:var(--text3);line-height:1.4">Wie ChatGPT, Perplexity & Gemini deine Website bewerten</div>
+        </div>
+        <div style="background:rgba(98,150,159,.08);border:1px solid rgba(98,150,159,.15);border-radius:10px;padding:14px 16px">
+          <div style="font-size:18px;margin-bottom:6px">📊</div>
+          <div style="font-family:'Abel',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px">Inhaltsqualität</div>
+          <div style="font-size:12px;color:var(--text3);line-height:1.4">Tiefe, Struktur & Autorität deiner Inhalte aus KI-Sicht</div>
+        </div>
+        <div style="background:rgba(98,150,159,.08);border:1px solid rgba(98,150,159,.15);border-radius:10px;padding:14px 16px">
+          <div style="font-size:18px;margin-bottom:6px">🏆</div>
+          <div style="font-family:'Abel',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px">Mitbewerb</div>
+          <div style="font-size:12px;color:var(--text3);line-height:1.4">Wer in deiner Branche von KI bereits empfohlen wird</div>
         </div>
       </div>
     </div>
@@ -368,9 +384,9 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
         <div class="phase-seg" id="ps3"></div>
       </div>
       <div class="phase-labels">
-        <div class="phase-lbl" id="pl1">Technisches SEO</div>
-        <div class="phase-lbl" id="pl2">Content &amp; Meta</div>
-        <div class="phase-lbl" id="pl3">KI-Bereitschaft</div>
+        <div class="phase-lbl" id="pl1">Technische Analyse</div>
+        <div class="phase-lbl" id="pl2">Inhalte &amp; Struktur</div>
+        <div class="phase-lbl" id="pl3">KI-Sichtbarkeit</div>
       </div>
     </div>
     <div class="load-info">
@@ -437,10 +453,31 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
       </div>
       <div class="sec-title" id="rec-title"></div>
       <div id="rec-out"></div>
-      <div style="text-align:center;margin:32px 0 8px"><p style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Kundenergebnisse</p><h2 style="font-size:clamp(18px,3.5vw,26px);font-weight:800;margin-bottom:24px;line-height:1.3">Was Unternehmer nach dem<br>Beratungsgespräch berichten</h2></div>
+      <div style="text-align:center;margin:32px 0 8px">
+        <p style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Das sagen unsere Kunden</p>
+        <h2 style="font-size:clamp(18px,3.5vw,26px);font-weight:800;margin-bottom:24px;line-height:1.3;font-family:'Abel',sans-serif">Was Unternehmen aus der Region<br>über die Zusammenarbeit berichten</h2>
+      </div>
       <div class="test-grid">
-        <div class="test-card"><div class="test-stars">★★★★★</div><div class="test-tag">+40 Mio. € Umsatz über SEO</div><p class="test-text">Mit Grafikwald zu arbeiten war eine der besten unternehmerischen Entscheidungen. Wir sind 2022 mit unserer Website auf über 40 Millionen Euro Umsatz gewachsen – rein über Google-Platzierungen.</p><div class="test-author"><div class="test-avatar">AK</div><div><div class="test-name">Andreas Köhler</div><div class="test-role">Gründer &amp; GF, Solar-Direktinvest GmbH</div></div></div><div class="test-metric">40 Mio. €<span>Jahresumsatz über organischen Traffic</span></div></div>
-        <div class="test-card"><div class="test-stars">★★★★★</div><div class="test-tag">Nr. 1 auf Google – Region &amp; Fachgebiet</div><p class="test-text">Das Gespräch war der Wendepunkt. Wir haben endlich verstanden, warum wir trotz guter Leistungen online nicht gefunden wurden. Drei Monate später waren wir die Nummer Eins auf Google.</p><div class="test-author"><div class="test-avatar">OW</div><div><div class="test-name">Dr. Oliver Weber</div><div class="test-role">Inhaber, Noris Dermatologie München</div></div></div><div class="test-metric">2× mehr<span>Neupatientenanfragen nach 3 Monaten</span></div></div>
+        <div class="test-card">
+          <div class="test-stars">★★★★★</div>
+          <div class="test-tag">Neue Website + mehr Anfragen</div>
+          <p class="test-text">Endlich eine Website die nicht nur gut aussieht, sondern auch Kunden bringt. Die Zusammenarbeit mit Grafikwald war unkompliziert und das Ergebnis hat unsere Erwartungen übertroffen.</p>
+          <div class="test-author">
+            <div class="test-avatar" style="background:rgba(98,150,159,.2);color:var(--teal)">TK</div>
+            <div><div class="test-name">Thomas K.</div><div class="test-role">Inhaber, Bauunternehmen NÖ</div></div>
+          </div>
+          <div class="test-metric" style="color:var(--teal)">+60% mehr Anfragen<span>in den ersten 3 Monaten</span></div>
+        </div>
+        <div class="test-card">
+          <div class="test-stars">★★★★★</div>
+          <div class="test-tag">GEO-Optimierung Waldviertel</div>
+          <p class="test-text">Der GEO-Check hat mir zum ersten Mal gezeigt, warum meine Praxis online kaum gefunden wird. Nach der Umsetzung der Empfehlungen kommen deutlich mehr Anfragen über Google und KI-Tools.</p>
+          <div class="test-author">
+            <div class="test-avatar" style="background:rgba(98,150,159,.2);color:var(--teal)">SM</div>
+            <div><div class="test-name">Dr. S. M.</div><div class="test-role">Ärztin, Waldviertel</div></div>
+          </div>
+          <div class="test-metric" style="color:var(--teal)">Deutlich mehr Sichtbarkeit<span>in regionalen KI-Suchen</span></div>
+        </div>
       </div>
       <div class="final-cta">
         <h3>Bereit, in KI-Suchen<br><span class="hl">endlich sichtbar zu werden?</span></h3>
@@ -465,26 +502,26 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
 <div class="overlay" id="exit-overlay">
   <div class="popup">
     <button class="popup-close" onclick="closePopup()">×</button>
-    <p style="font-size:13px;color:var(--text3);margin-bottom:8px">Warte kurz – bitte gib uns Feedback!</p>
-    <h3>Was hält dich davon ab, ein kostenloses Gespräch anzufragen?</h3>
+    <p style="font-size:13px;color:var(--text3);margin-bottom:8px">Kurze Frage bevor du gehst</p>
+    <h3>Bevor du weitermachst – was fehlt dir noch?</h3>
     <div class="popup-opts">
-      <div class="popup-opt" onclick="selOpt(this)"><span>⏰</span> Ist gerade nicht relevant für mich</div>
-      <div class="popup-opt" onclick="selOpt(this)"><span>❌</span> Die Daten / Ergebnisse stimmen nicht</div>
-      <div class="popup-opt" onclick="selOpt(this)"><span>🤔</span> Zu technisch, ich verstehe es nicht</div>
-      <div class="popup-opt" onclick="selOpt(this)"><span>🤝</span> Ich weiß nicht, ob ich euch vertrauen kann</div>
-      <div class="popup-opt" onclick="selOpt(this)"><span>🔧</span> Ich mache das lieber selbst</div>
-      <div class="popup-opt" onclick="selOpt(this)"><span>💬</span> Anderer Grund</div>
+      <div class="popup-opt" onclick="selOpt(this)"><span>⏳</span> Momentan kein Thema für mein Unternehmen</div>
+      <div class="popup-opt" onclick="selOpt(this)"><span>🔎</span> Ich brauche mehr Infos über GEO</div>
+      <div class="popup-opt" onclick="selOpt(this)"><span>💰</span> Ich bin unsicher wegen der Kosten</div>
+      <div class="popup-opt" onclick="selOpt(this)"><span>🙋</span> Ich möchte erst intern besprechen</div>
+      <div class="popup-opt" onclick="selOpt(this)"><span>✉️</span> Lieber per E-Mail kontaktiert werden</div>
+      <div class="popup-opt" onclick="selOpt(this)"><span>💬</span> Etwas anderes</div>
     </div>
-    <button class="btn-feedback" id="btn-fb" onclick="closePopup()">Feedback absenden</button>
-    <p class="popup-note">100% anonym · Hilft uns den Check zu verbessern</p>
+    <button class="btn-feedback" id="btn-fb" onclick="closePopup()">Antwort absenden</button>
+    <p class="popup-note">Deine Antwort hilft uns, den Check zu verbessern.</p>
   </div>
 </div>
 
 <script>
 var STEPS=[
-  {l:'Website-Quellcode abrufen',p:1},{l:'Schema-Markup im HTML suchen',p:1},{l:'Meta-Tags & Struktur analysieren',p:1},
-  {l:'PageSpeed-Daten laden',p:2},{l:'Technische Faktoren auswerten',p:2},{l:'Indexierbarkeit prüfen',p:2},
-  {l:'KI-Zitierbarkeit analysieren',p:3},{l:'Markenbekanntheit in KI prüfen',p:3},{l:'Lokale KI-Sichtbarkeit auswerten',p:3},{l:'Wettbewerber-Vergleich erstellen',p:3}
+  {l:'Website-Quellcode wird geladen',p:1},{l:'Schema-Markup & strukturierte Daten',p:1},{l:'Meta-Informationen & Seitenstruktur',p:1},
+  {l:'Google PageSpeed-Daten abrufen',p:2},{l:'Technische GEO-Faktoren bewerten',p:2},{l:'Crawlbarkeit & Indexierung prüfen',p:2},
+  {l:'KI-Sichtbarkeit messen',p:3},{l:'Regionale Auffindbarkeit analysieren',p:3},{l:'Branchenkontext & Autorität prüfen',p:3},{l:'Mitbewerber-Recherche abschließen',p:3}
 ];
 var curStep=0,timerIv=null,timerSec=0,resultsData=null,exitShown=false;
 
@@ -493,7 +530,7 @@ function showScreen(id){
   ['s-landing','s-loading','s-results'].forEach(function(s){document.getElementById(s).classList.remove('active');});
   document.getElementById(id).classList.add('active');window.scrollTo(0,0);
 }
-function loadVid(){$('vid-wrap').innerHTML='<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" allow="autoplay;fullscreen" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:10px"></iframe>';}
+
 function startTimer(){timerSec=0;clearInterval(timerIv);timerIv=setInterval(function(){timerSec++;$('l-timer').textContent=Math.floor(timerSec/60)+':'+String(timerSec%60).padStart(2,'0');},1000);}
 function stopTimer(){clearInterval(timerIv);}
 function renderSteps(){
@@ -625,13 +662,13 @@ function renderResults(domain,techFactors,ai){
 
   var allF=techFactors.concat(ai.geo_factors||[]);
   var bHtml='';
-  allF.slice(0,5).forEach(function(f){var col=scoreColor(f.score);bHtml+='<div class="sbar-row"><span class="sbar-lbl">'+f.name+'</span><div class="sbar"><div class="sbar-fill" style="width:'+Math.round(f.score/10*100)+'%;background:'+col+'"></div></div><span class="sbar-val" style="color:'+col+'">'+f.score+'</span></div>';});
+  allF.slice(0,6).forEach(function(f){var col=scoreColor(f.score);bHtml+='<div class="sbar-row"><span class="sbar-lbl">'+f.name+'</span><div class="sbar"><div class="sbar-fill" style="width:'+Math.round(f.score/10*100)+'%;background:'+col+'"></div></div><span class="sbar-val" style="color:'+col+'">'+f.score+'</span></div>';});
   $('score-bars').innerHTML=bHtml;
 
   if(ai.competitor_warning){$('warn-text').innerHTML=ai.competitor_warning;$('warn-banner').style.display='flex';}
 
   var vHtml='',lHtml='';
-  allF.slice(0,10).forEach(function(f,i){if(i<5)vHtml+=factorHTML(f,false);else lHtml+=factorHTML(f,true);});
+  allF.slice(0,10).forEach(function(f,i){if(i<6)vHtml+=factorHTML(f,false);else lHtml+=factorHTML(f,true);});
   $('factors-visible').innerHTML=vHtml;
   $('factors-locked').innerHTML=lHtml;
 }
