@@ -59,9 +59,9 @@ h1,h2,h3,h4,.logo,.btn-scan,.hdr-cta,.btn-cta,.btn-unlock,.score-headline,.sec-t
 .step-box p{font-size:13px;color:var(--text3);line-height:1.6}
 .step-box .step-tag{display:inline-block;background:rgba(230,232,97,.1);border:1px solid rgba(230,232,97,.25);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--lime);margin-top:10px;letter-spacing:.04em}
 .stats-row{display:flex;gap:40px;justify-content:center;margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
-.stat-item{text-align:center}
-.stat-val{font-family:'Abel',sans-serif;font-size:32px;color:var(--lime);line-height:1}
-.stat-lbl{font-size:12px;color:var(--text3);margin-top:4px;line-height:1.4}
+.stat-item{text-align:center;padding:0 20px}
+.stat-val{font-family:'Abel',sans-serif;font-size:36px;color:var(--lime);line-height:1;margin-bottom:10px}
+.stat-lbl{font-size:12px;color:var(--text3);margin-top:6px;line-height:1.5}
 
 /* LOADING */
 #s-loading{background:#1A1A2E;background:linear-gradient(155deg,rgba(26,26,46,1) 0%,rgba(64,80,83,1) 50%,rgba(15,52,96,1) 100%)}
@@ -233,8 +233,11 @@ h1,h2,h3,h4,.logo,.btn-scan,.hdr-cta,.btn-cta,.btn-unlock,.score-headline,.sec-t
 
 .reset-link{text-align:center;margin-top:20px}
 .reset-link button{background:none;border:none;color:var(--text3);font-size:13px;cursor:pointer}
-footer{text-align:center;padding:24px;font-size:12px;color:var(--text3);border-top:1px solid var(--border)}
-footer a{color:var(--text3)}
+footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-left{font-size:12px;color:var(--text3)}
+.footer-right{display:flex;gap:24px}
+.footer-right a{font-size:12px;color:var(--text3);text-decoration:none;transition:color .2s}
+.footer-right a:hover{color:var(--teal)}
 
 /* EXIT POPUP */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;align-items:center;justify-content:center;padding:24px}
@@ -440,7 +443,14 @@ footer a{color:var(--text3)}
     </div>
     <div class="reset-link"><button onclick="resetCheck()">Neue Domain prüfen</button></div>
   </div>
-  <footer>© 2026 Grafikwald e.U. &nbsp;·&nbsp; <a href="#">Datenschutz</a> &nbsp;·&nbsp; <a href="#">Impressum</a><br><span style="margin-top:4px;display:block">GEO-Check – powered by Grafikwald &amp; Claude AI</span></footer>
+  <footer>
+    <div class="footer-left">© 2026 Grafikwald e.U. · GEO-Check – powered by Claude AI</div>
+    <div class="footer-right">
+      <a href="https://grafikwald.com/impressum" target="_blank">Impressum</a>
+      <a href="https://grafikwald.com/datenschutz" target="_blank">Datenschutz</a>
+      <a href="https://grafikwald.com/agb" target="_blank">AGB</a>
+    </div>
+  </footer>
 </div>
 
 <!-- EXIT POPUP -->
