@@ -2,6 +2,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 const cors = require('cors');
 const path = require('path');
+const { GoogleGenAI } = require('@google/genai'); // NEU: Gemini SDK
 
 const app = express();
 app.use(express.json());
@@ -16,7 +17,6 @@ app.get('/health', (req, res) => {
 });
 
 // ─── PageSpeed API Proxy ───
-// Key optional — ohne Key gibt es Rate Limits
 app.get('/api/pagespeed', async (req, res) => {
   const { url } = req.query;
   if (!url) return res.status(400).json({ error: 'url parameter required' });
@@ -37,7 +37,6 @@ app.get('/api/pagespeed', async (req, res) => {
     const data = await response.json();
     res.json(data);
   } catch (e) {
-    // Nie fatal — Frontend arbeitet ohne PSI weiter
     res.status(200).json({ error: 'pagespeed_unavailable' });
   }
 });
@@ -59,74 +58,62 @@ app.get('/api/fetchhtml', async (req, res) => {
 
     if (!response.ok) return res.status(200).json({ html: null });
     const html = await response.text();
-    res.json({ html: html.slice(0, 500000) }); // Max 500KB
+    res.json({ html: html.slice(0, 500000) });
   } catch (e) {
     res.status(200).json({ html: null });
   }
 });
 
-// ─── Anthropic API Proxy ─── KEY BLEIBT HIER, NIE IM FRONTEND
+// ─── Gemini API Proxy ─── KEY BLEIBT HIER, NIE IM FRONTEND
 app.post('/api/analyze', async (req, res) => {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY; // NEU: Gemini Key aus den Umgebungsvariablen
   if (!apiKey) {
-    return res.status(500).json({ error: 'ANTHROPIC_API_KEY not configured on server' });
+    return res.status(500).json({ error: 'GEMINI_API_KEY not configured on server' });
   }
 
   const { domain, techSummary } = req.body;
   if (!domain) return res.status(400).json({ error: 'domain required' });
 
+  const ai = new GoogleGenAI({ apiKey: apiKey });
+
   const prompt = `Du bist GEO-Experte (Generative Engine Optimization). Analysiere die KI-Sichtbarkeit von: ${domain}
 
 Bereits gemessene technische Werte: ${techSummary || 'keine Daten verfügbar'}
 
-Führe eine Web-Suche durch um zu prüfen:
-1. Wie bekannt ist ${domain} in KI-Suchantworten (ChatGPT, Perplexity, Gemini)?
+Nutze die Google Suche, um folgendes zu prüfen:
+1. Wie bekannt ist ${domain} in Suchantworten?
 2. Taucht die Website bei branchenrelevanten Fragen auf?
-3. Lokale/regionale Präsenz in KI?
-4. Suche via Web nach 2 echten direkten Wettbewerbern - NUR Domains die du tatsächlich in den Suchergebnissen findest. Wenn du keine echten Wettbewerber findest, gib ein leeres Array zurück. ERFINDE NIEMALS Domains oder Firmennamen.
+3. Lokale/regionale Präsenz?
+4. Suche nach 2 echten direkten Wettbewerbern in derselben Branche und Region. ERFINDE NIEMALS Domains. Wenn du keine echten findest, lass das Array leer.
 
-Antworte NUR mit JSON (kein Markdown, keine Backticks):
-{"website_name":"Unternehmensname","website_desc":"2 Sätze was das Unternehmen macht","score":4.7,"rating":"kaum sichtbar","summary":"2 konkrete Sätze warum der Score so ist","competitor_warning":"Dein Hauptwettbewerber liegt in X von 10 Faktoren vor dir. domain.de wird von KI-Systemen bereits aktiv empfohlen. Jede Anfrage die dort landet fehlt dir.","geo_factors":[{"name":"Faktendichte","score":5.0,"status":"opt","finding":"Konkrete Beobachtung zur Domain","tip":"Konkreter Tipp"},{"name":"Aktualität & Frische","score":4.5,"status":"opt","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"},{"name":"Thematische Tiefe","score":6.0,"status":"mittel","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"},{"name":"Heading & Architektur","score":5.5,"status":"opt","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"},{"name":"Semantische Klarheit","score":5.0,"status":"opt","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"}],"competitors":[{"domain":"konkurrent1.at","score":7.4,"top_factor":"Schema Markup","ki":"Regelmäßig"},{"domain":"konkurrent2.at","score":6.8,"top_factor":"Answer-First Struktur","ki":"Oft"}],"comp_note":"Ein konkreter Satz warum diese Wettbewerber besser abschneiden.","lost_monthly":"6-9","lost_yearly":"~72","actions":[{"name":"Schema Markup","desc":"Implementiere Article, FAQPage, HowTo, Organization. Nutze Author-Markup und Breadcrumbs.","priority":"hoch"},{"name":"Answer-First Struktur","desc":"Stelle klare Antworten in den ersten 40–60 Wörtern. Nutze FAQ-Stil H2/H3 und TL;DR-Blöcke.","priority":"hoch"},{"name":"KI-Crawlbarkeit","desc":"Erlaube KI-Crawler in robots.txt. Füge llms.txt hinzu. Prüfe Sitemap und Core Web Vitals.","priority":"hoch"},{"name":"Externe Autorität","desc":"Aufbau von Erwähnungen auf Branchenportalen und Presseartikeln.","priority":"mittel"},{"name":"E-E-A-T Signale","desc":"Autorenprofile, Zertifizierungen und Referenzprojekte prominent darstellen.","priority":"mittel"}]}
+Antworte EXAKT in diesem JSON-Format:
+{"website_name":"Unternehmensname","website_desc":"2 Sätze was das Unternehmen macht","score":4.7,"rating":"kaum sichtbar","summary":"2 konkrete Sätze warum der Score so ist","competitor_warning":"Dein Hauptwettbewerber liegt in X von 10 Faktoren vor dir. domain.de wird von KI-Systemen bereits aktiv empfohlen. Jede Anfrage die dort landet fehlt dir.","geo_factors":[{"name":"Faktendichte","score":5.0,"status":"opt","finding":"Konkrete Beobachtung zur Domain","tip":"Konkreter Tipp"},{"name":"Aktualität & Frische","score":4.5,"status":"opt","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"},{"name":"Thematische Tiefe","score":6.0,"status":"mittel","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"},{"name":"Heading & Architektur","score":5.5,"status":"opt","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"},{"name":"Semantische Klarheit","score":5.0,"status":"opt","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"}],"competitors":[{"domain":"konkurrent1.at","score":7.4,"top_factor":"Schema Markup","ki":"Regelmäßig"},{"domain":"konkurrent2.at","score":6.8,"top_factor":"Answer-First Struktur","ki":"Oft"}],"comp_note":"Ein konkreter Satz warum diese Wettbewerber besser abschneiden.","lost_monthly":"6-9","lost_yearly":"~72","actions":[{"name":"Schema Markup","desc":"Implementiere Article, FAQPage, HowTo.","priority":"hoch"},{"name":"Answer-First Struktur","desc":"Stelle klare Antworten in den ersten 40–60 Wörtern.","priority":"hoch"},{"name":"KI-Crawlbarkeit","desc":"Erlaube KI-Crawler in robots.txt.","priority":"hoch"},{"name":"Externe Autorität","desc":"Aufbau von Erwähnungen.","priority":"mittel"},{"name":"E-E-A-T Signale","desc":"Zertifizierungen darstellen.","priority":"mittel"}]}
 
-Scoring: score<3.5=kritisch, 3.5-4.9=opt (Optimierungsbedarf), 5-6.9=mittel, >=7=gut. Alles auf Deutsch. Sehr spezifisch zur Domain. KRITISCH: Bei competitors NUR echte Domains eintragen die du via Websuche verifiziert hast. Keine erfundenen oder nicht-existierenden Domains. Wenn unsicher, lieber leeres Array [] zurückgeben.`;
+Scoring: score<3.5=kritisch, 3.5-4.9=opt (Optimierungsbedarf), 5-6.9=mittel, >=7=gut. Alles auf Deutsch. Sehr spezifisch zur Domain.`;
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 2500,
-        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-        messages: [{ role: 'user', content: prompt }]
-      })
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
+      config: {
+        tools: [{ googleSearch: {} }], // Aktiviert die Google Suche
+        responseMimeType: "application/json", // Zwingt Gemini, valides JSON auszugeben
+      }
     });
 
-    if (!response.ok) {
-      const err = await response.text();
-      return res.status(response.status).json({ error: 'Anthropic API error: ' + err });
-    }
-
-    const data = await response.json();
-    const text = data.content
-      .filter(b => b.type === 'text')
-      .map(b => b.text)
-      .join('');
-
+    const text = response.text;
+    
+    // Fallback Regex, falls wider Erwarten doch Markdown-Backticks mitkommen
     const match = text.match(/\{[\s\S]*\}/);
-    if (!match) return res.status(500).json({ error: 'Keine gültige JSON-Antwort von Claude' });
+    if (!match) return res.status(500).json({ error: 'Keine gültige JSON-Antwort generiert' });
 
     res.json(JSON.parse(match[0]));
 
   } catch (e) {
+    console.error("Gemini API Error:", e);
     res.status(500).json({ error: e.message || 'Interner Serverfehler' });
   }
 });
-
 
 // ─── HubSpot Contact erstellen ───
 app.post('/api/subscribe', async (req, res) => {
@@ -154,7 +141,6 @@ app.post('/api/subscribe', async (req, res) => {
     });
     if (!response.ok) {
       const err = await response.text();
-      // Kontakt existiert bereits - kein Fehler
       if (response.status === 409) return res.json({ ok: true });
       return res.status(200).json({ ok: false, error: err });
     }
