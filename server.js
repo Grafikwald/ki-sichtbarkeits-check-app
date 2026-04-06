@@ -2,7 +2,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 const cors = require('cors');
 const path = require('path');
-const { GoogleGenAI } = require('@google/genai'); // NEU: Gemini SDK
+const { GoogleGenAI } = require('@google/genai');
 
 const app = express();
 app.use(express.json());
@@ -64,9 +64,9 @@ app.get('/api/fetchhtml', async (req, res) => {
   }
 });
 
-// ─── Gemini API Proxy ─── KEY BLEIBT HIER, NIE IM FRONTEND
+// ─── Gemini API Proxy ───
 app.post('/api/analyze', async (req, res) => {
-  const apiKey = process.env.GEMINI_API_KEY; // NEU: Gemini Key aus den Umgebungsvariablen
+  const apiKey = process.env.GEMINI_API_KEY; 
   if (!apiKey) {
     return res.status(500).json({ error: 'GEMINI_API_KEY not configured on server' });
   }
@@ -86,7 +86,7 @@ Nutze die Google Suche, um folgendes zu prüfen:
 3. Lokale/regionale Präsenz?
 4. Suche nach 2 echten direkten Wettbewerbern in derselben Branche und Region. ERFINDE NIEMALS Domains. Wenn du keine echten findest, lass das Array leer.
 
-Antworte EXAKT in diesem JSON-Format:
+Antworte EXAKT in diesem JSON-Format (Ohne Markdown, ohne Backticks):
 {"website_name":"Unternehmensname","website_desc":"2 Sätze was das Unternehmen macht","score":4.7,"rating":"kaum sichtbar","summary":"2 konkrete Sätze warum der Score so ist","competitor_warning":"Dein Hauptwettbewerber liegt in X von 10 Faktoren vor dir. domain.de wird von KI-Systemen bereits aktiv empfohlen. Jede Anfrage die dort landet fehlt dir.","geo_factors":[{"name":"Faktendichte","score":5.0,"status":"opt","finding":"Konkrete Beobachtung zur Domain","tip":"Konkreter Tipp"},{"name":"Aktualität & Frische","score":4.5,"status":"opt","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"},{"name":"Thematische Tiefe","score":6.0,"status":"mittel","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"},{"name":"Heading & Architektur","score":5.5,"status":"opt","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"},{"name":"Semantische Klarheit","score":5.0,"status":"opt","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"}],"competitors":[{"domain":"konkurrent1.at","score":7.4,"top_factor":"Schema Markup","ki":"Regelmäßig"},{"domain":"konkurrent2.at","score":6.8,"top_factor":"Answer-First Struktur","ki":"Oft"}],"comp_note":"Ein konkreter Satz warum diese Wettbewerber besser abschneiden.","lost_monthly":"6-9","lost_yearly":"~72","actions":[{"name":"Schema Markup","desc":"Implementiere Article, FAQPage, HowTo.","priority":"hoch"},{"name":"Answer-First Struktur","desc":"Stelle klare Antworten in den ersten 40–60 Wörtern.","priority":"hoch"},{"name":"KI-Crawlbarkeit","desc":"Erlaube KI-Crawler in robots.txt.","priority":"hoch"},{"name":"Externe Autorität","desc":"Aufbau von Erwähnungen.","priority":"mittel"},{"name":"E-E-A-T Signale","desc":"Zertifizierungen darstellen.","priority":"mittel"}]}
 
 Scoring: score<3.5=kritisch, 3.5-4.9=opt (Optimierungsbedarf), 5-6.9=mittel, >=7=gut. Alles auf Deutsch. Sehr spezifisch zur Domain.`;
@@ -96,14 +96,13 @@ Scoring: score<3.5=kritisch, 3.5-4.9=opt (Optimierungsbedarf), 5-6.9=mittel, >=7
       model: 'gemini-2.5-flash',
       contents: prompt,
       config: {
-        tools: [{ googleSearch: {} }], // Aktiviert die Google Suche
-        responseMimeType: "application/json", // Zwingt Gemini, valides JSON auszugeben
+        tools: [{ googleSearch: {} }] // <-- Hier war der Fehler, jetzt ist er korrigiert!
       }
     });
 
     const text = response.text;
     
-    // Fallback Regex, falls wider Erwarten doch Markdown-Backticks mitkommen
+    // Wir extrahieren das JSON sicherheitshalber
     const match = text.match(/\{[\s\S]*\}/);
     if (!match) return res.status(500).json({ error: 'Keine gültige JSON-Antwort generiert' });
 
