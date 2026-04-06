@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -280,6 +279,7 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
       <button class="btn-scan" onclick="startCheck()" id="check-btn">Jetzt analysieren</button>
     </div>
     <p class="scan-hint">Einfach Domain eingeben – ohne www, z.B. grafikwald.com</p>
+    <p style="text-align:center;margin-top:12px"><button onclick="loadDemo()" style="background:none;border:1px solid rgba(98,150,159,.4);color:var(--teal);font-size:12px;padding:5px 14px;border-radius:20px;cursor:pointer;font-family:'Quicksand',sans-serif">▶ Demo ansehen (ohne echten Check)</button></p>
     <div id="err" class="err"></div>
   </div>
   <div class="steps-wrap">
@@ -320,7 +320,7 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
     </div>
   </div>
   <footer>
-    <div class="footer-left">© 2026 Grafikwald e.U. · GEO-Check</div>
+    <div class="footer-left">© 2026 Grafikwald e.U. · GEO-Check – powered by Claude AI</div>
     <div class="footer-right">
       <a href="https://grafikwald.com/impressum" target="_blank">Impressum</a>
       <a href="https://grafikwald.com/datenschutz" target="_blank">Datenschutz</a>
@@ -405,7 +405,7 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
   </header>
   <div class="res-container">
     <div class="score-hero">
-      <div class="score-tag">GEO-CHECK – DEIN ERGEBNIS</div>
+      <div class="score-tag">DEIN GEO-ANALYSE ERGEBNIS</div>
       <div class="score-headline" id="r-headline"></div>
       <p class="score-summary" id="r-summary"></p>
       <div class="score-display">
@@ -420,13 +420,13 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
       </div>
     </div>
     <div class="warn-banner" id="warn-banner"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" style="flex-shrink:0;margin-top:1px"><path d="m10.29 3.86-8.36 14.5A1 1 0 0 0 2.82 20h16.36a1 1 0 0 0 .89-1.64L11.71 3.86a1 1 0 0 0-1.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><p id="warn-text"></p></div>
-    <div class="sec-title">Deine 10 GEO-Faktoren im Detail</div>
+    <div class="sec-title">Analyse deiner 10 GEO-Faktoren</div>
     <div id="factors-visible"></div>
     <div id="factors-locked"></div>
     <div class="email-gate" id="email-gate">
       <div class="gate-lock">🔒</div>
-      <h3>Vollständigen Bericht freischalten</h3>
-      <p>Trag deine E-Mail ein – du bekommst alle 10 Faktoren, den Mitbewerber-Vergleich und konkrete Maßnahmen. Kostenlos.</p>
+      <h3>Deine weiteren 4 Faktoren + Mitbewerberanalyse</h3>
+      <p>Trag deine E-Mail ein und sieh sofort alle Faktoren, deinen Branchenvergleich und was du konkret tun kannst.</p>
       <div class="email-row">
         <input type="email" id="email-input" placeholder="deine@email.at"/>
         <button class="btn-unlock" onclick="unlockResults()">Ergebnisse freischalten</button>
@@ -434,57 +434,89 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
       <div class="gate-note">Kein Spam. Nur dein persönlicher GEO-Bericht.</div>
     </div>
     <div id="unlocked">
-      <div class="sec-title">So stehst du im Vergleich zu deinen Mitbewerbern</div>
-      <table class="comp-table"><thead><tr><th style="width:40px">Platz</th><th>Domain</th><th style="width:90px">Score</th><th>Stärkster Faktor</th><th style="width:100px">KI-Empf.</th></tr></thead><tbody id="comp-body"></tbody></table>
+      <div class="sec-title">Dein Branchenvergleich</div>
+      <table class="comp-table"><thead><tr><th style="width:40px">#</th><th>Website</th><th style="width:90px">GEO-Score</th><th>Bester Faktor</th><th style="width:100px">KI-Nennung</th></tr></thead><tbody id="comp-body"></tbody></table>
       <p class="comp-note" id="comp-note"></p>
-      <div class="sec-title">Was fehlende KI-Sichtbarkeit kostet</div>
-      <p style="font-size:13px;color:var(--text3);margin-bottom:16px">Grobe Schätzung auf Basis vergleichbarer Unternehmen in deiner Branche:</p>
+      <div class="sec-title">Das kostet fehlende KI-Sichtbarkeit</div>
+      <p style="font-size:13px;color:var(--text3);margin-bottom:16px">Schätzung auf Basis ähnlicher Betriebe – was du durch fehlende KI-Sichtbarkeit pro Monat liegen lässt:</p>
       <div class="cost-cards">
-        <div class="cost-card"><div class="cost-val" id="c-lost">—</div><div class="cost-lbl">potenzielle Anfragen pro Monat die du verpasst</div></div>
-        <div class="cost-card"><div class="cost-val" id="c-year">—</div><div class="cost-lbl">Anfragen pro Jahr die an Mitbewerber gehen</div></div>
-        <div class="cost-card"><div class="cost-val up">↑ wächst</div><div class="cost-lbl">KI-Nutzung wächst jeden Monat weiter</div></div>
+        <div class="cost-card"><div class="cost-val" id="c-lost">—</div><div class="cost-lbl">verpasste Anfragen pro Monat</div></div>
+        <div class="cost-card"><div class="cost-val" id="c-year">—</div><div class="cost-lbl">Anfragen pro Jahr beim Mitbewerb</div></div>
+        <div class="cost-card"><div class="cost-val up">↑ wächst</div><div class="cost-lbl">KI-Nutzung steigt – dein Rückstand auch</div></div>
       </div>
-      <div class="cta-banner">
-        <div class="sub">Dein nächster Schritt</div>
-        <h3>Deine Mitbewerber werden gefunden –<br><span class="hl">du solltest das auch sein.</span></h3>
-        <p>In 30 Minuten besprechen wir gemeinsam, wo dein größtes Potenzial liegt – und welche Maßnahmen sofort Wirkung zeigen.</p>
-        <a class="btn-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank">Kostenloses Beratungsgespräch vereinbaren →</a>
-        <div class="cta-checks"><div class="cta-chk">Kein Verkaufsdruck</div><div class="cta-chk">Konkrete GEO-Tipps sofort</div><div class="cta-chk">30 Minuten, unkompliziert</div></div>
-      </div>
+
       <div class="sec-title" id="rec-title"></div>
       <div id="rec-out"></div>
-      <div style="text-align:center;margin:32px 0 8px">
-        <p style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Das sagen unsere Kunden</p>
-        <h2 style="font-size:clamp(18px,3.5vw,26px);font-weight:800;margin-bottom:24px;line-height:1.3;font-family:'Abel',sans-serif">Was Unternehmen aus der Region<br>über die Zusammenarbeit berichten</h2>
+      <div style="text-align:center;margin:40px 0 24px">
+        <p style="font-size:12px;color:var(--teal);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;font-family:'Quicksand',sans-serif">Das sagen unsere Kunden</p>
+        <h2 style="font-size:clamp(20px,3.5vw,30px);font-weight:400;margin-bottom:8px;line-height:1.3;font-family:'Abel',sans-serif">Was Unternehmen nach dem<br>Beratungsgespräch berichten</h2>
+        <p style="font-size:14px;color:var(--text3)">Platzhalter-Texte – werden durch echte Kundenstimmen ersetzt</p>
       </div>
-      <div class="test-grid">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
         <div class="test-card">
           <div class="test-stars">★★★★★</div>
-          <div class="test-tag">Neue Website + mehr Anfragen</div>
-          <p class="test-text">Endlich eine Website die nicht nur gut aussieht, sondern auch Kunden bringt. Die Zusammenarbeit mit Grafikwald war unkompliziert und das Ergebnis hat unsere Erwartungen übertroffen.</p>
+          <div class="test-tag">Handwerk &amp; Bau</div>
+          <p class="test-text">Ich war skeptisch, ob das wirklich etwas bringt. Aber nach dem GEO-Check und der Umsetzung durch Grafikwald kommen heute Anfragen über Wege, die ich vorher gar nicht auf dem Radar hatte – auch über ChatGPT.</p>
           <div class="test-author">
-            <div class="test-avatar" style="background:rgba(98,150,159,.2);color:var(--teal)">TK</div>
-            <div><div class="test-name">Thomas K.</div><div class="test-role">Inhaber, Bauunternehmen NÖ</div></div>
+            <div class="test-avatar" style="background:rgba(98,150,159,.2);color:var(--teal)">MH</div>
+            <div><div class="test-name">Markus H.</div><div class="test-role">Geschäftsführer, Hoch- und Tiefbau NÖ</div></div>
           </div>
-          <div class="test-metric" style="color:var(--teal)">+60% mehr Anfragen<span>in den ersten 3 Monaten</span></div>
+          <div class="test-metric" style="color:var(--teal)">+8 Anfragen/Monat<span>zusätzlich über KI- und Google-Suche</span></div>
         </div>
         <div class="test-card">
           <div class="test-stars">★★★★★</div>
-          <div class="test-tag">GEO-Optimierung Waldviertel</div>
-          <p class="test-text">Der GEO-Check hat mir zum ersten Mal gezeigt, warum meine Praxis online kaum gefunden wird. Nach der Umsetzung der Empfehlungen kommen deutlich mehr Anfragen über Google und KI-Tools.</p>
+          <div class="test-tag">Gesundheit &amp; Praxis</div>
+          <p class="test-text">Patienten fragen heute bei ChatGPT nach Ärztinnen in der Region. Der GEO-Check hat mir gezeigt, dass ich dort schlicht nicht vorkam. Nach der Optimierung hat sich das geändert – und die Neupatientenanfragen sind messbar gestiegen.</p>
           <div class="test-author">
-            <div class="test-avatar" style="background:rgba(98,150,159,.2);color:var(--teal)">SM</div>
-            <div><div class="test-name">Dr. S. M.</div><div class="test-role">Ärztin, Waldviertel</div></div>
+            <div class="test-avatar" style="background:rgba(98,150,159,.2);color:var(--teal)">AS</div>
+            <div><div class="test-name">Dr. Christine S.</div><div class="test-role">Allgemeinmedizin, Niederösterreich</div></div>
           </div>
-          <div class="test-metric" style="color:var(--teal)">Deutlich mehr Sichtbarkeit<span>in regionalen KI-Suchen</span></div>
+          <div class="test-metric" style="color:var(--teal)">+5 Neupatienten/Monat<span>nach GEO-Optimierung</span></div>
         </div>
       </div>
-      <div class="final-cta">
-        <h3>Bereit, in KI-Suchen<br><span class="hl">endlich sichtbar zu werden?</span></h3>
-        <p>In 30 Minuten bekommst du einen klaren Plan, wie deine Website in ChatGPT, Perplexity und Co. sichtbar wird.</p>
-        <a class="btn-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank">Jetzt Termin sichern →</a>
-        <div class="final-checks"><span>Kein Verkaufsdruck</span><span>Konkrete GEO-Tipps sofort</span><span>Regional verwurzelt, digital stark</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:32px">
+        <div class="test-card" style="padding:16px">
+          <div class="test-stars" style="font-size:12px">★★★★★</div>
+          <div class="test-tag" style="font-size:9px;margin:4px 0 8px">Gastgewerbe</div>
+          <p class="test-text" style="font-size:12px">Seit der GEO-Optimierung erscheinen wir bei Perplexity, wenn Gäste nach Hotels im Waldviertel fragen. Das hätte ich nicht für möglich gehalten.</p>
+          <div class="test-author" style="margin-top:10px">
+            <div class="test-avatar" style="background:rgba(98,150,159,.2);color:var(--teal);width:28px;height:28px;font-size:11px">RB</div>
+            <div><div class="test-name" style="font-size:12px">Robert B.</div><div class="test-role" style="font-size:11px">Hotelier, Waldviertel</div></div>
+          </div>
+        </div>
+        <div class="test-card" style="padding:16px">
+          <div class="test-stars" style="font-size:12px">★★★★★</div>
+          <div class="test-tag" style="font-size:9px;margin:4px 0 8px">Handel &amp; E-Commerce</div>
+          <p class="test-text" style="font-size:12px">Endlich jemand, der nicht nur redet, sondern konkret zeigt was zu tun ist. Binnen zwei Monaten waren erste Ergebnisse spürbar.</p>
+          <div class="test-author" style="margin-top:10px">
+            <div class="test-avatar" style="background:rgba(98,150,159,.2);color:var(--teal);width:28px;height:28px;font-size:11px">SK</div>
+            <div><div class="test-name" style="font-size:12px">Sandra K.</div><div class="test-role" style="font-size:11px">Inhaberin, Fachhandel NÖ</div></div>
+          </div>
+        </div>
+        <div class="test-card" style="padding:16px">
+          <div class="test-stars" style="font-size:12px">★★★★★</div>
+          <div class="test-tag" style="font-size:9px;margin:4px 0 8px">Dienstleistung</div>
+          <p class="test-text" style="font-size:12px">Professionell, transparent und mit echtem Verständnis für kleine Unternehmen. Der GEO-Check war der erste Schritt zu mehr Sichtbarkeit.</p>
+          <div class="test-author" style="margin-top:10px">
+            <div class="test-avatar" style="background:rgba(98,150,159,.2);color:var(--teal);width:28px;height:28px;font-size:11px">TW</div>
+            <div><div class="test-name" style="font-size:12px">Thomas W.</div><div class="test-role" style="font-size:11px">Steuerberater, Wien</div></div>
+          </div>
+        </div>
       </div>
+
+      <!-- TERMIN-BLOCK -->
+      <div style="background:linear-gradient(135deg,rgba(98,150,159,.15) 0%,rgba(64,80,83,.2) 100%);border:1px solid rgba(98,150,159,.3);border-radius:var(--radius-xl);padding:44px 32px;text-align:center;margin-bottom:24px">
+        <p style="font-size:11px;color:var(--lime);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;font-family:'Quicksand',sans-serif">Dein nächster Schritt</p>
+        <h3 style="font-family:'Abel',sans-serif;font-size:clamp(22px,4vw,32px);margin-bottom:12px;line-height:1.3">Lass uns gemeinsam schauen,<br>wie wir deine Sichtbarkeit verbessern.</h3>
+        <p style="font-size:15px;color:var(--text2);margin-bottom:28px;line-height:1.7;max-width:480px;margin-left:auto;margin-right:auto">30 Minuten, kostenlos, ohne Verpflichtung. Du bekommst einen klaren Plan – speziell für deine Website und deine Branche.</p>
+        <a class="btn-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank" style="font-size:16px;padding:16px 40px">Jetzt Termin vereinbaren →</a>
+        <div style="display:flex;gap:24px;justify-content:center;margin-top:18px;flex-wrap:wrap">
+          <span style="font-size:12px;color:var(--text3);display:flex;align-items:center;gap:5px">✓ Kein Verkaufsgespräch</span>
+          <span style="font-size:12px;color:var(--text3);display:flex;align-items:center;gap:5px">✓ Konkrete GEO-Maßnahmen sofort</span>
+          <span style="font-size:12px;color:var(--text3);display:flex;align-items:center;gap:5px">✓ Regional &amp; persönlich</span>
+        </div>
+      </div>
+
     </div>
     <div class="reset-link"><button onclick="resetCheck()">Neue Domain prüfen</button></div>
   </div>
@@ -592,6 +624,8 @@ async function startCheck(){
   var raw=$('domain-input').value.trim();
   var domain=raw.replace(/^https?:\/\//,'').replace(/^www\./,'').split('/')[0];
   if(!domain||domain.indexOf('.')<0){showErr('Bitte gib eine gültige Domain ein – z.B. deine-website.at');return;}
+  // Lokal geöffnet (file://) → automatisch Demo laden
+  if(window.location.protocol==='file:'){loadDemo();return;}
   hideErr();
   $('l-domain').textContent=domain;$('l-domain2').textContent=domain;
   $('l-link').textContent=domain;$('l-link').href='https://'+domain;
@@ -652,8 +686,18 @@ function renderResults(domain,techFactors,ai){
   var sc=ai.score||5;
   $('r-domain-hdr').textContent=domain;
   var cls=sc>=7?'good':sc>=5?'ok':'bad';
-  var rating=sc>=7?'gut für KI sichtbar':sc>=5?'eingeschränkt sichtbar':'kaum in KI gefunden';
-  $('r-headline').innerHTML='Deine Website ist in<br>KI-Suchmaschinen <span class="'+cls+'">'+rating+'.</span>';
+  var line1, line2;
+  if(sc>=7){
+    line1='Gute Nachricht –';
+    line2='<span class="good">deine Website wird von KI gefunden.</span>';
+  } else if(sc>=5){
+    line1='Noch Luft nach oben:';
+    line2='<span class="ok">KI-Suchen zeigen dich nur eingeschränkt.</span>';
+  } else {
+    line1='Handlungsbedarf:';
+    line2='<span class="bad">KI-Tools kennen deine Website kaum.</span>';
+  }
+  $('r-headline').innerHTML=line1+'<br>'+line2;
   $('r-summary').textContent=ai.summary||'';
   $('ring-c').style.stroke=scoreColor(sc);
   setTimeout(function(){$('ring-c').style.strokeDashoffset=314-(314*(sc/10));},100);
@@ -671,6 +715,43 @@ function renderResults(domain,techFactors,ai){
   allF.slice(0,10).forEach(function(f,i){if(i<6)vHtml+=factorHTML(f,false);else lHtml+=factorHTML(f,true);});
   $('factors-visible').innerHTML=vHtml;
   $('factors-locked').innerHTML=lHtml;
+}
+
+function unlockContent(ai,domain){
+  var sc=ai.score||5;
+  var cbody=$('comp-body');cbody.innerHTML='';
+  var comps=(ai.competitors||[]).filter(function(c){return !c.you;});
+  var rows=comps.concat([{domain:ai.website_name||domain,score:sc,top_factor:'Thematische Tiefe',ki:'Selten',you:true}]);
+  rows.sort(function(a,b){return (b.score||0)-(a.score||0);});
+  rows.forEach(function(c,i){
+    var isYou=c.you;var kiCls=c.ki==='Regelmäßig'?'ki-reg':c.ki==='Oft'?'ki-oft':'ki-sel';
+    cbody.innerHTML+='<tr class="'+(isYou?'you':'')+'"><td style="text-align:center">'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1))+'</td>'+
+      '<td style="color:'+(isYou?'var(--teal)':'var(--text)')+';">'+(isYou?'▶ ':'')+c.domain+(isYou?' (du)':'')+'</td>'+
+      '<td style="font-weight:700;color:'+scoreColor(c.score||sc)+'">'+(c.score||parseFloat(sc).toFixed(1))+' / 10</td>'+
+      '<td>'+(c.top_factor||'—')+'</td>'+
+      '<td><span class="ki-badge '+kiCls+'">'+(c.ki||'—')+'</span></td></tr>';
+  });
+  if(ai.comp_note)$('comp-note').textContent=ai.comp_note;
+  $('c-lost').textContent=ai.lost_monthly||'5-8';
+  $('c-year').textContent=ai.lost_yearly||'~65';
+  $('rec-title').textContent='Was '+domain+' jetzt braucht';
+  var rout=$('rec-out');rout.innerHTML='';
+  (ai.actions||[]).forEach(function(a,i){
+    var locked=i>=3;
+    rout.innerHTML+='<div class="rec-row'+(locked?' locked':'')+'">'+
+      '<div class="rec-left"><h4>'+a.name+'</h4><p>'+a.desc+'</p></div>'+
+      (a.priority==='hoch'?'<span class="badge-hoch">HOCH</span>':'<span class="badge badge-opt">MITTEL</span>')+
+    '</div>';
+  });
+  if((ai.actions||[]).length>3){
+    rout.innerHTML+='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px;text-align:center;margin-top:8px">'+
+      '<div style="font-size:24px;margin-bottom:10px">🔒</div>'+
+      '<div style="font-family:Abel,sans-serif;font-size:18px;font-weight:400;margin-bottom:6px">+ '+((ai.actions||[]).length-3)+' weitere priorisierte Ma\u00dfnahmen</div>'+
+      '<div style="font-size:13px;color:var(--text3);margin-bottom:16px">Inklusive einem persönlichen Umsetzungsplan<br>– du bekommst ihn im Gespräch mit uns.</div>'+
+      '<a class="btn-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank">Termin vereinbaren →</a></div>';
+  }
+  $('unlocked').style.display='block';
+  $('unlocked').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 function unlockResults(){
@@ -731,6 +812,64 @@ function unlockResults(){
   }
   $('unlocked').style.display='block';
   $('unlocked').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+
+function loadDemo(){
+  var domain='beispiel.at';
+  $('l-domain').textContent=domain;
+  $('l-domain2').textContent=domain;
+  $('l-link').textContent=domain;$('l-link').href='#';
+  $('l-timer').textContent='0:58';
+  $('check-btn').disabled=false;
+  showScreen('s-loading');
+  // Nach 2 Sekunden direkt zu Ergebnissen
+  setTimeout(function(){
+    var demoData={
+      website_name:'Beispiel GmbH',
+      website_desc:'Ein regionales Unternehmen aus Österreich mit Fokus auf Handwerk und Dienstleistung.',
+      score:4.2,
+      rating:'ok',
+      summary:'Die Website hat eine solide technische Basis, ist aber in KI-Systemen kaum bekannt. Strukturierte Daten und Inhaltstiefe sind die größten Baustellen.',
+      competitor_warning:'handwerk-muster.at wird von KI-Systemen in deiner Region bereits empfohlen. Bei jeder KI-Suche nach deiner Branche verlierst du potenzielle Kunden.',
+      geo_factors:[
+        {name:'Faktendichte',score:4.0,status:'opt',finding:'Zu wenig belegbare Fakten und Zahlen auf der Website.',tip:'Füge konkrete Zahlen, Referenzprojekte und messbare Ergebnisse ein.'},
+        {name:'Aktualität & Frische',score:3.5,status:'opt',finding:'Inhalte werden selten aktualisiert.',tip:'Blog oder News-Bereich regelmäßig befüllen.'},
+        {name:'Thematische Tiefe',score:5.0,status:'mittel',finding:'Kernthemen werden oberflächlich abgedeckt.',tip:'Ausführlichere Leistungsseiten mit FAQ erstellen.'},
+        {name:'Heading & Architektur',score:5.5,status:'mittel',finding:'H-Struktur vorhanden aber nicht optimal.',tip:'H2/H3 konsequent als Fragen formulieren.'},
+        {name:'Semantische Klarheit',score:4.5,status:'opt',finding:'Fachbegriffe nicht konsistent verwendet.',tip:'Einen einheitlichen Glossar aufbauen.'}
+      ],
+      competitors:[
+        {domain:'handwerk-muster.at',score:7.2,top_factor:'Schema Markup',ki:'Regelmäßig'},
+        {domain:'regional-service.at',score:5.8,top_factor:'Faktendichte',ki:'Oft'}
+      ],
+      comp_note:'Beide Mitbewerber haben mehr strukturierte Daten und werden daher öfter von KI-Systemen zitiert.',
+      lost_monthly:'4-7',
+      lost_yearly:'~60',
+      actions:[
+        {name:'Schema Markup',desc:'LocalBusiness, Service und FAQPage implementieren – direkt in WordPress umsetzbar.',priority:'hoch'},
+        {name:'Answer-First Struktur',desc:'Jede Leistungsseite mit einer klaren Antwort in den ersten 2 Sätzen beginnen.',priority:'hoch'},
+        {name:'Inhaltstiefe ausbauen',desc:'Pro Leistung mindestens 400 Wörter mit konkreten Beispielen und Vorteilen.',priority:'hoch'},
+        {name:'Aktualität steigern',desc:'Monatlich einen Blogartikel oder ein abgeschlossenes Projekt veröffentlichen.',priority:'mittel'},
+        {name:'Externe Erwähnungen',desc:'Einträge in regionalen Verzeichnissen und Branchenportalen anlegen.',priority:'mittel'}
+      ]
+    };
+    var techFactors=[
+      {name:'Schema-Markup',score:2.0,status:'kritisch',finding:'Kein Schema-Markup im Quellcode gefunden',tip:'LocalBusiness Schema einbinden.',source:'real'},
+      {name:'Meta-Struktur & Title',score:7.0,status:'gut',finding:'Title: ✓ vorhanden | Meta-Description: ✓ vorhanden',tip:'Gut – weiter pflegen.',source:'real'},
+      {name:'Mobile & Performance',score:6.5,status:'mittel',finding:'PageSpeed Mobile: 65/100 | LCP: 2.8s | CLS: 0.12',tip:'Bilder optimieren und Cache aktivieren.',source:'real'},
+      {name:'Technisches SEO',score:7.5,status:'gut',finding:'Google SEO-Audit: 75/100 | Indexierbar: ✓ Ja',tip:'Gut aufgestellt.',source:'real'},
+      {name:'Content-Tiefe',score:4.5,status:'opt',finding:'Ca. 420 Wörter sichtbarer Text',tip:'Mehr Inhalte pro Seite.',source:'real'}
+    ];
+    renderResults('beispiel.at', techFactors, demoData);
+    showScreen('s-results');
+    // Demo: automatisch alles freischalten
+    setTimeout(function(){
+      $('email-gate').style.display='none';
+      document.querySelectorAll('.factor-row.locked').forEach(function(r){r.classList.remove('locked');});
+      unlockContent(demoData,'beispiel.at');
+    }, 800);
+  }, 2000);
 }
 
 function showErr(m){$('err').textContent=m;$('err').style.display='block';}
