@@ -771,36 +771,46 @@ function unlockContent(ai,domain){
   $('unlocked').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-function unlockResults(){
-  var email=$('email-input').value.trim();
-  var name=$('name-input').value.trim();
+function unlockResults() {
+  var email = document.getElementById('email-input').value.trim();
+  var name = document.getElementById('name-input').value.trim();
 
-  if(!email||email.indexOf('@')<0){
-    $('email-input').style.borderColor='var(--red)';
-    setTimeout(function(){$('email-input').style.borderColor='';},1500);
+  if (!email || email.indexOf('@') < 0) {
+    document.getElementById('email-input').style.borderColor = 'red';
     return;
   }
+
+  var domain = resultsData ? resultsData.domain : '';
+
+  // Der direkte HubSpot Versand
+  var xhr = new XMLHttpRequest();
+  var url = 'https://api.hsforms.com/submissions/v3/integration/submit/147422560/d9bb3a83-b30e-4d4e-a33b-7e7da348489d';
   
-  // Daten an DEIN EIGENES Backend (Railway) senden
-  var _hs_domain=resultsData?resultsData.domain:'';
-  var _hs_score=resultsData&&resultsData.ai?resultsData.ai.score:'';
-  
-  fetch('/api/subscribe',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      email: email,
-      firstname: name,
-      domain: _hs_domain,
-      score: _hs_score
-    })
-  }).catch(function(e){console.log("Fehler:", e)});
+  var data = {
+    "fields": [
+      { "name": "email", "value": email },
+      { "name": "firstname", "value": name },
+      { "name": "website", "value": domain }
+    ],
+    "context": {
+      "pageUri": window.location.href,
+      "pageName": "KI-Sichtbarkeits-Check"
+    }
+  };
+
+  xhr.open('POST', url, true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(JSON.stringify(data));
 
   // UI sofort freischalten
-  $('email-gate').style.display='none';
-  document.querySelectorAll('.factor-row.locked').forEach(function(r){r.classList.remove('locked');});
+  document.getElementById('email-gate').style.display = 'none';
+  document.querySelectorAll('.factor-row.locked').forEach(function(r) {
+    r.classList.remove('locked');
+  });
   
-  unlockContent(resultsData.ai, resultsData.domain);
+  if (typeof unlockContent === 'function') {
+    unlockContent(resultsData.ai, resultsData.domain);
+  }
 }
 
 function showErr(m){$('err').textContent=m;$('err').style.display='block';}
