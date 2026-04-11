@@ -784,34 +784,25 @@ function unlockResults() {
   var domain = resultsData.domain;
   var scoreValue = ai.score || 0;
 
-  // --- DETAILLIERTER TEXTBLOCK ---
-  var detailsText = "🤖 KI-SICHTBARKEITS-REPORT FÜR: " + domain + "\n";
+  // --- DER AUTOMATISCHE TEXTBLOCK (Kein Suchen mehr nötig) ---
+  var detailsText = "🤖 KI-REPORT FÜR: " + domain + "\n";
   detailsText += "====================================\n";
   detailsText += "GESAMT-SCORE: " + scoreValue + " / 10\n\n";
   
   detailsText += "EINZEL-METRIKEN:\n";
   
-  // Hier ziehen wir die Detail-Werte direkt aus dem AI-Objekt
-  var metrics = [
-    { n: "Schema Markup", v: ai.schema_score },
-    { n: "Answer-First Struktur", v: ai.answer_score },
-    { n: "KI-Crawlbarkeit", v: ai.crawl_score },
-    { n: "Externe Autorität", v: ai.auth_score },
-    { n: "E-E-A-T Signale", v: ai.eeat_score },
-    { n: "LLM-Antwort-Fokus", v: ai.llm_score }
-  ];
-
-  metrics.forEach(function(m) {
-    if(m.v !== undefined) {
-      detailsText += "• " + m.n + ": " + m.v + " / 10\n";
-    }
-  });
+  // Diese Schleife findet automatisch alle Faktoren (Schema, EEAT, etc.)
+  if (ai.factors && Array.isArray(ai.factors)) {
+    ai.factors.forEach(function(f) {
+      detailsText += "• " + f.name + ": " + f.score + " / 10\n";
+    });
+  }
 
   detailsText += "\nVERGLEICH MIT MITBEWERBERN:\n";
   detailsText += ai.comp_note || "Keine spezifische Notiz vorhanden.";
   
   detailsText += "\n\nAKTIONSEMPFEHLUNGEN:\n";
-  if(ai.actions && ai.actions.length > 0) {
+  if (ai.actions && ai.actions.length > 0) {
     ai.actions.forEach(function(a) {
       detailsText += "-> " + a.name + "\n";
     });
