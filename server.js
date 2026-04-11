@@ -76,27 +76,65 @@ app.post('/api/analyze', async (req, res) => {
 
   const ai = new GoogleGenAI({ apiKey: apiKey });
 
-  const prompt = `Du bist GEO-Experte (Generative Engine Optimization). Analysiere die KI-Sichtbarkeit von: ${domain}
+  // HIER IST DER NEUE PROMPT EINGEBAUT:
+  const prompt = `Du bist ein hochkarätiger GEO-Experte (Generative Engine Optimization) der Agentur "Grafikwald". Analysiere die KI-Sichtbarkeit für die Domain: ${domain}
 
 Bereits gemessene technische Werte: ${techSummary || 'keine Daten verfügbar'}
 
-Nutze die Google Suche, um folgendes zu prüfen:
-1. Wie bekannt ist ${domain} in Suchantworten?
-2. Taucht die Website bei branchenrelevanten Fragen auf?
-3. Lokale/regionale Präsenz?
-4. Suche nach 2 echten direkten Wettbewerbern in derselben Branche und Region. ERFINDE NIEMALS Domains. Wenn du keine echten findest, lass das Array leer.
+DEINE AUFGABE:
+Nutze zwingend die Google Suche, um Folgendes für ${domain} herauszufinden:
+1. Reale KI-Sichtbarkeit und Thementiefe in der jeweiligen Nische.
+2. Finde 2 ECHTE, existierende direkte Wettbewerber aus derselben Region/Branche. 
+WICHTIG ZU WETTBEWERBERN: Erfinde NIEMALS URLs. Wenn du keine echten findest, gib ein leeres Array [] aus.
 
-Antworte EXAKT in diesem JSON-Format (Ohne Markdown, ohne Backticks):
-{"website_name":"Unternehmensname","website_desc":"2 Sätze was das Unternehmen macht","score":4.7,"rating":"kaum sichtbar","summary":"2 konkrete Sätze warum der Score so ist","competitor_warning":"Dein Hauptwettbewerber liegt in X von 10 Faktoren vor dir. domain.de wird von KI-Systemen bereits aktiv empfohlen. Jede Anfrage die dort landet fehlt dir.","geo_factors":[{"name":"Faktendichte","score":5.0,"status":"opt","finding":"Konkrete Beobachtung zur Domain","tip":"Konkreter Tipp"},{"name":"Aktualität & Frische","score":4.5,"status":"opt","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"},{"name":"Thematische Tiefe","score":6.0,"status":"mittel","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"},{"name":"Heading & Architektur","score":5.5,"status":"opt","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"},{"name":"Semantische Klarheit","score":5.0,"status":"opt","finding":"Konkrete Beobachtung","tip":"Konkreter Tipp"}],"competitors":[{"domain":"konkurrent1.at","score":7.4,"top_factor":"Schema Markup","ki":"Regelmäßig"},{"domain":"konkurrent2.at","score":6.8,"top_factor":"Answer-First Struktur","ki":"Oft"}],"comp_note":"Ein konkreter Satz warum diese Wettbewerber besser abschneiden.","lost_monthly":"6-9","lost_yearly":"~72","actions":[{"name":"Schema Markup","desc":"Implementiere Article, FAQPage, HowTo.","priority":"hoch"},{"name":"Answer-First Struktur","desc":"Stelle klare Antworten in den ersten 40–60 Wörtern.","priority":"hoch"},{"name":"KI-Crawlbarkeit","desc":"Erlaube KI-Crawler in robots.txt.","priority":"hoch"},{"name":"Externe Autorität","desc":"Aufbau von Erwähnungen.","priority":"mittel"},{"name":"E-E-A-T Signale","desc":"Zertifizierungen darstellen.","priority":"mittel"}]}
+VORGABEN ZUR ABGRENZUNG VON DER KONKURRENZ:
+- "geo_factors": Kopiere KEINE Standardbegriffe wie "Answer-First Struktur", "Faktendichte" oder "Thematische Tiefe". Verwende stattdessen moderne, eigene Grafikwald-Begriffe (z.B. "LLM-Antwort-Fokus", "Entitäts-Relevanz", "KI-Vertrauenssignale", "Prompt-Sichtbarkeit"). Generiere 5 GANZ INDIVIDUELLE Faktoren.
+- "actions": Generiere EXAKT 10 Maßnahmen. (Die ersten 3 bekommen priority "hoch", die restlichen 7 priority "mittel").
+- "lost_monthly" / "lost_yearly": Schätze diese Zahlen REALISTISCH basierend auf der Branche. Ein lokaler Betrieb verliert vielleicht "3-5" Anfragen/Monat, ein B2B-Unternehmen "15-25".
+- Scoring: score < 3.5 = kritisch, 3.5-4.9 = opt (Optimierungsbedarf), 5-6.9 = mittel, >= 7 = gut.
 
-Scoring: score<3.5=kritisch, 3.5-4.9=opt (Optimierungsbedarf), 5-6.9=mittel, >=7=gut. Alles auf Deutsch. Sehr spezifisch zur Domain.`;
+Antworte EXAKT in diesem JSON-Format (ohne Markdown, ohne Backticks):
+{
+  "website_name": "Realer Unternehmensname",
+  "website_desc": "2 Sätze, was das Unternehmen konkret macht",
+  "score": 4.7,
+  "rating": "kaum sichtbar",
+  "summary": "2 konkrete Sätze, warum der Score so ausfällt",
+  "competitor_warning": "Dein Hauptwettbewerber liegt in einigen Metriken vor dir. [echte-domain.at] wird von KI-Systemen bereits aktiv empfohlen...",
+  "geo_factors": [
+    {"name": "[Individueller Faktor 1]", "score": 5.0, "status": "opt", "finding": "[Echte Beobachtung]", "tip": "[Spezifischer Tipp]"},
+    {"name": "[Individueller Faktor 2]", "score": 4.5, "status": "kritisch", "finding": "[Echte Beobachtung]", "tip": "[Spezifischer Tipp]"},
+    {"name": "[Individueller Faktor 3]", "score": 6.0, "status": "mittel", "finding": "[Echte Beobachtung]", "tip": "[Spezifischer Tipp]"},
+    {"name": "[Individueller Faktor 4]", "score": 5.5, "status": "opt", "finding": "[Echte Beobachtung]", "tip": "[Spezifischer Tipp]"},
+    {"name": "[Individueller Faktor 5]", "score": 7.5, "status": "gut", "finding": "[Echte Beobachtung]", "tip": "[Spezifischer Tipp]"}
+  ],
+  "competitors": [
+    {"domain": "[echte-konkurrenz1.at]", "score": 7.4, "top_factor": "[Grund für Ranking]", "ki": "Oft"},
+    {"domain": "[echte-konkurrenz2.at]", "score": 6.8, "top_factor": "[Grund für Ranking]", "ki": "Regelmäßig"}
+  ],
+  "comp_note": "Warum diese beiden Wettbewerber KI-technisch besser aufgestellt sind.",
+  "lost_monthly": "[Realistische Schätzung, z.B. 4-8]",
+  "lost_yearly": "[lost_monthly mal 12, z.B. ~70]",
+  "actions": [
+    {"name": "[Maßnahme 1]", "desc": "[Anleitung]", "priority": "hoch"},
+    {"name": "[Maßnahme 2]", "desc": "[Anleitung]", "priority": "hoch"},
+    {"name": "[Maßnahme 3]", "desc": "[Anleitung]", "priority": "hoch"},
+    {"name": "[Maßnahme 4]", "desc": "[Anleitung]", "priority": "mittel"},
+    {"name": "[Maßnahme 5]", "desc": "[Anleitung]", "priority": "mittel"},
+    {"name": "[Maßnahme 6]", "desc": "[Anleitung]", "priority": "mittel"},
+    {"name": "[Maßnahme 7]", "desc": "[Anleitung]", "priority": "mittel"},
+    {"name": "[Maßnahme 8]", "desc": "[Anleitung]", "priority": "mittel"},
+    {"name": "[Maßnahme 9]", "desc": "[Anleitung]", "priority": "mittel"},
+    {"name": "[Maßnahme 10]", "desc": "[Anleitung]", "priority": "mittel"}
+  ]
+}`;
 
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: prompt,
       config: {
-        tools: [{ googleSearch: {} }] // <-- Hier war der Fehler, jetzt ist er korrigiert!
+        tools: [{ googleSearch: {} }] 
       }
     });
 
