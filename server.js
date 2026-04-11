@@ -154,7 +154,7 @@ Antworte EXAKT in diesem JSON-Format (ohne Markdown, ohne Backticks):
 
 // ─── HubSpot Contact erstellen ───
 app.post('/api/subscribe', async (req, res) => {
-  const { email, domain, score } = req.body;
+  const { email, firstname, domain, score } = req.body;
   if (!email) return res.status(400).json({ error: 'email required' });
 
   const apiKey = process.env.HUBSPOT_API_KEY;
@@ -170,19 +170,24 @@ app.post('/api/subscribe', async (req, res) => {
       body: JSON.stringify({
         properties: {
           email: email,
-          website: domain || '',
-          hs_lead_source: 'KI-Sichtbarkeits-Check',
-          description: 'KI-Score: ' + (score || '?') + '/10 via ki-check Tool'
+          firstname: firstname || '',
+          website: domain || ''
+          // Keine Custom-Felder mehr, damit HubSpot die Anfrage 100% akzeptiert!
         }
       })
     });
-    if (!response.ok) {
-      const err = await response.text();
-      if (response.status === 409) return res.json({ ok: true });
-      return res.status(200).json({ ok: false, error: err });
+    
+    // 409 bedeutet, der Kontakt ist schon in deinem CRM. Das ist auch okay!
+    if (response.ok || response.status === 409) {
+      return res.json({ ok: true });
     }
-    res.json({ ok: true });
+    
+    // Falls es doch einen Fehler gibt, schreiben wir ihn ins Railway-Log
+    const errorText = await response.text();
+    console.error("HubSpot API Fehler:", errorText);
+    res.status(200).json({ ok: false, error: errorText });
   } catch (e) {
+    console.error("Server Fehler:", e.message);
     res.status(200).json({ ok: false, error: e.message });
   }
 });
