@@ -780,9 +780,10 @@ function unlockResults() {
     return;
   }
 
+  // Daten aus der Analyse holen
   var domain = resultsData ? resultsData.domain : '';
+  var scoreValue = resultsData && resultsData.ai ? resultsData.ai.score : 0;
 
-  // Der direkte HubSpot Versand
   var xhr = new XMLHttpRequest();
   var url = 'https://api.hsforms.com/submissions/v3/integration/submit/147422560/d9bb3a83-b30e-4d4e-a33b-7e7da348489d';
   
@@ -790,7 +791,8 @@ function unlockResults() {
     "fields": [
       { "name": "email", "value": email },
       { "name": "firstname", "value": name },
-      { "name": "website", "value": domain }
+      { "name": "website", "value": domain },
+      { "name": "ki_score", "value": scoreValue }
     ],
     "context": {
       "pageUri": window.location.href,
