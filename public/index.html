@@ -780,9 +780,23 @@ function unlockResults() {
     return;
   }
 
-  // Daten aus der Analyse holen
-  var domain = resultsData ? resultsData.domain : '';
-  var scoreValue = resultsData && resultsData.ai ? resultsData.ai.score : 0;
+  var ai = resultsData.ai;
+  var domain = resultsData.domain;
+  var scoreValue = ai.score || 0;
+
+  // Wir bauen eine Text-Zusammenfassung aller Details für HubSpot
+  var detailsText = "GEO-Analyse für: " + domain + "\n";
+  detailsText += "Gesamt-Score: " + scoreValue + "/10\n\n";
+  detailsText += "FAKTOREN:\n";
+  
+  // Geht durch alle Faktoren und schreibt sie untereinander
+  if(ai.factors) {
+    ai.factors.forEach(f => {
+      detailsText += "- " + f.name + ": " + f.score + "/10 (" + f.status + ")\n";
+    });
+  }
+  
+  detailsText += "\nNOTIZ: " + (ai.comp_note || "");
 
   var xhr = new XMLHttpRequest();
   var url = 'https://api.hsforms.com/submissions/v3/integration/submit/147422560/d9bb3a83-b30e-4d4e-a33b-7e7da348489d';
@@ -792,7 +806,8 @@ function unlockResults() {
       { "name": "email", "value": email },
       { "name": "firstname", "value": name },
       { "name": "website", "value": domain },
-      { "name": "ki_score", "value": scoreValue }
+      { "name": "ki_score", "value": scoreValue },
+      { "name": "analyse_details", "value": detailsText } // Das neue Feld mit allen Infos
     ],
     "context": {
       "pageUri": window.location.href,
@@ -811,7 +826,7 @@ function unlockResults() {
   });
   
   if (typeof unlockContent === 'function') {
-    unlockContent(resultsData.ai, resultsData.domain);
+    unlockContent(ai, domain);
   }
 }
 
