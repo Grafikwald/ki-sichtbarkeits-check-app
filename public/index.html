@@ -436,9 +436,11 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
       <div class="gate-lock">🔒</div>
       <h3>Deine weiteren 4 Faktoren + Mitbewerberanalyse</h3>
       <p>Trag deine E-Mail ein und sieh sofort alle Faktoren, deinen Branchenvergleich und was du konkret tun kannst.</p>
-      <div class="email-row">
-        <input type="email" id="email-input" placeholder="deine@email.at"/>
-        <button class="btn-unlock" onclick="unlockResults()">Ergebnisse freischalten</button>
+      <div class="email-row" style="flex-direction: column; gap: 10px;">
+  <input type="text" id="name-input" placeholder="Dein Vorname" style="width: 100%;" />
+  <div style="display: flex; gap: 8px; width: 100%;">
+    <input type="email" id="email-input" placeholder="deine@email.at" style="flex: 1;" />
+    <button class="btn-unlock" onclick="unlockResults()">Ergebnisse freischalten</button>
       </div>
       <div class="gate-note">Kein Spam. Nur dein persönlicher GEO-Bericht.</div>
     </div>
