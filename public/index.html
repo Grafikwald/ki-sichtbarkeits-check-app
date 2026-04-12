@@ -675,14 +675,24 @@ async function startCheck(){
     showScreen('s-results');
 
     setTimeout(function(){
-      document.addEventListener('mouseleave',function handler(e){
-        if(e.clientY<=0&&!exitShown){exitShown=true;$('exit-overlay').classList.add('show');document.removeEventListener('mouseleave',handler);}
+      document.addEventListener('mouseleave', function handler(e){
+        // 1. Check: Maus geht oben raus? Popup war noch nicht da?
+        if(e.clientY <= 0 && !exitShown) {
+          
+          // 2. Check: Ist das E-Mail-Gate noch SICHTBAR? 
+          // (Falls ja, hat der User noch keine Mail eingegeben -> Wir brechen ab!)
+          if(document.getElementById('email-gate').style.display !== 'none') {
+            return; 
+          }
+
+          // Wenn wir hier ankommen, hat der User seine Mail schon eingegeben.
+          // JETZT darf das Popup kommen:
+          exitShown = true;
+          $('exit-overlay').classList.add('show');
+          document.removeEventListener('mouseleave', handler);
+        }
       });
-    },10000);
-  }catch(e){
-    stopTimer();$('check-btn').disabled=false;showScreen('s-landing');showErr(e.message||'Fehler – bitte erneut versuchen.');
-  }
-}
+    }, 10000);
 
 function scoreColor(s){return s>=7?'var(--green)':s>=5?'var(--amber)':s>=3.5?'var(--coral)':'var(--red)';}
 function badgeHTML(st){
