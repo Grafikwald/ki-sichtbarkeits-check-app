@@ -787,22 +787,20 @@ function unlockResults() {
   var domain = resultsData.domain;
   var scoreValue = ai.score || 0;
 
-  // --- DER AUTOMATISCHE TEXTBLOCK (Kein Suchen mehr nötig) ---
+  // --- DER AUTOMATISCHE TEXTBLOCK ---
   var detailsText = "🤖 KI-REPORT FÜR: " + domain + "\n";
   detailsText += "====================================\n";
   detailsText += "GESAMT-SCORE: " + scoreValue + " / 10\n\n";
   
   detailsText += "EINZEL-METRIKEN:\n";
   
-  // Diese Schleife findet automatisch alle Faktoren (Schema, EEAT, etc.)
   if (ai.factors && Array.isArray(ai.factors)) {
     ai.factors.forEach(function(f) {
       detailsText += "• " + f.name + ": " + f.score + " / 10\n";
     });
   }
 
-  detailsText += "\nVERGLEICH MIT MITBEWERBERN:\n";
-  detailsText += ai.comp_note || "Keine spezifische Notiz vorhanden.";
+  detailsText += "\nVERGLEICH MIT MITBEWERBERN:\n" + (ai.comp_note || "");
   
   detailsText += "\n\nAKTIONSEMPFEHLUNGEN:\n";
   if (ai.actions && ai.actions.length > 0) {
@@ -810,7 +808,6 @@ function unlockResults() {
       detailsText += "-> " + a.name + "\n";
     });
   }
-  // --- ENDE TEXTBLOCK ---
 
   var xhr = new XMLHttpRequest();
   var url = 'https://api.hsforms.com/submissions/v3/integration/submit/147422560/d9bb3a83-b30e-4d4e-a33b-7e7da348489d';
@@ -833,7 +830,6 @@ function unlockResults() {
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.send(JSON.stringify(data));
 
-  // UI freischalten
   document.getElementById('email-gate').style.display = 'none';
   document.querySelectorAll('.factor-row.locked').forEach(function(r) {
     r.classList.remove('locked');
@@ -844,11 +840,65 @@ function unlockResults() {
   }
 }
 
+// --- POPUP LOGIK ---
+let selectedExitReason = ""; 
+
+function selOpt(element, reasonText) {
+    document.querySelectorAll('.popup-opt').forEach(opt => {
+        opt.style.borderColor = 'var(--border2)';
+        opt.classList.remove('selected');
+    });
+    element.style.borderColor = 'var(--teal)';
+    element.classList.add('selected');
+    selectedExitReason = reasonText;
+    document.getElementById('btn-fb').classList.add('on');
+}
+
+function sendExitFeedback() {
+    var email = document.getElementById('email-input').value.trim();
+    if (!selectedExitReason) {
+        alert("Bitte wähle eine Option aus.");
+        return;
+    }
+
+    var xhr = new XMLHttpRequest();
+    var url = 'https://api.hsforms.com/submissions/v3/integration/submit/147422560/d9bb3a83-b30e-4d4e-a33b-7e7da348489d';
+    
+    var data = {
+        "fields": [
+            { "name": "email", "value": email || "unbekannt@popup.at" },
+            { "name": "abbruchgrund", "value": selectedExitReason }
+        ]
+    };
+
+    xhr.open('POST', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(data));
+
+    alert("Vielen Dank für dein Feedback!");
+    closePopup();
+}
+
+function closePopup() {
+    document.getElementById('exit-overlay').classList.remove('show');
+}
+
+// --- HILFSFUNKTIONEN ---
 function showErr(m){$('err').textContent=m;$('err').style.display='block';}
 function hideErr(){$('err').style.display='none';}
-function resetCheck(){showScreen('s-landing');$('check-btn').disabled=false;$('domain-input').value='';hideErr();resultsData=null;exitShown=false;$('exit-overlay').classList.remove('show');$('unlocked').style.display='none';$('email-gate').style.display='block';}
-function selOpt(el){document.querySelectorAll('.popup-opt').forEach(function(o){o.classList.remove('selected');});el.classList.add('selected');$('btn-fb').classList.add('on');}
-function closePopup(){$('exit-overlay').classList.remove('show');}
+
+function resetCheck(){
+    showScreen('s-landing');
+    $('check-btn').disabled=false;
+    $('domain-input').value='';
+    hideErr();
+    resultsData=null;
+    exitShown=false;
+    $('exit-overlay').classList.remove('show');
+    $('unlocked').style.display='none';
+    $('email-gate').style.display='block';
+}
+
 </script>
 </body>
 </html>
