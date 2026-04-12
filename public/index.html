@@ -794,9 +794,15 @@ function unlockResults() {
   
   detailsText += "EINZEL-METRIKEN:\n";
   
-  if (ai.factors && Array.isArray(ai.factors)) {
-    ai.factors.forEach(function(f) {
-      detailsText += "• " + f.name + ": " + f.score + " / 10\n";
+  // Wir holen uns die Faktoren direkt aus dem, was die App anzeigt (Sicherste Methode)
+  var factorElements = document.querySelectorAll('.factor-row');
+  if (factorElements.length > 0) {
+    factorElements.forEach(function(row) {
+      var nameSpan = row.querySelector('span:first-child');
+      var scoreSpan = row.querySelector('span:last-child');
+      if(nameSpan && scoreSpan) {
+          detailsText += "• " + nameSpan.textContent + ": " + scoreSpan.textContent + "\n";
+      }
     });
   }
 
@@ -856,6 +862,15 @@ function selOpt(element, reasonText) {
 
 function sendExitFeedback() {
     var email = document.getElementById('email-input').value.trim();
+    
+    // Falls keine Email da ist (weil User das Gate noch nicht ausgefüllt hat)
+    // können wir den Grund leider keinem Kontakt zuordnen.
+    if (!email) {
+        alert("Danke für dein Feedback!");
+        closePopup();
+        return;
+    }
+
     if (!selectedExitReason) {
         alert("Bitte wähle eine Option aus.");
         return;
@@ -866,7 +881,7 @@ function sendExitFeedback() {
     
     var data = {
         "fields": [
-            { "name": "email", "value": email || "unbekannt@popup.at" },
+            { "name": "email", "value": email },
             { "name": "abbruchgrund", "value": selectedExitReason }
         ]
     };
@@ -883,7 +898,6 @@ function closePopup() {
     document.getElementById('exit-overlay').classList.remove('show');
 }
 
-// --- HILFSFUNKTIONEN ---
 function showErr(m){$('err').textContent=m;$('err').style.display='block';}
 function hideErr(){$('err').style.display='none';}
 
@@ -898,7 +912,6 @@ function resetCheck(){
     $('unlocked').style.display='none';
     $('email-gate').style.display='block';
 }
-
 </script>
 </body>
 </html>
