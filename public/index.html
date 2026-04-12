@@ -600,46 +600,20 @@ function updatePhase(p){for(var i=1;i<=3;i++){$('ps'+i).className='phase-seg'+(i
 function advanceStep(){if(curStep<STEPS.length){updatePhase(STEPS[curStep].p);renderSteps();curStep++;}}
 function startSteps(){curStep=0;renderSteps();updatePhase(1);var t=0;[700,900,1000,1300,1100,1000,1800,2000,1800,2000].forEach(function(ms){t+=ms;setTimeout(advanceStep,t);});}
 
-// ── Alle API-Calls gehen an eigenen Backend ──
-function apiFetch(path,opts){
-  return fetch(path,opts).then(function(r){return r.json();}).catch(function(){return null;});
+async function checkTechnical(domain) {
+  const response = await fetch('/api/check?domain=' + encodeURIComponent(domain));
+  if (!response.ok) throw new Error('Technische Prüfung fehlgeschlagen');
+  return response.json();
 }
 
-function parseHTML(html){
-  if(!html)return null;
-  var schema=html.indexOf('"@context"')>-1&&html.indexOf('"@type"')>-1;
-  var micro=/itemtype=["']https?:\/\/(www\.)?schema\.org/.test(html);
-  schema=schema||micro;
-  var types=[],rx=/"@type"\s*:\s*"([A-Za-z]{3,40})"/g,m;
-  while((m=rx.exec(html))!==null){if(types.indexOf(m[1])<0)types.push(m[1]);}
-  return{schema:schema,types:types.slice(0,6),
-    title:/<title[^>]*>[^<]{4,}/i.test(html),
-    metaDesc:/<meta[^>]+(name=["']description["'][^>]+content=["'][^"']{10,}|content=["'][^"']{10,}["'][^>]+name=["']description["'])/i.test(html),
-    viewport:/<meta[^>]+name=["']viewport["']/i.test(html),
-    wordCount:html.replace(/<[^>]+>/g,' ').split(/\s+/).filter(function(w){return w.length>3;}).length};
-}
-function parsePSI(psi){
-  if(!psi||!psi.lighthouseResult||psi.error)return null;
-  var lh=psi.lighthouseResult,cats=lh.categories||{},au=lh.audits||{};
-  return{perf:Math.round((cats.performance&&cats.performance.score||0)*100),seo:Math.round((cats.seo&&cats.seo.score||0)*100),
-    lcp:(au['largest-contentful-paint']&&au['largest-contentful-paint'].displayValue)||'?',
-    cls:(au['cumulative-layout-shift']&&au['cumulative-layout-shift'].displayValue)||'?'};
-}
-function buildTechFactors(hd,psi){
-  function st(s){return s>=7?'gut':s>=5?'opt':s>=3.5?'opt':'kritisch';}
-  var hasSchema=hd?hd.schema:false,types=hd?hd.types:[];
-  var ss=hasSchema?(types.length>=3?9:types.length>=1?7.5:6.5):1;
-  var afs=psi?(psi.seo/10):(hd&&hd.title&&hd.metaDesc?6.5:4.5);afs=parseFloat(afs.toFixed(1));
-  var perfS=psi?(psi.perf/10):(hd&&hd.viewport?5.5:3);perfS=parseFloat(perfS.toFixed(1));
-  var extS=hd?(hd.wordCount>800?5:hd.wordCount>300?4:3):3.5;extS=parseFloat(extS.toFixed(1));
-  var eatS=psi?parseFloat(Math.min(8.5,(psi.seo+psi.perf)/20).toFixed(1)):4.5;
-  return[
-    {name:'Schema Markup',score:ss,status:st(ss),finding:hasSchema?(types.length?'Gefunden: '+types.join(', '):'Schema vorhanden'):'Keine strukturierten Daten gefunden',tip:'Schema-Typen implementieren: Article, FAQPage, HowTo, Organization, LocalBusiness.',source:hd?'real':'est'},
-    {name:'Answer-First Struktur',score:afs,status:st(afs),finding:psi?'SEO-Score: '+psi.seo+'/100':'Klare Antworten in den ersten 40–60 Wörtern prüfen',tip:'Nutze FAQ-Stil H2/H3 und TL;DR-Blöcke.',source:psi?'real':'est'},
-    {name:'KI-Crawlbarkeit',score:perfS,status:st(perfS),finding:psi?'Performance: '+psi.perf+'/100 | LCP: '+psi.lcp+' | CLS: '+psi.cls:(hd&&hd.viewport?'Viewport vorhanden':'Viewport fehlt'),tip:'KI-Crawler in robots.txt erlauben, llms.txt hinzufügen.',source:psi?'real':'est'},
-    {name:'Externe Autorität',score:extS,status:st(extS),finding:hd&&hd.wordCount>0?'Ca. '+hd.wordCount+' Wörter sichtbarer Text':'Externe Verlinkung prüfen',tip:'Erwähnungen auf Branchenportalen und Presseartikeln aufbauen.',source:hd?'real':'est'},
-    {name:'E-E-A-T Signale',score:eatS,status:st(eatS),finding:'Expertise und Vertrauen teilweise sichtbar. Autorensignale stärken.',tip:'Autorenprofile, Zertifizierungen und Referenzprojekte prominent darstellen.',source:psi?'real':'est'}
-  ];
+async function getAIAnalysis(domain, techFactors) {
+  const response = await fetch('/api/analysis', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ domain, techFactors })
+  });
+  if (!response.ok) throw new Error('KI-Analyse fehlgeschlagen');
+  return response.json();
 }
 
 async function startCheck() {
@@ -650,18 +624,19 @@ async function startCheck() {
   hideErr();
   $('check-btn').disabled = true;
   showScreen('s-loading');
+  startTimer();
+  startSteps();
 
   try {
     const techFactors = await checkTechnical(domain);
     const ai = await getAIAnalysis(domain, techFactors);
     renderResults(domain, techFactors, ai);
     showScreen('s-results');
+    stopTimer();
 
-    // Das Popup erst nach 10 Sekunden scharf schalten
     setTimeout(function() {
       document.addEventListener('mouseleave', function handler(e) {
         if (e.clientY <= 0 && !exitShown) {
-          // Nur zeigen, wenn E-Mail-Gate schon weg ist
           if (document.getElementById('email-gate') && document.getElementById('email-gate').style.display !== 'none') {
             return;
           }
@@ -673,13 +648,12 @@ async function startCheck() {
     }, 10000);
 
   } catch (e) {
+    stopTimer();
     $('check-btn').disabled = false;
     showScreen('s-landing');
     showErr(e.message || 'Fehler – bitte erneut versuchen.');
   }
 }
-
-// --- OPTIK-FUNKTIONEN ---
 
 function scoreColor(s) {
   return s >= 7 ? 'var(--green)' : s >= 5 ? 'var(--amber)' : s >= 3.5 ? 'var(--coral)' : 'var(--red)';
@@ -701,8 +675,6 @@ function factorHTML(f, locked) {
     '<div class="factor-bar"><div class="factor-bar-fill" style="width:' + pct + '%;background:' + col + '"></div></div>' +
     '</div>';
 }
-
-// --- ERGEBNISSE RENDERN ---
 
 function renderResults(domain, techFactors, ai) {
   resultsData = { domain: domain, techFactors: techFactors, ai: ai };
@@ -754,8 +726,6 @@ function renderResults(domain, techFactors, ai) {
   $('factors-locked').innerHTML = lHtml;
 }
 
-// --- FREISCHALTUNG (Tabelle & Recs) ---
-
 function unlockContent(ai, domain) {
   var sc = ai.score || 5;
   var cbody = $('comp-body');
@@ -801,8 +771,6 @@ function unlockContent(ai, domain) {
   $('unlocked').style.display = 'block';
   $('unlocked').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-
-// --- HUBSPOT INTEGRATION ---
 
 function unlockResults() {
   var email = document.getElementById('email-input').value.trim();
@@ -859,8 +827,6 @@ function unlockResults() {
   if (typeof unlockContent === 'function') { unlockContent(ai, domain); }
 }
 
-// --- POPUP LOGIK ---
-
 let selectedExitReason = "";
 function selOpt(element, reasonText) {
   document.querySelectorAll('.popup-opt').forEach(opt => {
@@ -908,7 +874,6 @@ function resetCheck() {
   $('unlocked').style.display = 'none';
   $('email-gate').style.display = 'block';
 }
-
 </script>
 </body>
 </html>
