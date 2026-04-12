@@ -677,7 +677,7 @@ async function startCheck(){
           exitShown=true;$('exit-overlay').classList.add('show');document.removeEventListener('mouseleave',handler);
         }
       });
-    },10000);
+    },3000);
   }catch(e){
     stopTimer();$('check-btn').disabled=false;showScreen('s-landing');showErr(e.message||'Fehler – bitte erneut versuchen.');
   }
