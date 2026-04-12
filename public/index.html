@@ -813,21 +813,49 @@ function unlockResults() {
 }
 
 let selectedExitReason = "";
-function selOpt(el, reasonText) {
-  document.querySelectorAll('.popup-opt').forEach(function(o){o.classList.remove('selected'); o.style.borderColor = 'var(--border)';});
-  el.classList.add('selected'); el.style.borderColor = 'var(--teal)';
-  selectedExitReason = reasonText;
+
+function selOpt(el) {
+  // Alle anderen Optionen zurücksetzen
+  document.querySelectorAll('.popup-opt').forEach(function(o){
+    o.classList.remove('selected'); 
+    o.style.borderColor = 'var(--border)';
+  });
+  // Gewählte Option markieren
+  el.classList.add('selected'); 
+  el.style.borderColor = 'var(--teal)';
+  
+  // Den Text direkt aus dem Feld holen (Emojis werden automatisch ignoriert)
+  selectedExitReason = el.innerText.replace(/[⏳🔎💰🙋✉️💬]/g, '').trim();
+  
+  // Senden-Button hell machen
   $('btn-fb').classList.add('on');
 }
 
 function sendExitFeedback() {
-  var email = document.getElementById('email-input').value.trim();
-  if (!email || !selectedExitReason) { closePopup(); return; }
+  var email = $('email-input').value.trim();
+  
+  // Sicherheits-Check: Ohne Email oder Grund schicken wir nichts
+  if (!email || !selectedExitReason) { 
+    closePopup(); 
+    return; 
+  }
+  
   var xhr = new XMLHttpRequest();
   var url = 'https://api.hsforms.com/submissions/v3/integration/submit/147422560/d9bb3a83-b30e-4d4e-a33b-7e7da348489d';
-  var data = { "fields": [ { "name": "email", "value": email }, { "name": "abbruchgrund", "value": selectedExitReason } ] };
-  xhr.open('POST', url, true); xhr.setRequestHeader('Content-Type', 'application/json'); xhr.send(JSON.stringify(data));
-  alert("Vielen Dank für dein Feedback!"); closePopup();
+  
+  var data = {
+    "fields": [
+      { "name": "email", "value": email },
+      { "name": "abbruchgrund", "value": selectedExitReason }
+    ]
+  };
+
+  xhr.open('POST', url, true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(JSON.stringify(data));
+
+  alert("Vielen Dank für dein Feedback!"); 
+  closePopup();
 }
 
 function closePopup(){$('exit-overlay').classList.remove('show');}
