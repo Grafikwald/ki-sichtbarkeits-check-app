@@ -21,7 +21,7 @@
 }
 html{scroll-behavior:smooth}
 body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;overflow-x:hidden}
-h1,h2,h3,h4,.logo,.btn-scan,.hdr-cta,.btn-cta,.btn-unlock,.score-headline,.sec-title,.feat-card h3,.load-top h2,.cta-banner h3,.final-cta h3,.factor-name,.comp-domain,.test-name,.gate-lock+h3{font-family:'Abel',sans-serif !important;letter-spacing:.02em}
+h1,h2,h3,h4,.logo,.btn-scan,.hdr-cta,.btn-cta,.btn-unlock,.score-headline,.sec-title,.feat-card h3,.load-top h2,.cta-banner h3,.final-cta h3,.factor-name,.comp-domain,.test-name,.gate-lock+h3{font-family:'Hubot+Sans',sans-serif !important;letter-spacing:.02em}
 .screen{display:none;min-height:100vh}
 .screen.active{display:block}
 
@@ -50,17 +50,17 @@ h1,h2,h3,h4,.logo,.btn-scan,.hdr-cta,.btn-cta,.btn-unlock,.score-headline,.sec-t
 .scan-hint{font-size:12px;color:var(--text3);text-align:center}
 .err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:var(--radius);padding:11px 16px;font-size:14px;color:#fca5a5;max-width:520px;margin:12px auto 0;display:none}
 .steps-wrap{max-width:820px;margin:60px auto 0;padding:0 24px}
-.steps-title{text-align:center;font-family:'Abel',sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:32px}
+.steps-title{text-align:center;font-family:'Hubot+Sans',sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:32px}
 .steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative}
 .steps-row::before{content:'';position:absolute;top:28px;left:calc(16.67% + 16px);right:calc(16.67% + 16px);height:1px;background:linear-gradient(to right,rgba(98,150,159,.4),rgba(98,150,159,.4));z-index:0}
 .step-box{text-align:center;padding:0 24px;position:relative;z-index:1}
-.step-num{width:56px;height:56px;border-radius:50%;background:rgba(98,150,159,.12);border:1px solid rgba(98,150,159,.35);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-family:'Abel',sans-serif;font-size:22px;color:var(--teal)}
-.step-box h3{font-family:'Abel',sans-serif;font-size:18px;margin-bottom:8px;color:var(--text)}
+.step-num{width:56px;height:56px;border-radius:50%;background:rgba(98,150,159,.12);border:1px solid rgba(98,150,159,.35);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-family:'Hubot+Sans',sans-serif;font-size:22px;color:var(--teal)}
+.step-box h3{font-family:'Hubot+Sans',sans-serif;font-size:18px;margin-bottom:8px;color:var(--text)}
 .step-box p{font-size:13px;color:var(--text3);line-height:1.6}
 .step-box .step-tag{display:inline-block;background:rgba(230,232,97,.1);border:1px solid rgba(230,232,97,.25);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--lime);margin-top:10px;letter-spacing:.04em}
 .stats-row{display:flex;gap:40px;justify-content:center;margin-top:48px;padding-top:32px;padding-bottom:64px;border-top:1px solid var(--border)}
 .stat-item{text-align:center;padding:0 20px}
-.stat-val{font-family:'Abel',sans-serif;font-size:36px;color:var(--lime);line-height:1;margin-bottom:10px}
+.stat-val{font-family:'Hubot+Sans',sans-serif;font-size:36px;color:var(--lime);line-height:1;margin-bottom:10px}
 .stat-lbl{font-size:12px;color:var(--text3);margin-top:6px;line-height:1.5}
 
 /* LOADING */
@@ -266,7 +266,7 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
 
 <div id="s-landing" class="screen active">
   <header class="hdr">
-    <div class="logo" style="font-family:'Abel',sans-serif;font-size:17px">Grafik<span style="color:var(--lime)">wald</span></div>
+    <div class="logo" style="font-family:'Hubot+Sans',sans-serif;font-size:17px">Grafik<span style="color:var(--lime)">wald</span></div>
     <a class="hdr-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank">Termin vereinbaren →</a>
   </header>
   <div class="hero">
@@ -331,7 +331,7 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
 
 <div id="s-loading" class="screen">
   <header class="hdr">
-    <div class="logo" style="font-family:'Abel',sans-serif;font-size:17px">Grafik<span style="color:var(--lime)">wald</span></div>
+    <div class="logo" style="font-family:'Hubot+Sans',sans-serif;font-size:17px">Grafik<span style="color:var(--lime)">wald</span></div>
     <div class="hdr-domain">Analyse für: <b id="l-domain"></b></div>
     <a class="hdr-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank">Termin vereinbaren →</a>
   </header>
@@ -355,22 +355,22 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <div style="background:rgba(98,150,159,.08);border:1px solid rgba(98,150,159,.15);border-radius:10px;padding:14px 16px">
           <div style="font-size:18px;margin-bottom:6px">⚙️</div>
-          <div style="font-family:'Abel',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px">Crawl-Infrastruktur</div>
+          <div style="font-family:'Hubot+Sans',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px">Crawl-Infrastruktur</div>
           <div style="font-size:12px;color:var(--text3);line-height:1.4">Markup-Architektur, Ladezeiten & KI-Lesbarkeit</div>
         </div>
         <div style="background:rgba(98,150,159,.08);border:1px solid rgba(98,150,159,.15);border-radius:10px;padding:14px 16px">
           <div style="font-size:18px;margin-bottom:6px">🧠</div>
-          <div style="font-family:'Abel',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px">LLM-Sichtbarkeits-Index</div>
+          <div style="font-family:'Hubot+Sans',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px">LLM-Sichtbarkeits-Index</div>
           <div style="font-size:12px;color:var(--text3);line-height:1.4">Gewichtung bei ChatGPT, Perplexity & Gemini</div>
         </div>
         <div style="background:rgba(98,150,159,.08);border:1px solid rgba(98,150,159,.15);border-radius:10px;padding:14px 16px">
           <div style="font-size:18px;margin-bottom:6px">🗂️</div>
-          <div style="font-family:'Abel',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px">Entitäts- & Datenstruktur</div>
+          <div style="font-family:'Hubot+Sans',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px">Entitäts- & Datenstruktur</div>
           <div style="font-size:12px;color:var(--text3);line-height:1.4">Kontextuelle Tiefe & semantische Einordnung</div>
         </div>
         <div style="background:rgba(98,150,159,.08);border:1px solid rgba(98,150,159,.15);border-radius:10px;padding:14px 16px">
           <div style="font-size:18px;margin-bottom:6px">🎯</div>
-          <div style="font-family:'Abel',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px">Markt- & Nischenabgleich</div>
+          <div style="font-family:'Hubot+Sans',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px">Markt- & Nischenabgleich</div>
           <div style="font-size:12px;color:var(--text3);line-height:1.4">Echtzeit-Abgleich mit direkten regionalen Konkurrenten</div>
         </div>
       </div>
@@ -409,7 +409,7 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
 
 <div id="s-results" class="screen">
   <header class="hdr">
-    <div class="logo" style="font-family:'Abel',sans-serif;font-size:17px">Grafik<span style="color:var(--lime)">wald</span></div>
+    <div class="logo" style="font-family:'Hubot+Sans',sans-serif;font-size:17px">Grafik<span style="color:var(--lime)">wald</span></div>
     <div class="hdr-domain">Analyse für: <b id="r-domain-hdr"></b></div>
     <a class="hdr-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank">Termin vereinbaren →</a>
   </header>
@@ -470,7 +470,7 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
       <div id="rec-out"></div>
       <div style="text-align:center;margin:40px 0 24px">
         <p style="font-size:12px;color:var(--teal);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;font-family:'Quicksand',sans-serif">Das sagen unsere Kunden</p>
-        <h2 style="font-size:clamp(20px,3.5vw,30px);font-weight:400;margin-bottom:8px;line-height:1.3;font-family:'Abel',sans-serif">Was Unternehmen nach dem<br>Beratungsgespräch berichten</h2>
+        <h2 style="font-size:clamp(20px,3.5vw,30px);font-weight:400;margin-bottom:8px;line-height:1.3;font-family:'Hubot+Sans',sans-serif">Was Unternehmen nach dem<br>Beratungsgespräch berichten</h2>
         <p style="font-size:14px;color:var(--text3)">Platzhalter-Texte – werden durch echte Kundenstimmen ersetzt</p>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
@@ -527,7 +527,7 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
 
       <div style="background:linear-gradient(135deg,rgba(98,150,159,.15) 0%,rgba(64,80,83,.2) 100%);border:1px solid rgba(98,150,159,.3);border-radius:var(--radius-xl);padding:44px 32px;text-align:center;margin-bottom:24px">
         <p style="font-size:11px;color:var(--lime);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;font-family:'Quicksand',sans-serif">Dein nächster Schritt</p>
-        <h3 style="font-family:'Abel',sans-serif;font-size:clamp(22px,4vw,32px);margin-bottom:12px;line-height:1.3">Lass uns gemeinsam schauen,<br>wie wir deine Sichtbarkeit verbessern.</h3>
+        <h3 style="font-family:'Hubot+Sans',sans-serif;font-size:clamp(22px,4vw,32px);margin-bottom:12px;line-height:1.3">Lass uns gemeinsam schauen,<br>wie wir deine Sichtbarkeit verbessern.</h3>
         <p style="font-size:15px;color:var(--text2);margin-bottom:28px;line-height:1.7;max-width:480px;margin-left:auto;margin-right:auto">30 Minuten, kostenlos, ohne Verpflichtung. Du bekommst einen klaren Plan – speziell für deine Website und deine Branche.</p>
         <a class="btn-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank" style="font-size:16px;padding:16px 40px">Jetzt Termin vereinbaren →</a>
         <div style="display:flex;gap:24px;justify-content:center;margin-top:18px;flex-wrap:wrap">
@@ -759,7 +759,7 @@ function unlockContent(ai,domain){
   if((ai.actions||[]).length>3){
     rout.innerHTML+='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px;text-align:center;margin-top:8px">'+
       '<div style="font-size:24px;margin-bottom:10px">🔒</div>'+
-      '<div style="font-family:Abel,sans-serif;font-size:18px;font-weight:400;margin-bottom:6px">+ '+((ai.actions||[]).length-3)+' weitere priorisierte Ma\u00dfnahmen</div>'+
+      '<div style="font-family:Hubot+Sans,sans-serif;font-size:18px;font-weight:400;margin-bottom:6px">+ '+((ai.actions||[]).length-3)+' weitere priorisierte Ma\u00dfnahmen</div>'+
       '<div style="font-size:13px;color:var(--text3);margin-bottom:16px">Inklusive einem persönlichen Umsetzungsplan<br>– du bekommst ihn im Gespräch mit uns.</div>'+
       '<a class="btn-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank">Termin vereinbaren →</a></div>';
   }
