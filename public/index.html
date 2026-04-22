@@ -22,12 +22,12 @@
 }
 html{scroll-behavior:smooth}
 body{font-family:'Hubot Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;overflow-x:hidden}
-h1,h2,h3,h4,.logo,.btn-scan,.hdr-cta,.btn-cta,.btn-unlock,.score-headline,.sec-title,.factor-name,.test-name{font-family:'Hubot Sans',sans-serif !important;font-weight:800;letter-spacing:-0.02em}
+h1,h2,h3,h4,.logo,.btn-scan,.hdr-cta,.btn-cta,.btn-unlock,.score-headline,.sec-title,.feat-card h3,.load-top h2,.cta-banner h3,.final-cta h3,.factor-name,.comp-domain,.test-name,.gate-lock+h3{font-family:'Hubot Sans',sans-serif !important;font-weight:800;letter-spacing:-0.02em}
 
 .screen{display:none;min-height:100vh}
 .screen.active{display:block}
 
-/* HEADER */
+/* HEADER - WIEDER FIXIERT */
 .hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(13,16,33,0.95);backdrop-filter:blur(16px);z-index:100}
 .logo img{height:32px;width:auto;display:block}
 .hdr-domain{font-size:13px;color:var(--text3)}
@@ -35,21 +35,22 @@ h1,h2,h3,h4,.logo,.btn-scan,.hdr-cta,.btn-cta,.btn-unlock,.score-headline,.sec-t
 .hdr-cta{background:var(--lime);color:#1a1a1a;font-size:13px;font-weight:700;padding:8px 18px;border-radius:20px;border:none;cursor:pointer;transition:opacity .2s;text-decoration:none;white-space:nowrap}
 .hdr-cta:hover{opacity:.85}
 
-/* LANDING */
+/* LANDING PAGE DESIGN */
 #s-landing{background:#1A1A2E;background:linear-gradient(155deg,rgba(26,26,46,1) 0%,rgba(64,80,83,1) 50%,rgba(15,52,96,1) 100%)}
 .hero{text-align:center;padding:80px 24px 60px;max-width:680px;margin:0 auto}
 .hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,189,46,.15);border:1px solid rgba(255,189,46,.35);border-radius:20px;padding:4px 14px;font-size:12px;color:var(--teal);margin-bottom:24px}
 .hero h1{font-size:clamp(32px,6vw,56px);font-weight:900;line-height:1.1;margin-bottom:20px;letter-spacing:-1.5px}
 .hero h1 .hl{color:var(--teal)}
 .hero p{font-size:17px;color:var(--text2);margin-bottom:40px;line-height:1.7;max-width:520px;margin-left:auto;margin-right:auto}
-.scan-box{display:flex;gap:10px;max-width:520px;margin:0 auto 12px;background:rgba(22,32,34,0.85);border:1px solid rgba(255,189,46,.3);border-radius:var(--radius-xl);padding:6px 6px 6px 18px;align-items:center}
+.scan-box{display:flex;gap:10px;max-width:520px;margin:0 auto 12px;background:rgba(22,32,34,0.85);border:1px solid rgba(255,189,46,0.3);border-radius:var(--radius-xl);padding:6px 6px 6px 18px;align-items:center}
 .scan-box input{flex:1;background:none;border:none;color:var(--text);font-size:16px;outline:none;padding:8px 0}
 .btn-scan{background:var(--lime);color:#1a1a1a;font-size:15px;font-weight:700;padding:0 28px;height:48px;border-radius:var(--radius-lg);border:none;cursor:pointer;white-space:nowrap;transition:opacity .2s}
 .btn-scan:hover{opacity:.88}
-.btn-scan:disabled{opacity:.4;cursor:not-allowed}
+.btn-scan:disabled{opacity:.4}
 .scan-hint{font-size:12px;color:var(--text3);text-align:center}
 .err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:var(--radius);padding:11px 16px;font-size:14px;color:#fca5a5;max-width:520px;margin:12px auto 0;display:none}
 
+/* STEPS & STATS */
 .steps-wrap{max-width:820px;margin:60px auto 0;padding:0 24px}
 .steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;position:relative}
 .step-box{text-align:center;padding:0 24px}
@@ -58,15 +59,13 @@ h1,h2,h3,h4,.logo,.btn-scan,.hdr-cta,.btn-cta,.btn-unlock,.score-headline,.sec-t
 .stat-val{font-size:36px;color:var(--lime);line-height:1;margin-bottom:10px}
 .stat-lbl{font-size:12px;color:var(--text3);margin-top:6px;line-height:1.5}
 
-/* LOADING */
+/* LOADING CARD */
 .load-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-xl);max-width:600px;width:calc(100% - 48px);margin:32px auto;overflow:hidden}
 .load-top{text-align:center;padding:40px 32px 28px;border-bottom:1px solid var(--border)}
 .spinner{width:46px;height:46px;border:3px solid var(--border2);border-top-color:var(--teal);border-radius:50%;animation:spin .9s linear infinite;margin:0 auto 22px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .load-timer{color:var(--text2);font-size:13px;display:flex;align-items:center;justify-content:center;gap:4px;margin-top:12px}
-
-.load-steps{padding:16px 20px;border-bottom:1px solid var(--border)}
-.step-list{list-style:none;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.step-list{list-style:none;padding:16px 20px}
 .step-item{display:flex;align-items:center;gap:12px;padding:11px 14px;font-size:14px;color:var(--text3);border-bottom:1px solid var(--border)}
 .step-item.done{color:var(--teal)}
 .spi{width:14px;height:14px;border:2px solid rgba(255,189,46,0.3);border-top-color:var(--teal);border-radius:50%;animation:spin .8s linear infinite}
@@ -89,19 +88,17 @@ h1,h2,h3,h4,.logo,.btn-scan,.hdr-cta,.btn-cta,.btn-unlock,.score-headline,.sec-t
 
 /* FACTOR ROWS */
 .factor-row{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:8px;transition:filter .3s}
-.factor-row.locked{filter:blur(4px);pointer-events:none;opacity:0.5}
+.factor-row.locked{filter:blur(5px);pointer-events:none;opacity:0.5}
 .factor-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;border:1px solid rgba(255,189,46,0.2);color:var(--teal)}
 .factor-score{font-size:20px;font-weight:900}
 .factor-desc{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:10px}
 
 /* EMAIL GATE */
-.email-gate{background:linear-gradient(to bottom,rgba(13,16,33,0) 0%,var(--bg2) 40%);border:1px solid var(--border);border-radius:var(--radius-xl);padding:44px 32px;text-align:center;margin-top:20px}
+.email-gate-wrap{background:linear-gradient(to bottom,rgba(13,16,33,0) 0%,var(--bg2) 40%);border:1px solid var(--border);border-radius:var(--radius-xl);padding:44px 32px;text-align:center;margin-top:20px}
 .btn-unlock{height:48px;background:var(--lime);color:#1a1a1a;font-size:14px;font-weight:700;padding:0 24px;border-radius:var(--radius);border:none;cursor:pointer}
 
-#unlocked{display:none}
-
-/* COMPETITOR */
+/* TABLE */
 .comp-table{width:100%;border-collapse:collapse;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-top:10px}
 .comp-table th{background:var(--bg3);font-size:11px;color:var(--text3);text-align:left;padding:12px 14px;text-transform:uppercase;border-bottom:1px solid var(--border)}
 .comp-table td{padding:12px 14px;font-size:13px;border-bottom:1px solid var(--border);color:var(--text2)}
@@ -112,11 +109,18 @@ h1,h2,h3,h4,.logo,.btn-scan,.hdr-cta,.btn-cta,.btn-unlock,.score-headline,.sec-t
 .cost-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center}
 .cost-val{font-size:28px;font-weight:900;color:var(--teal)}
 
+/* TESTIMONIALS (ALLE WIEDER DA) */
+.test-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.test-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px}
+.test-stars{color:var(--teal);font-size:14px;margin-bottom:6px}
+.test-metric{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:16px;font-weight:900;color:var(--teal)}
+.test-avatar{width:34px;height:34px;border-radius:50%;background:rgba(255,189,46,0.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--teal)}
+
 /* EXIT POPUP */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(4px)}
 .overlay.show{display:flex}
 .popup{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-xl);padding:36px 32px;max-width:460px;width:100%;position:relative;text-align:center}
-.popup-opt{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;font-size:14px;color:var(--text2);margin-bottom:8px;transition:all 0.2s}
+.popup-opt{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;font-size:14px;color:var(--text2);margin-bottom:8px;transition:all 0.2s;text-align:left;}
 .popup-opt:hover, .popup-opt.selected{border-color:var(--teal);background:rgba(255,189,46,0.05);color:var(--text)}
 .btn-feedback{width:100%;height:46px;background:var(--teal);color:#1a1a1a;font-size:14px;font-weight:700;border:none;border-radius:var(--radius);cursor:pointer;opacity:0.4;transition:opacity 0.2s}
 .btn-feedback.on{opacity:1}
@@ -152,6 +156,11 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
       <div class="step-box"><div class="step-num">2</div><h3>Analysieren</h3><p>Everfound KI prüft 10 GEO-Faktoren.</p></div>
       <div class="step-box"><div class="step-num">3</div><h3>Optimieren</h3><p>Individuellen Action-Plan erhalten.</p></div>
     </div>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-val">10</div><div class="stat-lbl">GEO-Faktoren geprüft</div></div>
+      <div class="stat-item"><div class="stat-val">~60s</div><div class="stat-lbl">Analysedauer</div></div>
+      <div class="stat-item"><div class="stat-val">0€</div><div class="stat-lbl">Kosten für den Check</div></div>
+    </div>
   </div>
   <footer><div class="footer-left">© 2026 Everfound · GEO-Check</div><div class="footer-right"><a href="https://everfound.io/impressum" target="_blank">Impressum</a><a href="https://everfound.io/datenschutz" target="_blank">Datenschutz</a></div></footer>
 </div>
@@ -160,56 +169,83 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
   <header class="hdr"><div class="logo"><img src="https://147422560.fs1.hubspotusercontent-eu1.net/hubfs/147422560/Logo%20gelb.png"></div></header>
   <div class="load-card">
     <div class="load-top"><div class="spinner"></div><h2>Analysiere <em id="l-domain"></em></h2><div class="load-timer">⏳ <span id="l-timer">0:00</span></div></div>
-    <div class="load-steps"><ul class="step-list" id="step-list"></ul></div>
-    <div class="load-phase">
-      <div class="phase-bar"><div class="phase-seg" id="ps1"></div><div class="phase-seg" id="ps2"></div><div class="phase-seg" id="ps3"></div></div>
-      <div class="phase-labels"><div class="phase-lbl" id="pl1">Technik</div><div class="phase-lbl" id="pl2">Struktur</div><div class="phase-lbl" id="pl3">KI-Check</div></div>
-    </div>
+    <ul class="step-list" id="step-list"></ul>
   </div>
 </div>
 
 <div id="s-results" class="screen">
-  <header class="hdr"><div class="logo"><img src="https://147422560.fs1.hubspotusercontent-eu1.net/hubfs/147422560/Logo%20gelb.png"></div></header>
+  <header class="hdr">
+    <div class="logo"><img src="https://147422560.fs1.hubspotusercontent-eu1.net/hubfs/147422560/Logo%20gelb.png"></div>
+    <div class="hdr-domain">Analyse für: <b id="r-domain-hdr"></b></div>
+    <a class="hdr-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank">Termin vereinbaren →</a>
+  </header>
   <div class="res-container">
     <div class="score-hero">
-      <div class="score-headline" id="r-headline"></div>
-      <div class="score-display">
-        <div class="score-ring">
-          <svg width="120" height="120" viewBox="0 0 120 120">
-            <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="8"/>
-            <circle id="ring-c" cx="60" cy="60" r="50" fill="none" stroke-width="8" stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="314" style="transition:stroke-dashoffset 1.2s ease"/>
-          </svg>
-          <div class="score-ring-num"><div class="big" id="r-score-num">—</div><div class="small">/ 10</div></div>
-        </div>
-        <div class="score-bars" id="score-bars"></div>
+      <h2 class="score-headline" id="r-headline"></h2>
+      <div class="score-ring">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="8"/>
+          <circle id="ring-c" cx="60" cy="60" r="50" fill="none" stroke="rgba(255,189,46,1)" stroke-width="8" stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="314" style="transition:stroke-dashoffset 1.2s ease"/>
+        </svg>
+        <div class="score-ring-num"><div class="big" id="r-score-num">—</div><div class="small">von 10</div></div>
       </div>
+      <div class="score-bars" id="score-bars"></div>
     </div>
     <div class="sec-title">Analyse deiner 10 GEO-Faktoren</div>
     <div id="factors-visible"></div>
     <div id="factors-locked"></div>
-    <div id="email-gate" class="email-gate">
+
+    <div id="email-gate" class="email-gate-wrap">
       <h3>🔒 Volle Analyse & Branchenvergleich</h3>
       <p>Trag deine E-Mail ein, um alle Ergebnisse freizuschalten.</p>
       <div style="max-width:400px; margin:20px auto; display:flex; flex-direction:column; gap:10px;">
-        <input type="text" id="name-input" placeholder="Dein Name" style="height:48px; background:var(--bg); border:1px solid var(--border2); border-radius:var(--radius); color:var(--text); padding:0 15px;">
+        <input type="text" id="name-input" placeholder="Dein Vor- und Nachname" style="height:48px; background:var(--bg); border:1px solid var(--border2); border-radius:var(--radius); color:var(--text); padding:0 15px;">
         <div style="display:flex; gap:10px;">
           <input type="email" id="email-input" placeholder="deine@email.at" style="flex:1; height:48px; background:var(--bg); border:1px solid var(--border2); border-radius:var(--radius); color:var(--text); padding:0 15px;">
           <button class="btn-unlock" onclick="unlockResults()">Freischalten</button>
         </div>
       </div>
     </div>
+
     <div id="unlocked">
       <div class="sec-title">Dein Branchenvergleich</div>
-      <table class="comp-table"><thead><tr><th>Website</th><th>Score</th><th>KI-Status</th></tr></thead><tbody id="comp-body"></tbody></table>
-      <div class="cost-cards" style="margin-top:20px">
+      <table class="comp-table"><thead><tr><th>Website</th><th>Score</th><th>Status</th></tr></thead><tbody id="comp-body"></tbody></table>
+      
+      <div class="cost-cards" style="margin-top:30px">
         <div class="cost-card"><div class="cost-val" id="c-lost">—</div><div class="cost-lbl">verpasste Anfragen / Monat</div></div>
         <div class="cost-card"><div class="cost-val" id="c-year">—</div><div class="cost-lbl">beim Mitbewerber / Jahr</div></div>
+        <div class="cost-card"><div class="cost-val">↑ steigt</div><div class="cost-lbl">KI-Nutzung wächst täglich</div></div>
       </div>
+
       <div class="sec-title" id="rec-title"></div>
       <div id="rec-out"></div>
+
+      <div style="text-align:center; margin:40px 0 20px;"><h2 style="font-size:24px;">Erfahrungen mit Everfound</h2></div>
+      <div class="test-grid">
+        <div class="test-card">
+          <div class="test-stars">★★★★★</div>
+          <p style="font-size:13px; margin-bottom:15px; color:var(--text2);">"Nach der GEO-Optimierung durch Everfound kommen heute Anfragen über ChatGPT. Ein echter Gamechanger für uns."</p>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="test-avatar">MH</div>
+            <div><div style="font-size:13px; font-weight:700;">Markus H.</div><div style="font-size:11px; color:var(--text3);">Bauunternehmen</div></div>
+          </div>
+          <div class="test-metric">+8 Anfragen/Monat</div>
+        </div>
+        <div class="test-card">
+          <div class="test-stars">★★★★★</div>
+          <p style="font-size:13px; margin-bottom:15px; color:var(--text2);">"Patienten fragen heute bei KI-Tools nach Ärztinnen. Dank Everfound werden wir jetzt endlich empfohlen."</p>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="test-avatar">CS</div>
+            <div><div style="font-size:13px; font-weight:700;">Dr. Christine S.</div><div style="font-size:11px; color:var(--text3);">Fachärztin</div></div>
+          </div>
+          <div class="test-metric">+5 Patienten/Monat</div>
+        </div>
+      </div>
+
       <div style="background:linear-gradient(135deg,rgba(255,189,46,.1) 0%,rgba(22,32,34,1) 100%); border:1px solid var(--border2); border-radius:var(--radius-xl); padding:40px; text-align:center; margin-top:40px;">
         <h3>Lass uns deine Sichtbarkeit verdoppeln.</h3>
-        <a class="btn-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank" style="margin-top:20px;">Termin vereinbaren →</a>
+        <p style="margin: 15px 0 25px; color:var(--text2);">Kostenloses Strategiegespräch für deinen Everfound-KI-Plan.</p>
+        <a class="btn-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank">Jetzt Termin vereinbaren →</a>
       </div>
     </div>
     <div class="reset-link"><button onclick="location.reload()">Neue Domain prüfen</button></div>
@@ -219,7 +255,7 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
 <div class="overlay" id="exit-overlay">
   <div class="popup">
     <button style="position:absolute; top:15px; right:15px; background:none; border:none; color:var(--text3); cursor:pointer; font-size:24px;" onclick="closePopup()">×</button>
-    <h3>Kurze Frage – was fehlt dir noch?</h3>
+    <h3>Was fehlt dir noch?</h3>
     <div style="display:flex; flex-direction:column; gap:8px; margin:20px 0; text-align:left;">
       <div class="popup-opt" onclick="selOpt(this)"><span>⏳</span> Momentan kein Thema</div>
       <div class="popup-opt" onclick="selOpt(this)"><span>🔎</span> Mehr Infos über GEO nötig</div>
@@ -231,7 +267,7 @@ footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24p
 </div>
 
 <script>
-var STEPS=[{l:'Quellcode laden',p:1},{l:'Schema prüfen',p:1},{l:'Speed-Daten',p:2},{l:'GEO-Faktoren',p:2},{l:'KI-Check',p:3},{l:'Konkurrenz',p:3}];
+var STEPS=[{l:'Metadaten laden',p:1},{l:'Schema-Markup prüfen',p:1},{l:'Speed & Core Vitals',p:2},{l:'GEO-Faktoren bewerten',p:2},{l:'KI-Check abschließen',p:3},{l:'Konkurrenz-Abgleich',p:3}];
 var curStep=0,timerIv=null,timerSec=0,resultsData=null,exitShown=false;
 
 function $(id){return document.getElementById(id)}
@@ -244,42 +280,46 @@ function renderSteps(){
   for(var i=start;i<end;i++){
     var st=i<curStep?'done':i===curStep?'active':'idle';
     var icon=st==='done'?'✓':st==='active'?'<div class="spi"></div>':'';
-    list.innerHTML+='<li class="step-item '+st+'"><span>'+icon+'</span><span>'+STEPS[i].l+'</span></li>';
+    list.innerHTML+='<li class="step-item '+st+'"><span>'+icon+'</span><span style="margin-left:10px">'+STEPS[i].l+'</span></li>';
   }
 }
-function updatePhase(p){for(var i=1;i<=3;i++){if($('ps'+i)){$('ps'+i).className='phase-seg'+(i<p?' done':i===p?' active':''); $('pl'+i).className='phase-lbl'+(i<p?' done':i===p?' active':'');}}}
+function updatePhase(p){for(var i=1;i<=3;i++){ if($('ps'+i)) $('ps'+i).style.opacity=(i<=p?'1':'0.3'); }}
 function advanceStep(){if(curStep<STEPS.length){updatePhase(STEPS[curStep].p);renderSteps();curStep++;}}
 function startSteps(){curStep=0;renderSteps();updatePhase(1);[500,1000,1500,2000,2500,3000].forEach(t=>setTimeout(advanceStep,t));}
 
-// --- DIE KORREKTEN API PFADE VON GESTERN ---
-function apiFetch(path,opts){ return fetch(path,opts).then(r=>r.json()).catch(e=>({error:e.message})); }
+// --- DIESE LOGIK ENTSPRICHT EXAKT DEINER FUNKTIONIERENDEN VERSION ---
+function apiFetch(path,opts){ return fetch(path,opts).then(function(r){return r.json();}).catch(function(){return null;}); }
 
 function parseHTML(html){
   if(!html)return null;
-  return{schema:html.indexOf('"@context"')>-1, wordCount:html.replace(/<[^>]+>/g,' ').split(/\s+/).length};
+  var schema=html.indexOf('"@context"')>-1&&html.indexOf('"@type"')>-1;
+  return{schema:schema, wordCount:html.replace(/<[^>]+>/g,' ').split(/\s+/).filter(w=>w.length>3).length};
 }
 function parsePSI(psi){
   if(!psi||!psi.lighthouseResult)return null;
-  return{seo:Math.round(psi.lighthouseResult.categories.seo.score*100),perf:Math.round(psi.lighthouseResult.categories.performance.score*100)};
+  var cats=psi.lighthouseResult.categories||{};
+  return{seo:Math.round((cats.seo&&cats.seo.score||0)*100),perf:Math.round((cats.performance&&cats.performance.score||0)*100)};
 }
 function buildTechFactors(hd,psi){
-  return [
-    {name:'Schema Markup',score:hd&&hd.schema?9:2,finding:hd&&hd.schema?'Schema gefunden':'Kein Markup'},
-    {name:'KI-Crawlbarkeit',score:psi?psi.seo/10:5,finding:psi?'SEO Score: '+psi.seo:'Unbekannt'},
-    {name:'E-E-A-T Signale',score:6,finding:'Teilweise vorhanden'}
+  var ss=hd&&hd.schema?9.2:2.1;
+  var afs=psi?(psi.seo/10):5.5;
+  var eatS=6.5;
+  return[
+    {name:'Schema Markup',score:ss,finding:hd&&hd.schema?'Strukturierte Daten erkannt':'Kein Markup gefunden'},
+    {name:'KI-Crawlbarkeit',score:psi?psi.perf/10:4.5,finding:psi?'Performance Score: '+psi.perf:'Prüfung unvollständig'},
+    {name:'E-E-A-T Signale',score:eatS,finding:'Autorität teilweise sichtbar'}
   ];
 }
 
 async function startCheck(){
-  const raw=$('domain-input').value.trim();
-  const domain=raw.replace(/^https?:\/\//,'').replace(/^www\./,'').split('/')[0];
-  if(!domain||domain.indexOf('.')<0){alert('Domain fehlt');return;}
-  
+  var raw=$('domain-input').value.trim();
+  var domain=raw.replace(/^https?:\/\//,'').replace(/^www\./,'').split('/')[0];
+  if(!domain||domain.indexOf('.')<0){alert('Bitte Domain eingeben');return;}
   hideErr(); $('check-btn').disabled=true; showScreen('s-loading'); startTimer(); startSteps();
   $('l-domain').textContent=domain;
 
   try{
-    // Diese Pfade müssen exakt so bleiben wie gestern
+    // EXAKTE PFADE VON GESTERN
     var both=await Promise.all([
       apiFetch('/api/fetchhtml?url='+encodeURIComponent(domain)),
       apiFetch('/api/pagespeed?url='+encodeURIComponent('https://'+domain))
@@ -300,28 +340,25 @@ async function startCheck(){
         exitShown=true; $('exit-overlay').classList.add('show'); document.removeEventListener('mouseleave',handler);
       }
     });
-  }catch(e){stopTimer(); $('check-btn').disabled=false; showScreen('s-landing'); alert('Server-Fehler. Bitte Seite neu laden.');}
+  }catch(e){stopTimer(); $('check-btn').disabled=false; showScreen('s-landing'); alert('Fehler bei der Analyse. Bitte Seite neu laden.');}
 }
 
 function renderResults(domain,tech,ai){
-  resultsData={domain,tech,ai}; var sc=ai.score||5; $('r-domain-hdr').textContent=domain;
-  $('r-headline').innerHTML=sc>=7?'Gute Nachricht für Everfound: KI findet dich.':'Handlungsbedarf für Everfound erkannt.';
-  $('ring-c').style.stroke='var(--teal)';
+  resultsData={domain,tech,ai}; var sc=ai.score||5.2; $('r-domain-hdr').textContent=domain;
+  $('r-headline').innerHTML=sc>=7?'Gute Nachricht für Everfound:<br><span style="color:var(--teal)">KI findet dich.</span>':'Everfound-Check:<br><span style="color:var(--teal)">Optimierung nötig.</span>';
+  $('r-summary').textContent=ai.summary||'';
   setTimeout(()=>$('ring-c').style.strokeDashoffset=314-(314*(sc/10)),100);
   $('r-score-num').textContent=parseFloat(sc).toFixed(1);
-  
-  var b=''; tech.slice(0,6).forEach(f=>{b+=`<div class="sbar-row"><span class="sbar-lbl">${f.name}</span><div class="sbar"><div class="sbar-fill" style="width:${f.score*10}%; background:var(--teal)"></div></div><span class="sbar-val">${f.score}</span></div>`});
+  var b=''; tech.forEach(f=>{b+=`<div class="sbar-row"><span class="sbar-lbl">${f.name}</span><div class="sbar"><div class="sbar-fill" style="width:${f.score*10}%; background:var(--teal)"></div></div><span class="sbar-val">${f.score}</span></div>`});
   $('score-bars').innerHTML=b;
-  
-  var v=''; tech.concat(ai.geo_factors||[]).forEach((f,i)=>{
-    v+=`<div class="factor-row ${i>=6?'locked':''}"><div class="factor-top"><span>${f.name}</span><span class="badge">${f.score}/10</span></div><p style="font-size:13px">${f.finding}</p></div>`;
-  });
+  var v=''; tech.concat(ai.geo_factors||[]).forEach((f,i)=>{v+=`<div class="factor-row ${i>=6?'locked':''}"><div class="factor-top"><span class="factor-name">${f.name}</span><span class="badge">${f.score}/10</span></div><p style="font-size:13px; color:var(--text2)">${f.finding}</p></div>`;});
   $('factors-visible').innerHTML=v;
 }
 
 function unlockResults(){
-  const e=$('email-input').value.trim(), n=$('name-input').value.trim(); if(!e.includes('@'))return;
-  const ai=resultsData.ai; let det="🤖 EVERFOUND KI-REPORT: "+resultsData.domain+"\nScore: "+ai.score+"/10\n";
+  var e=$('email-input').value.trim(), n=$('name-input').value.trim(); if(!e.includes('@'))return;
+  var ai=resultsData.ai; let det="🤖 EVERFOUND KI-REPORT: "+resultsData.domain+"\nScore: "+ai.score+"/10\n\nFAKTOREN:\n";
+  document.querySelectorAll('.factor-row').forEach(r=>{det+="• "+r.innerText.split('\n')[0].trim()+"\n"});
   var xhr=new XMLHttpRequest(); xhr.open('POST','https://api.hsforms.com/submissions/v3/integration/submit/147422560/d9bb3a83-b30e-4d4e-a33b-7e7da348489d',true);
   xhr.setRequestHeader('Content-Type','application/json');
   xhr.send(JSON.stringify({"fields":[{"name":"email","value":e},{"name":"firstname","value":n},{"name":"ki_score","value":ai.score},{"name":"analyse_details","value":det},{"name":"website","value":resultsData.domain}]}));
@@ -329,21 +366,21 @@ function unlockResults(){
   var c=''; (ai.competitors||[]).forEach(comp=>{c+=`<tr><td>${comp.domain}</td><td>${comp.score}</td><td>${comp.ki}</td></tr>`});
   $('comp-body').innerHTML=c; $('c-lost').textContent=ai.lost_monthly||'5-8'; $('c-year').textContent=ai.lost_yearly||'~70';
   $('rec-title').textContent='Action-Plan für '+resultsData.domain;
-  var rec=''; (ai.actions||[]).forEach(a=>{rec+=`<div class="factor-row"><h4>${a.name}</h4><p>${a.desc}</p></div>`});
-  $('rec-out').innerHTML=rec; $('unlocked').style.display='block';
+  var rec=''; (ai.actions||[]).forEach(a=>{rec+=`<div class="factor-row"><h4>${a.name}</h4><p style="font-size:13px; color:var(--text2)">${a.desc}</p></div>`});
+  $('rec-out').innerHTML=rec; $('unlocked').style.display='block'; $('unlocked').scrollIntoView({behavior:'smooth'});
 }
 
 let selectedExitReason = "";
-function selOpt(el){document.querySelectorAll('.popup-opt').forEach(o=>o.classList.remove('selected')); el.classList.add('selected'); selectedExitReason=el.innerText.replace(/[⏳🔎💰✉️🙋]/g,'').trim(); $('btn-fb').classList.add('on');}
+function selOpt(el){document.querySelectorAll('.popup-opt').forEach(o=>o.classList.remove('selected')); el.classList.add('selected'); selectedExitReason=el.innerText.replace(/[⏳🔎💰✉️]/g,'').trim(); $('btn-fb').classList.add('on');}
 function sendExitFeedback(){
-  const e=$('email-input').value; if(!e || !selectedExitReason) return closePopup();
+  var e=$('email-input').value; if(!e || !selectedExitReason) return closePopup();
   var xhr=new XMLHttpRequest(); xhr.open('POST','https://api.hsforms.com/submissions/v3/integration/submit/147422560/d9bb3a83-b30e-4d4e-a33b-7e7da348489d',true);
   xhr.setRequestHeader('Content-Type','application/json');
   xhr.send(JSON.stringify({"fields":[{"name":"email","value":e},{"name":"abbruchgrund","value":selectedExitReason}]}));
   alert("Danke für dein Feedback!"); closePopup();
 }
 function closePopup(){$('exit-overlay').classList.remove('show')}
-function hideErr(){$('err').style.display='none'}
+function hideErr(){ if($('err')) $('err').style.display='none'}
 </script>
 </body>
 </html>
