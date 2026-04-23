@@ -1,867 +1,1256 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GEO-Check – Wie sichtbar ist deine Website für KI? | Everfound</title>
-  <link rel="icon" type="image/png" href="faviconeverfound.ico">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hubot Sans:wght@200..900&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0f1a1c;--bg2:#162022;--bg3:#1c2a2d;--bg4:#223034;
-  --text:#f6f6f6;--text2:#b8cdd0;--text3:#6a8a8f;
-  --teal:#62969f;--teal2:#405053;
-  --purple:#62969f;--purple2:#405053;--purple-dim:rgba(98,150,159,0.15);
-  --lime:#ffbd2e;--coral:#ffbd2e;--amber:#ffbd2e;--green:#62969f;--red:#ef4444;
-  --border:rgba(255,255,255,0.07);--border2:rgba(98,150,159,0.25);
-  --radius:10px;--radius-lg:16px;--radius-xl:20px;
-}
-html{scroll-behavior:smooth}
-body{font-family:'Hubot Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;overflow-x:hidden}
-h1,h2,h3,h4,.logo,.btn-scan,.hdr-cta,.btn-cta,.btn-unlock,.score-headline,.sec-title,.feat-card h3,.load-top h2,.cta-banner h3,.final-cta h3,.factor-name,.comp-domain,.test-name,.gate-lock+h3{font-family:'Hubot Sans',sans-serif !important;letter-spacing:.02em}
-.screen{display:none;min-height:100vh}
-.screen.active{display:block}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEO-Check – Wie sichtbar ist deine Website für KI? | Everfound</title>
+    <link rel="icon" type="image/png" href="faviconeverfound.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hubot+Sans:wght@200..900&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
 
-/* HEADER */
-.hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(13,16,33,0.95);backdrop-filter:blur(16px);z-index:100}
-.logo{font-size:15px;font-weight:700;letter-spacing:-.3px}
-.logo span{color:var(--teal)}
-.hdr-domain{font-size:13px;color:var(--text3)}
-.hdr-domain b{color:var(--text2)}
-.hdr-cta{background:var(--lime);color:#1a1a1a;font-size:13px;font-weight:700;padding:8px 18px;border-radius:20px;border:none;cursor:pointer;transition:opacity .2s;text-decoration:none;white-space:nowrap}
-.hdr-cta:hover{opacity:.85}
+        :root {
+            --bg:      #f0ede6;
+            --bg2:     #ffffff;
+            --bg3:     #f7f5f1;
+            --bg4:     #eceae3;
+            --text:    #0d0d0d;
+            --text2:   #4a4a4a;
+            --text3:   #999999;
+            --teal:    #b97020;
+            --teal-bg: #f5f2f0;
+            --teal-bd: #b97020;
+            --amber:   #b97020;
+            --green:   #2a7a5a;
+            --red:     #c43a2a;
+            --border:  rgba(0, 0, 0, 0.08);
+            --border2: rgba(82, 135, 144, 0.28);
+            --radius:    8px;
+            --radius-lg: 12px;
+            --radius-xl: 18px;
+        }
 
-/* LANDING */
-#s-landing{background:#1A1A2E;background:linear-gradient(155deg,rgba(26,26,46,1) 0%,rgba(64,80,83,1) 50%,rgba(15,52,96,1) 100%)}
-.hero{text-align:center;padding:80px 24px 60px;max-width:680px;margin:0 auto}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(98,150,159,.15);border:1px solid rgba(98,150,159,.35);border-radius:20px;padding:4px 14px;font-size:12px;color:var(--teal);margin-bottom:24px;letter-spacing:.04em}
-.hero h1{font-size:clamp(32px,6vw,56px);font-weight:800;line-height:1.15;margin-bottom:20px;letter-spacing:-.5px}
-.hero h1 .hl{color:var(--teal)}
-.hero p{font-size:17px;color:var(--text2);margin-bottom:40px;line-height:1.7;max-width:520px;margin-left:auto;margin-right:auto}
-.scan-box{display:flex;gap:10px;max-width:520px;margin:0 auto 12px;background:rgba(22,32,34,0.85);border:1px solid rgba(98,150,159,.3);border-radius:var(--radius-xl);padding:6px 6px 6px 18px;align-items:center}
-.scan-box input{flex:1;background:none;border:none;color:var(--text);font-size:16px;outline:none;padding:8px 0}
-.scan-box input::placeholder{color:var(--text3)}
-.btn-scan{background:var(--lime);color:#1a1a1a;font-size:15px;font-weight:700;padding:0 28px;height:48px;border-radius:var(--radius-lg);border:none;cursor:pointer;white-space:nowrap;transition:opacity .2s}
-.btn-scan:hover{opacity:.88}
-.btn-scan:disabled{opacity:.4;cursor:not-allowed}
-.scan-hint{font-size:12px;color:var(--text3);text-align:center}
-.err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:var(--radius);padding:11px 16px;font-size:14px;color:#fca5a5;max-width:520px;margin:12px auto 0;display:none}
-.steps-wrap{max-width:820px;margin:60px auto 0;padding:0 24px}
-.steps-title{text-align:center;font-family:'Hubot Sans',sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:32px}
-.steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative}
-.steps-row::before{content:'';position:absolute;top:28px;left:calc(16.67% + 16px);right:calc(16.67% + 16px);height:1px;background:linear-gradient(to right,rgba(98,150,159,.4),rgba(98,150,159,.4));z-index:0}
-.step-box{text-align:center;padding:0 24px;position:relative;z-index:1}
-.step-num{width:56px;height:56px;border-radius:50%;background:rgba(98,150,159,.12);border:1px solid rgba(98,150,159,.35);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-family:'Hubot Sans',sans-serif;font-size:22px;color:var(--teal)}
-.step-box h3{font-family:'Hubot Sans',sans-serif;font-size:18px;margin-bottom:8px;color:var(--text)}
-.step-box p{font-size:13px;color:var(--text3);line-height:1.6}
-.step-box .step-tag{display:inline-block;background:rgba(230,232,97,.1);border:1px solid rgba(230,232,97,.25);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--lime);margin-top:10px;letter-spacing:.04em}
-.stats-row{display:flex;gap:40px;justify-content:center;margin-top:48px;padding-top:32px;padding-bottom:64px;border-top:1px solid var(--border)}
-.stat-item{text-align:center;padding:0 20px}
-.stat-val{font-family:'Hubot Sans',sans-serif;font-size:36px;color:var(--lime);line-height:1;margin-bottom:10px}
-.stat-lbl{font-size:12px;color:var(--text3);margin-top:6px;line-height:1.5}
+        html { scroll-behavior: smooth }
 
-/* LOADING */
-#s-loading{background:#1A1A2E;background:linear-gradient(155deg,rgba(26,26,46,1) 0%,rgba(64,80,83,1) 50%,rgba(15,52,96,1) 100%)}
-.load-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-xl);max-width:600px;width:calc(100% - 48px);margin:32px auto;overflow:hidden}
-.load-top{text-align:center;padding:40px 32px 28px;border-bottom:1px solid var(--border)}
-.spinner{width:46px;height:46px;border:3px solid var(--border2);border-top-color:var(--teal);border-radius:50%;animation:spin .9s linear infinite;margin:0 auto 22px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.load-top h2{font-size:20px;font-weight:700;margin-bottom:6px}
-.load-top h2 em{font-style:normal;color:var(--teal)}
-.load-sub{font-size:14px;color:var(--text2);margin-bottom:4px}
-.load-time{font-size:12px;color:var(--text3);margin-bottom:16px}
-.load-meta{display:flex;align-items:center;justify-content:center;gap:12px;font-size:13px}
-.load-meta a{color:var(--teal)}
-.load-meta .sep{color:var(--text3)}
-.load-timer{color:var(--text2);font-variant-numeric:tabular-nums;font-size:13px;display:flex;align-items:center;gap:4px}
-.load-video{padding:20px 24px;border-bottom:1px solid var(--border)}
-.load-video-lbl{font-size:13px;font-weight:600;text-align:center;margin-bottom:12px;color:var(--text2)}
-.vid-wrap{position:relative;padding-bottom:56.25%;border-radius:var(--radius);overflow:hidden;background:var(--bg3)}
-.vid-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
-.vid-ph{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer}
-.play-btn{width:58px;height:58px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center;transition:transform .2s}
-.play-btn:hover{transform:scale(1.08)}
-.play-tri{width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:19px solid #fff;margin-left:4px}
-.vid-ph p{font-size:13px;color:var(--text3)}
-.load-steps{padding:16px 20px;border-bottom:1px solid var(--border)}
-.step-list{list-style:none;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-.step-item{display:flex;align-items:center;gap:12px;padding:11px 14px;font-size:14px;color:var(--text3);border-bottom:1px solid var(--border);transition:all .3s}
-.step-item:last-child{border-bottom:none}
-.step-item.done{color:var(--teal)}
-.step-item.active{color:var(--text);background:rgba(98,150,159,.08)}
-.step-icon{width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px}
-.step-item.done .step-icon{background:rgba(0,229,192,.12);color:var(--teal)}
-.spi{width:14px;height:14px;border:2px solid rgba(124,92,252,.3);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite}
-.load-phase{padding:14px 20px;border-bottom:1px solid var(--border)}
-.phase-bar{display:flex;gap:3px;margin-bottom:8px}
-.phase-seg{flex:1;height:4px;background:var(--bg3);border-radius:2px;transition:background .5s}
-.phase-seg.done{background:var(--teal)}
-.phase-seg.active{background:var(--purple);animation:pulse .9s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
-.phase-labels{display:flex;margin-bottom:12px}
-.phase-lbl{flex:1;text-align:center;font-size:10px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
-.phase-lbl.active{color:var(--purple)}
-.phase-lbl.done{color:var(--teal)}
-.load-info{display:grid;grid-template-columns:1fr 1fr}
-.info-card{padding:18px 20px;display:flex;gap:12px;align-items:flex-start}
-.info-card:first-child{border-right:1px solid var(--border)}
-.info-ic{font-size:18px;flex-shrink:0}
-.info-card h4{font-size:13px;font-weight:600;margin-bottom:4px}
-.info-card p{font-size:12px;color:var(--text3);line-height:1.5}
+        body {
+            font-family: 'Hubot Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.3;
+            overflow-x: hidden;
+        }
 
-/* RESULTS */
-#s-results{background:var(--bg)}
-.res-container{max-width:820px;margin:0 auto;padding:32px 24px 80px}
-.score-hero{text-align:center;padding:40px 24px 32px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-xl);margin-bottom:20px}
-.score-tag{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
-.score-headline{font-size:clamp(22px,4vw,34px);font-weight:800;margin-bottom:16px;line-height:1.25}
-.score-headline .bad{color:var(--coral)}
-.score-headline .ok{color:var(--amber)}
-.score-headline .good{color:var(--teal)}
-.score-summary{font-size:15px;color:var(--text2);max-width:560px;margin:0 auto 28px;line-height:1.7}
-.score-display{display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap;margin-bottom:20px}
-.score-ring{position:relative;width:120px;height:120px}
-.score-ring svg{transform:rotate(-90deg)}
-.score-ring-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.score-ring-num .big{font-size:32px;font-weight:800;line-height:1}
-.score-ring-num .small{font-size:12px;color:var(--text3)}
-.score-bars{display:flex;flex-direction:column;gap:8px;text-align:left;min-width:200px}
-.sbar-row{display:flex;align-items:center;gap:10px;font-size:13px}
-.sbar-lbl{color:var(--text3);width:130px;flex-shrink:0;font-size:12px}
-.sbar{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
-.sbar-fill{height:100%;border-radius:3px}
-.sbar-val{font-size:12px;font-weight:600;min-width:32px;text-align:right}
-.warn-banner{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:var(--radius);padding:12px 16px;margin-bottom:20px;display:none;gap:12px;align-items:flex-start}
-.warn-banner p{font-size:13px;color:var(--text2);line-height:1.5}
-.warn-banner strong{color:var(--text)}
-.sec-title{font-size:18px;font-weight:700;margin:28px 0 16px;letter-spacing:-.2px}
+        .screen { display: none; min-height: 100vh }
+        .screen.active { display: block }
 
-/* FACTOR ROWS */
-.factor-row{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:8px;transition:filter .3s}
-.factor-row.locked{filter:blur(4px);pointer-events:none;user-select:none}
-.factor-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.factor-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.factor-name{font-size:14px;font-weight:600}
-.badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
-.badge-kritisch{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.2)}
-.badge-opt{background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.2)}
-.badge-mittel{background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.2)}
-.badge-gut{background:rgba(34,197,94,.15);color:#86efac;border:1px solid rgba(34,197,94,.2)}
-.factor-score{font-size:20px;font-weight:800}
-.factor-score .denom{font-size:13px;font-weight:400;color:var(--text3)}
-.factor-desc{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:10px}
-.factor-bar{height:3px;background:var(--bg3);border-radius:2px;overflow:hidden}
-.factor-bar-fill{height:100%;border-radius:2px}
-.factor-real{font-size:9px;padding:1px 5px;background:rgba(0,229,192,.1);color:var(--teal);border-radius:3px;margin-left:4px}
+        /* ─── SHARED HEADER ─── */
+        .hdr {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 40px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: rgba(240, 237, 230, 0.96);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+        }
 
-/* EMAIL GATE */
-.email-gate{background:linear-gradient(to bottom,rgba(13,16,33,0) 0%,var(--bg2) 40%);border:1px solid var(--border);border-radius:var(--radius-xl);padding:44px 32px;text-align:center;margin-top:-4px}
-.gate-lock{font-size:32px;margin-bottom:14px}
-.email-gate h3{font-size:20px;font-weight:700;margin-bottom:8px}
-.email-gate p{font-size:14px;color:var(--text2);margin-bottom:22px;line-height:1.6}
-.email-row{display:flex;gap:8px;max-width:420px;margin:0 auto}
-.email-row input{flex:1;height:44px;background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-size:14px;padding:0 14px;outline:none}
-.email-row input:focus{border-color:var(--teal)}
-.email-row input::placeholder{color:var(--text3)}
-.btn-unlock{height:44px;background:var(--lime);color:#1a1a1a;font-size:13px;font-weight:700;padding:0 22px;border-radius:var(--radius);border:none;cursor:pointer;white-space:nowrap}
-.gate-note{font-size:11px;color:var(--text3);margin-top:10px}
+        .hdr .logo {
+            height: 26px;
+            width: auto;
+            filter: brightness(0);
+            display: block;
+        }
 
-#unlocked{display:none}
+        .hdr-domain {
+            font-family: 'Fragment Mono', monospace;
+            font-size: 12px;
+            color: var(--text3);
+            letter-spacing: 0.04em;
+        }
 
-/* COMPETITOR */
-.comp-table{width:100%;border-collapse:collapse;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;table-layout:fixed}
-.comp-table th{background:var(--bg3);font-size:11px;color:var(--text3);text-align:left;padding:11px 14px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border)}
-.comp-table td{padding:12px 14px;font-size:13px;border-bottom:1px solid var(--border);color:var(--text2);word-break:break-word}
-.comp-table tr:last-child td{border-bottom:none}
-.comp-table tr.you td{background:rgba(124,92,252,.07);color:var(--text);font-weight:500}
-.comp-note{font-size:12px;color:var(--text3);margin-top:8px;line-height:1.5}
-.ki-badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px}
-.ki-reg{background:rgba(0,229,192,.12);color:var(--teal)}
-.ki-oft{background:rgba(34,197,94,.12);color:var(--green)}
-.ki-sel{background:rgba(245,158,11,.12);color:var(--amber)}
+        .hdr-domain b { color: var(--teal); font-weight: 400; }
 
-/* COST */
-.cost-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
-.cost-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center}
-.cost-val{font-size:28px;font-weight:800;color:var(--coral);margin-bottom:4px;line-height:1}
-.cost-val.up{color:var(--amber)}
-.cost-lbl{font-size:12px;color:var(--text3);line-height:1.4}
+        .hdr-cta {
+            font-family: 'Fragment Mono', monospace;
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+            color: var(--text);
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: opacity .2s;
+            white-space: nowrap;
+        }
 
-/* CTA */
-.cta-banner{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-xl);padding:40px 32px;text-align:center;margin:24px 0}
-.cta-banner .sub{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);margin-bottom:12px}
-.cta-banner h3{font-size:clamp(18px,3.5vw,26px);font-weight:800;margin-bottom:12px;line-height:1.3}
-.cta-banner h3 .hl{color:var(--teal)}
-.cta-banner p{font-size:15px;color:var(--text2);margin-bottom:24px;line-height:1.6}
-.btn-cta{display:inline-flex;align-items:center;gap:8px;background:var(--lime);color:#1a1a1a;font-size:15px;font-weight:700;padding:14px 32px;border-radius:var(--radius-lg);border:none;cursor:pointer;text-decoration:none;transition:opacity .2s}
-.btn-cta:hover{opacity:.88}
-.cta-checks{display:flex;gap:16px;justify-content:center;margin-top:16px;flex-wrap:wrap}
-.cta-chk{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:5px}
-.cta-chk::before{content:'✓';color:var(--teal)}
+        .hdr-cta:hover { opacity: .5 }
 
-/* RECOMMENDATIONS */
-.rec-row{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:8px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;transition:filter .3s}
-.rec-row.locked{filter:blur(5px);pointer-events:none;user-select:none}
-.rec-left h4{font-size:14px;font-weight:600;margin-bottom:4px}
-.rec-left p{font-size:13px;color:var(--text2);line-height:1.5}
-.badge-hoch{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.2);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.05em;white-space:nowrap}
+        .err {
+            background: rgba(0,0,0,.5);
+            border: 1px solid rgba(196,58,42,.2);
+            border-radius: var(--radius);
+            padding: 11px 16px;
+            font-size: 13px;
+            color: var(--red);
+            display: none;
+        }
 
-/* TESTIMONIALS */
-.test-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:20px}
-.test-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px}
-.test-stars{color:var(--amber);font-size:14px;margin-bottom:6px}
-.test-tag{font-size:10px;font-weight:700;color:var(--teal);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
-.test-text{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:14px}
-.test-author{display:flex;align-items:center;gap:10px}
-.test-avatar{width:34px;height:34px;border-radius:50%;background:var(--purple-dim);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--purple);flex-shrink:0}
-.test-name{font-size:13px;font-weight:600}
-.test-role{font-size:12px;color:var(--text3)}
-.test-metric{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:16px;font-weight:800;color:var(--teal)}
-.test-metric span{display:block;font-size:11px;font-weight:400;color:var(--text3)}
+        /* shared footer */
+        .page-footer {
+            background: var(--bg);
+            border-top: 1px solid var(--border);
+            padding: 22px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
 
-/* FINAL CTA */
-.final-cta{background:linear-gradient(135deg,#223034 0%,#162022 100%);border:1px solid rgba(98,150,159,.2);border-radius:var(--radius-xl);padding:44px 32px;text-align:center;margin:24px 0}
-.final-cta h3{font-size:clamp(18px,3.5vw,26px);font-weight:800;margin-bottom:12px;line-height:1.3}
-.final-cta h3 .hl{color:var(--teal)}
-.final-cta p{font-size:15px;color:rgba(255,255,255,.75);margin-bottom:24px;line-height:1.6}
-.final-checks{display:flex;gap:20px;justify-content:center;margin-top:14px;flex-wrap:wrap}
-.final-checks span{font-size:12px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:5px}
-.final-checks span::before{content:'✓';color:var(--teal)}
+        .page-footer .footer-left {
+            font-family: 'Fragment Mono', monospace;
+            font-size: 11px;
+            color: var(--text3);
+        }
 
-.reset-link{text-align:center;margin-top:20px}
-.reset-link button{background:none;border:none;color:var(--text3);font-size:13px;cursor:pointer}
-footer{background:rgba(0,0,0,0.2);border-top:1px solid var(--border);padding:24px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.footer-left{font-size:12px;color:var(--text3)}
-.footer-right{display:flex;gap:24px}
-.footer-right a{font-size:12px;color:var(--text3);text-decoration:none;transition:color .2s}
-.footer-right a:hover{color:var(--teal)}
+        .page-footer .footer-right { display: flex; gap: 24px; }
 
-/* EXIT POPUP */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;align-items:center;justify-content:center;padding:24px}
-.overlay.show{display:flex}
-.popup{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-xl);padding:36px 32px;max-width:460px;width:100%;position:relative;text-align:center}
-.popup-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;line-height:1}
-.popup h3{font-size:18px;font-weight:700;margin-bottom:20px;line-height:1.3}
-.popup-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;text-align:left}
-.popup-opt{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;font-size:14px;color:var(--text2);transition:border-color .15s}
-.popup-opt:hover,.popup-opt.selected{border-color:var(--purple);background:var(--purple-dim);color:var(--text)}
-.btn-feedback{width:100%;height:44px;background:var(--purple);color:#fff;font-size:14px;font-weight:600;border:none;border-radius:var(--radius);cursor:pointer;opacity:.4;transition:opacity .2s}
-.btn-feedback.on{opacity:1}
-.popup-note{font-size:12px;color:var(--text3);margin-top:10px}
+        .page-footer .footer-right a {
+            font-family: 'Fragment Mono', monospace;
+            font-size: 11px;
+            color: var(--text3);
+            text-decoration: none;
+            transition: color .2s;
+        }
 
-@media(max-width:620px){
-  .hdr{padding:12px 16px}.feat-grid{grid-template-columns:repeat(2,1fr)}
-  .cost-cards{grid-template-columns:1fr}.test-grid{grid-template-columns:1fr}.steps-row{grid-template-columns:1fr;gap:32px}.steps-row::before{display:none}.stats-row{gap:24px}
-  .email-row{flex-direction:column}.load-info{grid-template-columns:1fr}
-  .res-container{padding:24px 16px 60px}.cta-banner,.final-cta,.email-gate{padding:28px 20px}
-  .scan-box{flex-direction:column;padding:12px}.scan-box input,.btn-scan{width:100%}
-  .comp-table{font-size:11px}.comp-table th,.comp-table td{padding:7px 8px}
-}
-</style>
+        .page-footer .footer-right a:hover { color: var(--teal); }
+
+        /* ════════ LANDING ════════ */
+        #s-landing { background: var(--bg); }
+
+        .hero {
+            margin: 0;
+            max-width: 100%;
+            padding: 64px 60px 72px;
+            min-height: calc(70vh - 64px);
+            background: url('../public/img/hero_bg_diamond.webp') center / cover no-repeat;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr auto auto auto auto;
+            align-items: end;
+            gap: 0 56px;
+            text-align: left;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top,rgba(0,0,0,.50) 0%,rgba(0,0,0,.16) 55%,transparent 100%);
+            pointer-events: none;
+        }
+
+        .hero > * { position: relative; }
+        .hero-badge { display: none; }
+
+        .hero h1 {
+            grid-column: 1; grid-row: 2;
+            font-size: clamp(36px, 4.2vw, 60px);
+            font-weight: 300;
+            line-height: 1.08;
+            letter-spacing: -0.03em;
+            color: #ffffff;
+            text-align: left;
+            margin-bottom: 0;
+        }
+
+        .hero h1 .hl { color: #ffffff; }
+
+        .hero > p:not(.scan-hint) {
+            grid-column: 2; grid-row: 2;
+            color: rgba(255,255,255,.80);
+            font-size: 15px;
+            line-height: 1.7;
+            text-align: left;
+            margin: 0;
+            align-self: end;
+        }
+
+        .hero > p:not(.scan-hint)::before {
+            content: '↳  ';
+            color: rgba(255,255,255,.38);
+            font-family: 'Fragment Mono', monospace;
+        }
+
+        .scan-box {
+            grid-column: 1; grid-row: 3;
+            max-width: 560px;
+            margin: 30px 0 0;
+            background: rgba(255,255,255,.97);
+            border: none;
+            border-radius: 7px;
+            padding: 7px 7px 7px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 24px rgba(0,0,0,.14);
+        }
+
+        .scan-box svg { color: #bbb; flex-shrink: 0; }
+
+        .scan-box input {
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            font-family: 'Fragment Mono', monospace;
+            font-size: 15px;
+            color: #0d0d0d;
+            padding: 9px 0;
+        }
+
+        .scan-box input::placeholder { color: #bbb; }
+
+        .btn-scan {
+            background: #0d0d0d;
+            color: #ffffff;
+            font-family: 'Fragment Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            border-radius: 5px;
+            border: none;
+            height: 46px;
+            padding: 0 26px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background .2s;
+        }
+
+        .btn-scan:hover { background: #333; }
+        .btn-scan:disabled { background: #aaa; cursor: not-allowed; }
+
+        .scan-hint {
+            grid-column: 1; grid-row: 4;
+            font-family: 'Fragment Mono', monospace;
+            font-size: 11px;
+            line-height: 1.7;
+            color: rgba(255,255,255,.52);
+            margin: 10px 0 0;
+            text-align: left;
+        }
+
+        .scan-hint span { color: rgba(255,210,100,.82); }
+
+        .hero .err { grid-column: 1; grid-row: 5; max-width: 560px; margin: 8px 0 0; }
+
+        /* steps */
+        .steps-wrap {
+            background: var(--bg2);
+            border-top: 1px solid var(--border);
+            padding: 80px 24px 72px;
+        }
+
+        .steps-title {
+            text-align: center;
+            font-family: 'Fragment Mono', monospace;
+            font-size: 11px;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: 40px;
+        }
+
+        .steps-row {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            position: relative;
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        .steps-row::before {
+            content: '';
+            position: absolute;
+            top: 26px;
+            left: calc(16.67% + 16px);
+            right: calc(16.67% + 16px);
+            height: 1px;
+            background: var(--border);
+            z-index: 0;
+        }
+
+        .step-box { text-align: center; padding: 0 32px; position: relative; z-index: 1; }
+
+        .step-num {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--teal-bg);
+            border: 1px solid var(--teal-bd);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            font-family: 'Fragment Mono', monospace;
+            font-size: 18px;
+            color: var(--teal);
+        }
+
+        .step-box h3 { font-size: 17px; margin-bottom: 8px; }
+        .step-box p { font-size: 13px; color: var(--text3); line-height: 1.6; }
+
+        .step-tag {
+            display: inline-block;
+            background: var(--teal-bg);
+            border: 1px solid var(--teal-bd);
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-family: 'Fragment Mono', monospace;
+            font-size: 11px;
+            color: var(--teal);
+            margin-top: 10px;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat-item { text-align: center; padding: 0 20px; }
+
+        .stat-val {
+            font-size: 38px;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .stat-lbl {
+            font-family: 'Fragment Mono', monospace;
+            font-size: 11px;
+            color: var(--text3);
+            line-height: 1.6;
+        }
+
+        /* ════════ LOADING ════════ */
+        #s-loading { background: var(--bg); }
+
+        .load-wrap {
+            max-width: 640px;
+            width: calc(100% - 48px);
+            margin: 40px auto 60px;
+        }
+
+        .load-domain-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 14px 22px;
+            margin-bottom: 16px;
+        }
+
+        .load-domain-label {
+            font-family: 'Fragment Mono', monospace;
+            font-size: 11px;
+            color: var(--text3);
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .load-domain-url {
+            font-family: 'Fragment Mono', monospace;
+            font-size: 13px;
+            color: var(--teal);
+        }
+
+        .load-timer-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Fragment Mono', monospace;
+            font-size: 12px;
+            color: var(--text3);
+        }
+
+        .load-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+        }
+
+        .load-top {
+            padding: 40px 32px 28px;
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .spinner {
+            width: 44px;
+            height: 44px;
+            border: 2px solid var(--border);
+            border-top-color: var(--teal);
+            border-radius: 50%;
+            animation: spin .9s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg) } }
+
+        .load-top h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+        .load-top h2 em { font-style: normal; color: var(--teal); }
+        .load-sub { font-size: 14px; color: var(--text2); margin-bottom: 6px; }
+        .load-time { font-size: 12px; color: var(--text3); }
+        .load-time strong { color: var(--amber); font-weight: 500; }
+
+        .load-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding: 20px 22px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .load-info-card {
+            background: var(--teal-bg);
+            border: 1px solid var(--teal-bd);
+            border-radius: var(--radius);
+            padding: 14px 16px;
+        }
+
+        .load-info-card .ic { font-size: 18px; margin-bottom: 6px; }
+        .load-info-card h4 { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+        .load-info-card p { font-size: 12px; color: var(--text3); line-height: 1.4; }
+
+        .load-steps { padding: 16px 22px; border-bottom: 1px solid var(--border); }
+
+        .step-list {
+            list-style: none;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            font-size: 13px;
+            color: var(--text3);
+            border-bottom: 1px solid var(--border);
+            transition: all .3s;
+        }
+
+        .step-item:last-child { border-bottom: none; }
+        .step-item.done { color: var(--teal); }
+        .step-item.active { color: var(--text); background: var(--teal-bg); }
+
+        .step-icon {
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+        }
+
+        .step-item.done .step-icon { background: var(--teal-bg); color: var(--teal); }
+
+        .spi {
+            width: 14px; height: 14px;
+            border: 2px solid var(--border);
+            border-top-color: var(--teal);
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
+        }
+
+        .load-phase { padding: 16px 22px; }
+
+        .phase-bar { display: flex; gap: 4px; margin-bottom: 10px; }
+
+        .phase-seg {
+            flex: 1; height: 3px;
+            background: var(--bg3);
+            border-radius: 2px;
+            transition: background .5s;
+        }
+
+        .phase-seg.done { background: var(--teal); }
+        .phase-seg.active { background: var(--teal); opacity: .5; animation: pulse .9s ease-in-out infinite; }
+
+        @keyframes pulse { 0%,100%{opacity:.5} 50%{opacity:1} }
+
+        .phase-labels { display: flex; }
+
+        .phase-lbl {
+            flex: 1;
+            text-align: center;
+            font-family: 'Fragment Mono', monospace;
+            font-size: 10px;
+            color: var(--text3);
+            letter-spacing: .06em;
+            text-transform: uppercase;
+        }
+
+        .phase-lbl.active { color: var(--teal); }
+        .phase-lbl.done { color: var(--teal); opacity: .6; }
+
+        /* ════════ RESULTS ════════ */
+        #s-results { background: var(--bg); }
+
+        .res-container { max-width: 860px; margin: 0 auto; padding: 36px 24px 80px; }
+
+        .score-hero {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 44px 32px 36px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .score-tag {
+            font-family: 'Fragment Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: 10px;
+        }
+
+        .score-headline {
+            font-size: clamp(22px, 4vw, 32px);
+            font-weight: 800;
+            margin-bottom: 14px;
+            line-height: 1.2;
+        }
+
+        .score-headline .bad  { color: var(--red); }
+        .score-headline .ok   { color: var(--amber); }
+        .score-headline .good { color: var(--green); }
+
+        .score-summary { font-size: 15px; color: var(--text2); max-width: 540px; margin: 0 auto 28px; line-height: 1.7; }
+
+        .score-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .score-ring { position: relative; width: 120px; height: 120px; }
+        .score-ring svg { transform: rotate(-90deg); }
+
+        .score-ring-num {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+        }
+
+        .score-ring-num .big {
+            font-family: 'Fragment Mono', monospace;
+            font-size: 30px; line-height: 1;
+        }
+
+        .score-ring-num .small {
+            font-family: 'Fragment Mono', monospace;
+            font-size: 11px; color: var(--text3); margin-top: 2px;
+        }
+
+        .score-bars { display: flex; flex-direction: column; gap: 9px; text-align: left; min-width: 220px; }
+
+        .sbar-row { display: flex; align-items: center; gap: 10px; }
+        .sbar-lbl { font-size: 12px; color: var(--text3); width: 140px; flex-shrink: 0; }
+        .sbar { flex: 1; height: 5px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+        .sbar-fill { height: 100%; border-radius: 3px; }
+        .sbar-val { font-family: 'Fragment Mono', monospace; font-size: 12px; min-width: 28px; text-align: right; }
+
+        .warn-banner {
+            background: rgba(185,112,32,.07);
+            border: 1px solid rgba(185,112,32,.2);
+            border-radius: var(--radius);
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            display: none;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .warn-banner p { font-size: 13px; color: var(--text2); line-height: 1.5; }
+
+        .sec-title { font-size: 17px; font-weight: 700; margin: 32px 0 14px; }
+
+        .factor-row {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 16px 20px;
+            margin-bottom: 8px;
+            transition: filter .3s;
+        }
+
+        .factor-row.locked { filter: blur(5px); pointer-events: none; user-select: none; }
+
+        .factor-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+        .factor-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .factor-name { font-size: 14px; font-weight: 600; }
+
+        .badge {
+            font-family: 'Fragment Mono', monospace;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+
+        .badge-kritisch { background: rgba(196,58,42,.10); color: var(--red);   border: 1px solid rgba(196,58,42,.18); }
+        .badge-opt      { background: rgba(185,112,32,.10); color: var(--amber); border: 1px solid rgba(185,112,32,.18); }
+        .badge-mittel   { background: rgba(185,112,32,.10); color: var(--amber); border: 1px solid rgba(185,112,32,.18); }
+        .badge-gut      { background: rgba(42,122,90,.10);  color: var(--green); border: 1px solid rgba(42,122,90,.18); }
+
+        .factor-score { font-family: 'Fragment Mono', monospace; font-size: 18px; }
+        .factor-score .denom { font-size: 12px; color: var(--text3); }
+        .factor-desc { font-size: 13px; color: var(--text2); line-height: 1.5; margin-bottom: 10px; }
+        .factor-bar { height: 3px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+        .factor-bar-fill { height: 100%; border-radius: 2px; }
+
+        .factor-real {
+            font-family: 'Fragment Mono', monospace;
+            font-size: 9px; padding: 1px 5px;
+            background: var(--teal-bg); color: var(--teal);
+            border-radius: 3px; margin-left: 4px;
+        }
+
+        /* email gate */
+        .email-gate {
+            background: linear-gradient(to bottom, rgba(240,237,230,0) 0%, var(--bg2) 35%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 48px 32px;
+            text-align: center;
+            margin-top: -4px;
+        }
+
+        .gate-lock { font-size: 28px; margin-bottom: 14px; }
+        .email-gate h3 { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+        .email-gate > p { font-size: 14px; color: var(--text2); margin-bottom: 24px; line-height: 1.6; }
+
+        .gate-inputs { max-width: 420px; margin: 0 auto; text-align: left; }
+
+        .gate-inputs input {
+            width: 100%;
+            height: 46px;
+            background: var(--bg);
+            border: 1px solid rgba(0,0,0,.12);
+            border-radius: var(--radius);
+            color: var(--text);
+            font-family: 'Fragment Mono', monospace;
+            font-size: 14px;
+            padding: 0 14px;
+            outline: none;
+            margin-bottom: 10px;
+            transition: border-color .2s;
+        }
+
+        .gate-inputs input:focus { border-color: var(--teal); }
+        .gate-inputs input::placeholder { color: var(--text3); }
+        .gate-row { display: flex; gap: 8px; }
+        .gate-row input { margin-bottom: 0; }
+
+        .btn-unlock {
+            height: 46px;
+            background: var(--teal);
+            color: #fff;
+            font-family: 'Fragment Mono', monospace;
+            font-size: 12px;
+            letter-spacing: .09em;
+            text-transform: uppercase;
+            padding: 0 22px;
+            border-radius: var(--radius);
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: opacity .2s;
+        }
+
+        .btn-unlock:hover { opacity: .85; }
+        .gate-note { font-family: 'Fragment Mono', monospace; font-size: 11px; color: var(--text3); margin-top: 14px; }
+
+        #unlocked { display: none; }
+
+        .comp-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            table-layout: fixed;
+        }
+
+        .comp-table th {
+            background: var(--bg3);
+            font-family: 'Fragment Mono', monospace;
+            font-size: 10px;
+            color: var(--text3);
+            text-align: left;
+            padding: 11px 14px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comp-table td { padding: 12px 14px; font-size: 13px; border-bottom: 1px solid var(--border); color: var(--text2); word-break: break-word; }
+        .comp-table tr:last-child td { border-bottom: none; }
+        .comp-table tr.you td { background: var(--teal-bg); color: var(--text); font-weight: 500; }
+
+        .comp-note { font-family: 'Fragment Mono', monospace; font-size: 11px; color: var(--text3); margin-top: 8px; line-height: 1.6; }
+
+        .ki-badge { font-family: 'Fragment Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 4px; }
+        .ki-reg { background: var(--teal-bg); color: var(--teal); }
+        .ki-oft { background: rgba(42,122,90,.10); color: var(--green); }
+        .ki-sel { background: rgba(185,112,32,.10); color: var(--amber); }
+
+        .cost-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 24px; }
+
+        .cost-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 22px 20px;
+            text-align: center;
+        }
+
+        .cost-val { font-family: 'Fragment Mono', monospace; font-size: 26px; color: var(--red); margin-bottom: 6px; line-height: 1; }
+        .cost-val.up { color: var(--amber); }
+        .cost-lbl { font-size: 12px; color: var(--text3); line-height: 1.4; }
+
+        .rec-row {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 16px 20px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            transition: filter .3s;
+        }
+
+        .rec-row.locked { filter: blur(5px); pointer-events: none; user-select: none; }
+        .rec-left h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+        .rec-left p { font-size: 13px; color: var(--text2); line-height: 1.5; }
+
+        .badge-hoch {
+            background: rgba(196,58,42,.10); color: var(--red);
+            border: 1px solid rgba(196,58,42,.18);
+            font-family: 'Fragment Mono', monospace;
+            font-size: 10px; padding: 2px 8px; border-radius: 4px;
+            letter-spacing: .06em; white-space: nowrap; text-transform: uppercase;
+        }
+
+        .test-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+        }
+
+        .test-stars { color: var(--amber); font-size: 13px; margin-bottom: 6px; }
+
+        .test-tag {
+            font-family: 'Fragment Mono', monospace;
+            font-size: 10px; color: var(--teal);
+            letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px;
+        }
+
+        .test-text { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 14px; }
+        .test-author { display: flex; align-items: center; gap: 10px; }
+
+        .test-avatar {
+            width: 34px; height: 34px; border-radius: 50%;
+            background: var(--teal-bg); border: 1px solid var(--teal-bd);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Fragment Mono', monospace; font-size: 11px; color: var(--teal); flex-shrink: 0;
+        }
+
+        .test-name { font-size: 13px; font-weight: 600; }
+        .test-role { font-size: 12px; color: var(--text3); }
+
+        .test-metric {
+            margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);
+            font-family: 'Fragment Mono', monospace; font-size: 15px; color: var(--teal);
+        }
+
+        .test-metric span { display: block; font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+        .test-section-header { text-align: center; margin: 48px 0 24px; }
+
+        .test-section-header .eyebrow {
+            font-family: 'Fragment Mono', monospace;
+            font-size: 10px; color: var(--teal);
+            text-transform: uppercase; letter-spacing: .14em; margin-bottom: 10px;
+        }
+
+        .test-section-header h2 { font-size: clamp(20px,3.5vw,28px); font-weight: 700; margin-bottom: 6px; line-height: 1.3; }
+        .test-section-header p { font-size: 13px; color: var(--text3); }
+
+        .btn-cta {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--teal); color: #fff;
+            font-family: 'Fragment Mono', monospace; font-size: 12px;
+            letter-spacing: .09em; text-transform: uppercase;
+            padding: 14px 32px; border-radius: var(--radius);
+            border: none; cursor: pointer; text-decoration: none; transition: opacity .2s;
+        }
+
+        .btn-cta:hover { opacity: .82; }
+
+        .final-cta {
+            background: var(--teal-bg);
+            border: 1px solid var(--teal-bd);
+            border-radius: var(--radius-xl);
+            padding: 48px 32px; text-align: center; margin: 24px 0;
+        }
+
+        .final-cta-sub {
+            font-family: 'Fragment Mono', monospace;
+            font-size: 10px; color: var(--teal);
+            letter-spacing: .14em; text-transform: uppercase; margin-bottom: 12px;
+        }
+
+        .final-cta h3 { font-size: clamp(20px,3.5vw,28px); font-weight: 800; margin-bottom: 12px; line-height: 1.3; }
+        .final-cta h3 .hl { color: var(--teal); }
+        .final-cta > p { font-size: 15px; color: var(--text2); margin-bottom: 24px; line-height: 1.6; }
+
+        .final-checks { display: flex; gap: 20px; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
+        .final-checks span { font-size: 12px; color: var(--text3); display: flex; align-items: center; gap: 5px; }
+        .final-checks span::before { content: '✓'; color: var(--teal); }
+
+        .reset-link { text-align: center; margin-top: 20px; }
+
+        .reset-link button {
+            background: none; border: none;
+            font-family: 'Fragment Mono', monospace; font-size: 11px;
+            color: var(--text3); cursor: pointer; letter-spacing: .06em; transition: color .2s;
+        }
+
+        .reset-link button:hover { color: var(--text); }
+
+        /* ── EXIT POPUP ─── */
+        .overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,.35);
+            z-index: 200; display: none;
+            align-items: center; justify-content: center; padding: 24px;
+        }
+
+        .overlay.show { display: flex; }
+
+        .popup {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 36px 32px; max-width: 460px; width: 100%;
+            position: relative; text-align: center;
+            box-shadow: 0 8px 40px rgba(0,0,0,.10);
+        }
+
+        .popup-close { position: absolute; top: 14px; right: 16px; background: none; border: none; color: var(--text3); font-size: 20px; cursor: pointer; }
+        .popup h3 { font-size: 18px; font-weight: 700; margin-bottom: 20px; line-height: 1.3; }
+        .popup > p { font-size: 12px; color: var(--text3); margin-bottom: 8px; }
+        .popup-opts { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; text-align: left; }
+
+        .popup-opt {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 16px;
+            background: var(--bg3); border: 1px solid var(--border);
+            border-radius: var(--radius); cursor: pointer;
+            font-size: 14px; color: var(--text2); transition: all .15s;
+        }
+
+        .popup-opt:hover, .popup-opt.selected { border-color: var(--teal); background: var(--teal-bg); color: var(--text); }
+
+        .btn-feedback {
+            width: 100%; height: 44px;
+            background: var(--teal); color: #fff;
+            font-family: 'Fragment Mono', monospace; font-size: 12px;
+            letter-spacing: .08em; text-transform: uppercase;
+            border: none; border-radius: var(--radius); cursor: pointer;
+            opacity: .35; transition: opacity .2s;
+        }
+
+        .btn-feedback.on { opacity: 1; }
+        .popup-note { font-family: 'Fragment Mono', monospace; font-size: 11px; color: var(--text3); margin-top: 10px; }
+
+        /* ── RESPONSIVE ─── */
+        @media (max-width: 860px) {
+            .hero { grid-template-columns: 1fr; padding: 40px 32px 56px; gap: 0; }
+            .hero > p:not(.scan-hint) { grid-column: 1; grid-row: 3; margin-top: 14px; }
+            .hero > p:not(.scan-hint)::before { content: ''; }
+            .scan-box { grid-row: 4; }
+            .scan-hint { grid-row: 5; }
+            .hero .err { grid-row: 6; }
+        }
+
+        @media (max-width: 620px) {
+            .hdr { padding: 14px 20px; }
+            .hero { padding: 28px 20px 44px; min-height: calc(100svh - 56px); }
+            .hero h1 { font-size: clamp(28px, 8vw, 40px); }
+            .scan-box { flex-direction: column; padding: 12px; }
+            .scan-box input, .btn-scan { width: 100%; }
+            .cost-cards { grid-template-columns: 1fr; }
+            .load-info-grid { grid-template-columns: 1fr; }
+            .res-container { padding: 24px 16px 60px; }
+            .final-cta, .email-gate { padding: 28px 20px; }
+            .stats-row { gap: 20px; }
+            .steps-row { grid-template-columns: 1fr; gap: 32px; }
+            .steps-row::before { display: none; }
+            .page-footer { padding: 18px 20px; }
+        }
+    </style>
 </head>
 <body>
 
+<!-- ════ LANDING ════ -->
 <div id="s-landing" class="screen active">
-  <header class="hdr">
-    <div class="logo" style="font-family:'Hubot Sans',sans-serif;font-size:17px">Ever<span style="color:var(--lime)">found</span></div>
-    <a class="hdr-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank">Termin vereinbaren →</a>
-  </header>
-  <div class="hero">
-    <div class="hero-badge">🔍 Kostenloser GEO-Check</div>
-    <h1>Findet dich die KI –<br><span class="hl">oder nur der Mitbewerb?</span></h1>
-    <p>KI-Tools wie ChatGPT, Perplexity und Gemini beantworten täglich tausende Fragen deiner Zielgruppe. Wir zeigen dir, ob dein Unternehmen dabei vorkommt – oder unsichtbar bleibt.</p>
-    <div class="scan-box">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text3);flex-shrink:0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="text" id="domain-input" placeholder="deine-website.at" onkeydown="if(event.key==='Enter')startCheck()"/>
-      <button class="btn-scan" onclick="startCheck()" id="check-btn">Jetzt analysieren</button>
+    <header class="hdr">
+        <a href="https://everfound.io" target="_blank">
+            <img class="logo" src="../public/img/everfound_logo_white.svg" alt="Everfound Logo"/>
+        </a>
+        <a class="hdr-cta" href="https://meetings-eu1.hubspot.com/grafikwald/everfound" target="_blank">Erstgespräch vereinbaren</a>
+    </header>
+
+    <div class="hero">
+        <h1>Findet dich die KI,<br>oder nur der Mitbewerb?</h1>
+        <p>KI-Tools wie ChatGPT, Perplexity und Gemini beantworten täglich tausende Fragen deiner Zielgruppe. Wir zeigen dir, ob dein Unternehmen dabei vorkommt – oder unsichtbar bleibt.</p>
+        <div class="scan-box">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input type="text" id="domain-input" placeholder="deine-website.at" onkeydown="if(event.key==='Enter')startCheck()"/>
+            <button class="btn-scan" onclick="startCheck()" id="check-btn">Jetzt analysieren</button>
+        </div>
+        <p class="scan-hint">Domain eingeben – ohne www, z.B. everfound.io<br><span>Fenster während der ~60-sekündigen Analyse bitte offen lassen.</span></p>
+        <div id="err" class="err"></div>
     </div>
-    <p class="scan-hint">Einfach Domain eingeben – ohne www, z.B. everfound.io<br><span style="color:var(--amber); opacity:0.9;">Wichtig: Bitte lass das Fenster während der ~60-sekündigen Analyse offen.</span></p>
-    
-    <div id="err" class="err"></div>
-  </div>
-  <div class="steps-wrap">
-    <div class="steps-title">So funktioniert der GEO-Check</div>
-    <div class="steps-row">
-      <div class="step-box">
-        <div class="step-num">1</div>
-        <h3>Domain eingeben</h3>
-        <p>Einfach deine Website-Adresse eingeben – ohne www. Der Check startet sofort, kein Account nötig.</p>
-        <span class="step-tag">Kostenlos &amp; anonym</span>
-      </div>
-      <div class="step-box">
-        <div class="step-num">2</div>
-        <h3>KI analysiert</h3>
-        <p>Wir prüfen 10 GEO-Faktoren: Schema-Markup, Inhaltstiefe, Autorität, Crawlbarkeit und mehr.</p>
-        <span class="step-tag">~60 Sekunden</span>
-      </div>
-      <div class="step-box">
-        <div class="step-num">3</div>
-        <h3>Bericht &amp; Maßnahmen</h3>
-        <p>Du bekommst deinen Score, einen Mitbewerber-Vergleich und priorisierte Empfehlungen.</p>
-        <span class="step-tag">Sofort verwertbar</span>
-      </div>
+
+    <div class="steps-wrap">
+        <div class="steps-title">So funktioniert der GEO-Check</div>
+        <div class="steps-row">
+            <div class="step-box">
+                <div class="step-num">1</div>
+                <h3>Domain eingeben</h3>
+                <p>Einfach deine Website-Adresse eingeben – ohne www. Der Check startet sofort, kein Account nötig.</p>
+                <span class="step-tag">Kostenlos &amp; anonym</span>
+            </div>
+            <div class="step-box">
+                <div class="step-num">2</div>
+                <h3>KI analysiert</h3>
+                <p>Wir prüfen 10 GEO-Faktoren: Schema-Markup, Inhaltstiefe, Autorität, Crawlbarkeit und mehr.</p>
+                <span class="step-tag">~60 Sekunden</span>
+            </div>
+            <div class="step-box">
+                <div class="step-num">3</div>
+                <h3>Bericht &amp; Maßnahmen</h3>
+                <p>Du bekommst deinen Score, einen Mitbewerber-Vergleich und priorisierte Empfehlungen.</p>
+                <span class="step-tag">Sofort verwertbar</span>
+            </div>
+        </div>
+        <div class="stats-row">
+            <div class="stat-item"><div class="stat-val">10</div><div class="stat-lbl">GEO-Faktoren<br>werden geprüft</div></div>
+            <div class="stat-item"><div class="stat-val">~60s</div><div class="stat-lbl">Analyse-<br>dauer</div></div>
+            <div class="stat-item"><div class="stat-val">0 €</div><div class="stat-lbl">Kosten für<br>den Check</div></div>
+        </div>
     </div>
-    <div class="stats-row">
-      <div class="stat-item">
-        <div class="stat-val">10</div>
-        <div class="stat-lbl">GEO-Faktoren<br>werden geprüft</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-val">~60s</div>
-        <div class="stat-lbl">Analyse-<br>dauer</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-val">0€</div>
-        <div class="stat-lbl">Kosten für<br>den Check</div>
-      </div>
-    </div>
-  </div>
-  <footer>
-    <div class="footer-left">© 2026 Everfound · GEO-Check</div>
-    <div class="footer-right">
-      <a href="https://everfound.io/impressum" target="_blank">Impressum</a>
-      <a href="https://everfound.io/datenschutz" target="_blank">Datenschutz</a>
-      <a href="https://everfound.io/agb" target="_blank">AGB</a>
-    </div>
-  </footer>
+
+    <footer class="page-footer">
+        <div class="footer-left">© 2026 Everfound · GEO-Check</div>
+        <div class="footer-right">
+            <a href="https://everfound.io/impressum" target="_blank">Impressum</a>
+            <a href="https://everfound.io/datenschutz" target="_blank">Datenschutz</a>
+        </div>
+    </footer>
 </div>
 
+
+<!-- ════ LOADING ════ -->
 <div id="s-loading" class="screen">
-  <header class="hdr">
-    <div class="logo" style="font-family:'Hubot Sans',sans-serif;font-size:17px">Grafik<span style="color:var(--lime)">wald</span></div>
-    <div class="hdr-domain">Analyse für: <b id="l-domain"></b></div>
-    <a class="hdr-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank">Termin vereinbaren →</a>
-  </header>
-  <div class="load-card">
-    <div class="load-top">
-      <div class="spinner"></div>
-      <h2>Analysiere <em id="l-domain2"></em></h2>
-      <p class="load-sub">Deine Website wird auf 10 GEO-Faktoren analysiert.</p>
-      <p class="load-time">Bitte kurz warten – das dauert etwa eine Minute.<br><strong style="color:var(--amber)">Bitte lass dieses Fenster während der Analyse geöffnet!</strong></p>
-      <div class="load-meta">
-        <a id="l-link" href="#" target="_blank"></a>
-        <span class="sep">•</span>
-        <div class="load-timer">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          <span id="l-timer">0:00</span>
+    <header class="hdr">
+        <img class="logo" src="../public/img/everfound_logo_white.svg" alt="Everfound Logo"/>
+        <div class="hdr-domain">Analyse für: <b id="l-domain"></b></div>
+        <a class="hdr-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank">Termin vereinbaren →</a>
+    </header>
+
+    <div class="load-wrap">
+        <div class="load-domain-bar">
+            <span class="load-domain-label">Analysiere</span>
+            <span class="load-domain-url" id="l-domain2"></span>
+            <div class="load-timer-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+                </svg>
+                <span id="l-timer">0:00</span>
+            </div>
         </div>
-      </div>
+
+        <div class="load-card">
+            <div class="load-top">
+                <div class="spinner"></div>
+                <h2>Website wird analysiert</h2>
+                <p class="load-sub">10 GEO-Faktoren werden geprüft – bitte einen Moment.</p>
+                <p class="load-time"><strong>Bitte lass dieses Fenster während der Analyse geöffnet.</strong></p>
+            </div>
+
+            <div class="load-info-grid">
+                <div class="load-info-card"><div class="ic">⚙️</div><h4>Crawl-Infrastruktur</h4><p>Markup-Architektur, Ladezeiten &amp; KI-Lesbarkeit</p></div>
+                <div class="load-info-card"><div class="ic">🧠</div><h4>LLM-Sichtbarkeits-Index</h4><p>Gewichtung bei ChatGPT, Perplexity &amp; Gemini</p></div>
+                <div class="load-info-card"><div class="ic">🗂️</div><h4>Entitäts- &amp; Datenstruktur</h4><p>Kontextuelle Tiefe &amp; semantische Einordnung</p></div>
+                <div class="load-info-card"><div class="ic">🎯</div><h4>Markt- &amp; Nischenabgleich</h4><p>Echtzeit-Abgleich mit direkten Konkurrenten</p></div>
+            </div>
+
+            <div class="load-steps">
+                <ul class="step-list" id="step-list"></ul>
+            </div>
+
+            <div class="load-phase">
+                <div class="phase-bar">
+                    <div class="phase-seg" id="ps1"></div>
+                    <div class="phase-seg" id="ps2"></div>
+                    <div class="phase-seg" id="ps3"></div>
+                </div>
+                <div class="phase-labels">
+                    <div class="phase-lbl" id="pl1">Technische Analyse</div>
+                    <div class="phase-lbl" id="pl2">Inhalte &amp; Struktur</div>
+                    <div class="phase-lbl" id="pl3">KI-Sichtbarkeit</div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div style="padding:20px 24px;border-bottom:1px solid var(--border)">
-      <p style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;text-align:center;margin-bottom:16px">Everfound System-Check läuft</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div style="background:rgba(98,150,159,.08);border:1px solid rgba(98,150,159,.15);border-radius:10px;padding:14px 16px">
-          <div style="font-size:18px;margin-bottom:6px">⚙️</div>
-          <div style="font-family:'Hubot Sans',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px">Crawl-Infrastruktur</div>
-          <div style="font-size:12px;color:var(--text3);line-height:1.4">Markup-Architektur, Ladezeiten & KI-Lesbarkeit</div>
+
+    <footer class="page-footer">
+        <div class="footer-left">© 2026 Everfound · GEO-Check</div>
+        <div class="footer-right">
+            <a href="https://everfound.io/impressum" target="_blank">Impressum</a>
+            <a href="https://everfound.io/datenschutz" target="_blank">Datenschutz</a>
+            <a href="https://everfound.io/agb" target="_blank">AGB</a>
         </div>
-        <div style="background:rgba(98,150,159,.08);border:1px solid rgba(98,150,159,.15);border-radius:10px;padding:14px 16px">
-          <div style="font-size:18px;margin-bottom:6px">🧠</div>
-          <div style="font-family:'Hubot Sans',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px">LLM-Sichtbarkeits-Index</div>
-          <div style="font-size:12px;color:var(--text3);line-height:1.4">Gewichtung bei ChatGPT, Perplexity & Gemini</div>
-        </div>
-        <div style="background:rgba(98,150,159,.08);border:1px solid rgba(98,150,159,.15);border-radius:10px;padding:14px 16px">
-          <div style="font-size:18px;margin-bottom:6px">🗂️</div>
-          <div style="font-family:'Hubot Sans',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px">Entitäts- & Datenstruktur</div>
-          <div style="font-size:12px;color:var(--text3);line-height:1.4">Kontextuelle Tiefe & semantische Einordnung</div>
-        </div>
-        <div style="background:rgba(98,150,159,.08);border:1px solid rgba(98,150,159,.15);border-radius:10px;padding:14px 16px">
-          <div style="font-size:18px;margin-bottom:6px">🎯</div>
-          <div style="font-family:'Hubot Sans',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px">Markt- & Nischenabgleich</div>
-          <div style="font-size:12px;color:var(--text3);line-height:1.4">Echtzeit-Abgleich mit direkten regionalen Konkurrenten</div>
-        </div>
-      </div>
-    </div>
-    <div class="load-steps"><ul class="step-list" id="step-list"></ul></div>
-    <div class="load-phase">
-      <div class="phase-bar">
-        <div class="phase-seg" id="ps1"></div>
-        <div class="phase-seg" id="ps2"></div>
-        <div class="phase-seg" id="ps3"></div>
-      </div>
-      <div class="phase-labels">
-        <div class="phase-lbl" id="pl1">Technische Analyse</div>
-        <div class="phase-lbl" id="pl2">Inhalte &amp; Struktur</div>
-        <div class="phase-lbl" id="pl3">KI-Sichtbarkeit</div>
-      </div>
-    </div>
-    <div class="load-info">
-      <div class="info-card">
-        <div class="info-ic">🔍</div>
-        <div>
-          <h4>Der Everfound-Scan</h4>
-          <p>Wir testen deine Präsenz in führenden KI-Modellen. Dabei durchleuchten wir deine technische Infrastruktur, semantische Eindeutigkeit und digitale Marktautorität.</p>
-        </div>
-      </div>
-      <div class="info-card">
-        <div class="info-ic">🎯</div>
-        <div>
-          <h4>Dein Action-Plan</h4>
-          <p>Du erhältst einen präzisen Nischen-Vergleich und erfährst exakt, mit welchen konkreten Optimierungen du die KI-Empfehlungsrate für dein Unternehmen gezielt steigerst.</p>
-        </div>
-      </div>
-    </div>
-  </div>
+    </footer>
 </div>
 
+
+<!-- ════ RESULTS ════ -->
 <div id="s-results" class="screen">
-  <header class="hdr">
-    <div class="logo" style="font-family:'Hubot Sans',sans-serif;font-size:17px">Grafik<span style="color:var(--lime)">wald</span></div>
-    <div class="hdr-domain">Analyse für: <b id="r-domain-hdr"></b></div>
-    <a class="hdr-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank">Termin vereinbaren →</a>
-  </header>
-  <div class="res-container">
-    <div class="score-hero">
-      <div class="score-tag">DEIN GEO-ANALYSE ERGEBNIS</div>
-      <div class="score-headline" id="r-headline"></div>
-      <p class="score-summary" id="r-summary"></p>
-      <div class="score-display">
-        <div class="score-ring">
-          <svg width="120" height="120" viewBox="0 0 120 120">
-            <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="8"/>
-            <circle id="ring-c" cx="60" cy="60" r="50" fill="none" stroke-width="8" stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="314" style="transition:stroke-dashoffset 1.2s ease"/>
-          </svg>
-          <div class="score-ring-num"><div class="big" id="r-score-num">—</div><div class="small">von 10</div></div>
-        </div>
-        <div class="score-bars" id="score-bars"></div>
-      </div>
-    </div>
-    <div class="warn-banner" id="warn-banner"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" style="flex-shrink:0;margin-top:1px"><path d="m10.29 3.86-8.36 14.5A1 1 0 0 0 2.82 20h16.36a1 1 0 0 0 .89-1.64L11.71 3.86a1 1 0 0 0-1.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><p id="warn-text"></p></div>
-    <div class="sec-title">Analyse deiner 10 GEO-Faktoren</div>
-    <div id="factors-visible"></div>
-    <div id="factors-locked"></div>
-    <div id="email-gate" class="gate-overlay">
-  <div class="gate-content">
-    <div class="lock-icon">🔒</div>
-    <h3>Deine weiteren 4 Faktoren + Mitbewerberanalyse</h3>
-    <p>Trag deine E-Mail ein und sieh sofort alle Faktoren, deinen Branchenvergleich und was du konkret tun kannst.</p>
-    
-    <div style="max-width: 400px; margin: 0 auto; text-align: left;">
-      <div style="margin-bottom: 12px;">
-        <input type="text" id="name-input" placeholder="Dein Vor- und Nachname" 
-               style="width: 100%; height: 48px; background: var(--bg); border: 1px solid var(--border2); border-radius: var(--radius); color: var(--text); padding: 0 15px; box-sizing: border-box; font-family: inherit; font-size: 15px;">
-      </div>
-      <div style="display: flex; gap: 10px;">
-        <input type="email" id="email-input" placeholder="deine@email.at" 
-               style="flex: 1; height: 48px; background: var(--bg); border: 1px solid var(--border2); border-radius: var(--radius); color: var(--text); padding: 0 15px; box-sizing: border-box; font-family: inherit; font-size: 15px;">
-        <button class="btn-unlock" onclick="unlockResults()" style="height: 48px; padding: 0 20px; white-space: nowrap;">Freischalten</button>
-      </div>
-    </div>
-    
-    <p class="gate-note" style="margin-top: 15px; opacity: 0.7; font-size: 12px;">Kein Spam. Nur dein persönlicher GEO-Bericht.</p>
-  </div>
-</div>
-    <div id="unlocked">
-      <div class="sec-title">Dein Branchenvergleich</div>
-      <table class="comp-table"><thead><tr><th style="width:40px">#</th><th>Website</th><th style="width:90px">GEO-Score</th><th>Bester Faktor</th><th style="width:100px">KI-Nennung</th></tr></thead><tbody id="comp-body"></tbody></table>
-      <p class="comp-note" id="comp-note"></p>
-      <div class="sec-title">Das kostet fehlende KI-Sichtbarkeit</div>
-      <p style="font-size:13px;color:var(--text3);margin-bottom:16px">Schätzung auf Basis ähnlicher Betriebe – was du durch fehlende KI-Sichtbarkeit pro Monat liegen lässt:</p>
-      <div class="cost-cards">
-        <div class="cost-card"><div class="cost-val" id="c-lost">—</div><div class="cost-lbl">verpasste Anfragen pro Monat</div></div>
-        <div class="cost-card"><div class="cost-val" id="c-year">—</div><div class="cost-lbl">Anfragen pro Jahr beim Mitbewerb</div></div>
-        <div class="cost-card"><div class="cost-val up">↑ wächst</div><div class="cost-lbl">KI-Nutzung steigt – dein Rückstand auch</div></div>
-      </div>
+    <header class="hdr">
+        <img class="logo" src="../public/img/everfound_logo_white.svg" alt="Everfound Logo"/>
+        <div class="hdr-domain">Analyse für: <b id="r-domain-hdr"></b></div>
+        <a class="hdr-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank">Termin vereinbaren →</a>
+    </header>
 
-      <div class="sec-title" id="rec-title"></div>
-      <div id="rec-out"></div>
-      <div style="text-align:center;margin:40px 0 24px">
-        <p style="font-size:12px;color:var(--teal);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;font-family:'Hubot Sans',sans-serif">Das sagen unsere Kunden</p>
-        <h2 style="font-size:clamp(20px,3.5vw,30px);font-weight:400;margin-bottom:8px;line-height:1.3;font-family:'Hubot Sans',sans-serif">Was Unternehmen nach dem<br>Beratungsgespräch berichten</h2>
-        <p style="font-size:14px;color:var(--text3)">Platzhalter-Texte – werden durch echte Kundenstimmen ersetzt</p>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-        <div class="test-card">
-          <div class="test-stars">★★★★★</div>
-          <div class="test-tag">Handwerk &amp; Bau</div>
-          <p class="test-text">Ich war skeptisch, ob das wirklich etwas bringt. Aber nach dem GEO-Check und der Umsetzung durch Everfound kommen heute Anfragen über Wege, die ich vorher gar nicht auf dem Radar hatte – auch über ChatGPT.</p>
-          <div class="test-author">
-            <div class="test-avatar" style="background:rgba(98,150,159,.2);color:var(--teal)">MH</div>
-            <div><div class="test-name">Markus H.</div><div class="test-role">Geschäftsführer, Hoch- und Tiefbau NÖ</div></div>
-          </div>
-          <div class="test-metric" style="color:var(--teal)">+8 Anfragen/Monat<span>zusätzlich über KI- und Google-Suche</span></div>
+    <div class="res-container">
+        <div class="score-hero">
+            <div class="score-tag">GEO-Analyse Ergebnis</div>
+            <div class="score-headline" id="r-headline"></div>
+            <p class="score-summary" id="r-summary"></p>
+            <div class="score-display">
+                <div class="score-ring">
+                    <svg width="120" height="120" viewBox="0 0 120 120">
+                        <circle cx="60" cy="60" r="50" fill="none" stroke="var(--bg3)" stroke-width="7"/>
+                        <circle id="ring-c" cx="60" cy="60" r="50" fill="none" stroke-width="7" stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="314" style="transition:stroke-dashoffset 1.2s ease"/>
+                    </svg>
+                    <div class="score-ring-num">
+                        <div class="big" id="r-score-num">—</div>
+                        <div class="small">von 10</div>
+                    </div>
+                </div>
+                <div class="score-bars" id="score-bars"></div>
+            </div>
         </div>
-        <div class="test-card">
-          <div class="test-stars">★★★★★</div>
-          <div class="test-tag">Gesundheit &amp; Praxis</div>
-          <p class="test-text">Patienten fragen heute bei ChatGPT nach Ärztinnen in der Region. Der GEO-Check hat mir gezeigt, dass ich dort schlicht nicht vorkam. Nach der Optimierung hat sich das geändert – und die Neupatientenanfragen sind messbar gestiegen.</p>
-          <div class="test-author">
-            <div class="test-avatar" style="background:rgba(98,150,159,.2);color:var(--teal)">AS</div>
-            <div><div class="test-name">Dr. Christine S.</div><div class="test-role">Allgemeinmedizin, Niederösterreich</div></div>
-          </div>
-          <div class="test-metric" style="color:var(--teal)">+5 Neupatienten/Monat<span>nach GEO-Optimierung</span></div>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:32px">
-        <div class="test-card" style="padding:16px">
-          <div class="test-stars" style="font-size:12px">★★★★★</div>
-          <div class="test-tag" style="font-size:9px;margin:4px 0 8px">Gastgewerbe</div>
-          <p class="test-text" style="font-size:12px">Seit der GEO-Optimierung erscheinen wir bei Perplexity, wenn Gäste nach Hotels im Waldviertel fragen. Das hätte ich nicht für möglich gehalten.</p>
-          <div class="test-author" style="margin-top:10px">
-            <div class="test-avatar" style="background:rgba(98,150,159,.2);color:var(--teal);width:28px;height:28px;font-size:11px">RB</div>
-            <div><div class="test-name" style="font-size:12px">Robert B.</div><div class="test-role" style="font-size:11px">Hotelier, Waldviertel</div></div>
-          </div>
-        </div>
-        <div class="test-card" style="padding:16px">
-          <div class="test-stars" style="font-size:12px">★★★★★</div>
-          <div class="test-tag" style="font-size:9px;margin:4px 0 8px">Handel &amp; E-Commerce</div>
-          <p class="test-text" style="font-size:12px">Endlich jemand, der nicht nur redet, sondern konkret zeigt was zu tun ist. Binnen zwei Monaten waren erste Ergebnisse spürbar.</p>
-          <div class="test-author" style="margin-top:10px">
-            <div class="test-avatar" style="background:rgba(98,150,159,.2);color:var(--teal);width:28px;height:28px;font-size:11px">SK</div>
-            <div><div class="test-name" style="font-size:12px">Sandra K.</div><div class="test-role" style="font-size:11px">Inhaberin, Fachhandel NÖ</div></div>
-          </div>
-        </div>
-        <div class="test-card" style="padding:16px">
-          <div class="test-stars" style="font-size:12px">★★★★★</div>
-          <div class="test-tag" style="font-size:9px;margin:4px 0 8px">Dienstleistung</div>
-          <p class="test-text" style="font-size:12px">Professionell, transparent und mit echtem Verständnis für kleine Unternehmen. Der GEO-Check war der erste Schritt zu mehr Sichtbarkeit.</p>
-          <div class="test-author" style="margin-top:10px">
-            <div class="test-avatar" style="background:rgba(98,150,159,.2);color:var(--teal);width:28px;height:28px;font-size:11px">TW</div>
-            <div><div class="test-name" style="font-size:12px">Thomas W.</div><div class="test-role" style="font-size:11px">Steuerberater, Wien</div></div>
-          </div>
-        </div>
-      </div>
 
-      <div style="background:linear-gradient(135deg,rgba(98,150,159,.15) 0%,rgba(64,80,83,.2) 100%);border:1px solid rgba(98,150,159,.3);border-radius:var(--radius-xl);padding:44px 32px;text-align:center;margin-bottom:24px">
-        <p style="font-size:11px;color:var(--lime);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;font-family:'Hubot Sans',sans-serif">Dein nächster Schritt</p>
-        <h3 style="font-family:'Hubot Sans',sans-serif;font-size:clamp(22px,4vw,32px);margin-bottom:12px;line-height:1.3">Lass uns gemeinsam schauen,<br>wie wir deine Sichtbarkeit verbessern.</h3>
-        <p style="font-size:15px;color:var(--text2);margin-bottom:28px;line-height:1.7;max-width:480px;margin-left:auto;margin-right:auto">30 Minuten, kostenlos, ohne Verpflichtung. Du bekommst einen klaren Plan – speziell für deine Website und deine Branche.</p>
-        <a class="btn-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank" style="font-size:16px;padding:16px 40px">Jetzt Termin vereinbaren →</a>
-        <div style="display:flex;gap:24px;justify-content:center;margin-top:18px;flex-wrap:wrap">
-          <span style="font-size:12px;color:var(--text3);display:flex;align-items:center;gap:5px">✓ Kein Verkaufsgespräch</span>
-          <span style="font-size:12px;color:var(--text3);display:flex;align-items:center;gap:5px">✓ Konkrete GEO-Maßnahmen sofort</span>
-          <span style="font-size:12px;color:var(--text3);display:flex;align-items:center;gap:5px">✓ Regional &amp; persönlich</span>
+        <div class="warn-banner" id="warn-banner">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" style="flex-shrink:0;margin-top:2px"><path d="m10.29 3.86-8.36 14.5A1 1 0 0 0 2.82 20h16.36a1 1 0 0 0 .89-1.64L11.71 3.86a1 1 0 0 0-1.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <p id="warn-text"></p>
         </div>
-      </div>
 
+        <div class="sec-title">Analyse deiner 10 GEO-Faktoren</div>
+        <div id="factors-visible"></div>
+        <div id="factors-locked"></div>
+
+        <div id="email-gate" class="email-gate">
+            <div class="gate-lock">🔒</div>
+            <h3>Deine weiteren 4 Faktoren + Mitbewerberanalyse</h3>
+            <p>Trag deine E-Mail ein und sieh sofort alle Faktoren, deinen Branchenvergleich und konkrete Maßnahmen.</p>
+            <div class="gate-inputs">
+                <input type="text" id="name-input" placeholder="Vor- und Nachname"/>
+                <div class="gate-row">
+                    <input type="email" id="email-input" placeholder="deine@email.at" style="flex:1"/>
+                    <button class="btn-unlock" onclick="unlockResults()">Freischalten</button>
+                </div>
+            </div>
+            <p class="gate-note">Kein Spam. Nur dein persönlicher GEO-Bericht.</p>
+        </div>
+
+        <div id="unlocked">
+            <div class="sec-title">Dein Branchenvergleich</div>
+            <table class="comp-table">
+                <thead><tr><th style="width:40px">#</th><th>Website</th><th style="width:90px">GEO-Score</th><th>Bester Faktor</th><th style="width:100px">KI-Nennung</th></tr></thead>
+                <tbody id="comp-body"></tbody>
+            </table>
+            <p class="comp-note" id="comp-note"></p>
+
+            <div class="sec-title">Das kostet fehlende KI-Sichtbarkeit</div>
+            <p style="font-size:13px;color:var(--text3);margin-bottom:16px">Schätzung auf Basis ähnlicher Betriebe:</p>
+            <div class="cost-cards">
+                <div class="cost-card"><div class="cost-val" id="c-lost">—</div><div class="cost-lbl">verpasste Anfragen pro Monat</div></div>
+                <div class="cost-card"><div class="cost-val" id="c-year">—</div><div class="cost-lbl">Anfragen pro Jahr beim Mitbewerb</div></div>
+                <div class="cost-card"><div class="cost-val up">↑ wächst</div><div class="cost-lbl">KI-Nutzung steigt – dein Rückstand auch</div></div>
+            </div>
+
+            <div class="sec-title" id="rec-title"></div>
+            <div id="rec-out"></div>
+
+            <div class="test-section-header">
+                <p class="eyebrow">Das sagen unsere Kunden</p>
+                <h2>Was Unternehmen nach dem<br>Beratungsgespräch berichten</h2>
+                <p>Platzhalter-Texte – werden durch echte Kundenstimmen ersetzt</p>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+                <div class="test-card">
+                    <div class="test-stars">★★★★★</div><div class="test-tag">Handwerk &amp; Bau</div>
+                    <p class="test-text">Ich war skeptisch, ob das wirklich etwas bringt. Aber nach dem GEO-Check kommen heute Anfragen über Wege, die ich vorher gar nicht auf dem Radar hatte – auch über ChatGPT.</p>
+                    <div class="test-author"><div class="test-avatar">MH</div><div><div class="test-name">Markus H.</div><div class="test-role">Geschäftsführer, Hoch- und Tiefbau NÖ</div></div></div>
+                    <div class="test-metric">+8 Anfragen/Monat<span>zusätzlich über KI- und Google-Suche</span></div>
+                </div>
+                <div class="test-card">
+                    <div class="test-stars">★★★★★</div><div class="test-tag">Gesundheit &amp; Praxis</div>
+                    <p class="test-text">Patienten fragen heute bei ChatGPT nach Ärztinnen in der Region. Der GEO-Check hat mir gezeigt, dass ich dort schlicht nicht vorkam. Nach der Optimierung sind die Anfragen messbar gestiegen.</p>
+                    <div class="test-author"><div class="test-avatar">CS</div><div><div class="test-name">Dr. Christine S.</div><div class="test-role">Allgemeinmedizin, Niederösterreich</div></div></div>
+                    <div class="test-metric">+5 Neupatienten/Monat<span>nach GEO-Optimierung</span></div>
+                </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px">
+                <div class="test-card" style="padding:16px">
+                    <div class="test-stars" style="font-size:11px">★★★★★</div><div class="test-tag" style="font-size:9px;margin:4px 0 8px">Gastgewerbe</div>
+                    <p class="test-text" style="font-size:12px">Seit der GEO-Optimierung erscheinen wir bei Perplexity, wenn Gäste nach Hotels fragen. Das hätte ich nicht für möglich gehalten.</p>
+                    <div class="test-author"><div class="test-avatar" style="width:28px;height:28px;font-size:10px">RB</div><div><div class="test-name" style="font-size:12px">Robert B.</div><div class="test-role" style="font-size:11px">Hotelier</div></div></div>
+                </div>
+                <div class="test-card" style="padding:16px">
+                    <div class="test-stars" style="font-size:11px">★★★★★</div><div class="test-tag" style="font-size:9px;margin:4px 0 8px">Handel &amp; E-Commerce</div>
+                    <p class="test-text" style="font-size:12px">Endlich jemand, der nicht nur redet, sondern konkret zeigt was zu tun ist. Binnen zwei Monaten waren erste Ergebnisse spürbar.</p>
+                    <div class="test-author"><div class="test-avatar" style="width:28px;height:28px;font-size:10px">SK</div><div><div class="test-name" style="font-size:12px">Sandra K.</div><div class="test-role" style="font-size:11px">Inhaberin, Fachhandel</div></div></div>
+                </div>
+                <div class="test-card" style="padding:16px">
+                    <div class="test-stars" style="font-size:11px">★★★★★</div><div class="test-tag" style="font-size:9px;margin:4px 0 8px">Dienstleistung</div>
+                    <p class="test-text" style="font-size:12px">Professionell, transparent und mit echtem Verständnis für kleine Unternehmen. Der GEO-Check war der erste Schritt zu mehr Sichtbarkeit.</p>
+                    <div class="test-author"><div class="test-avatar" style="width:28px;height:28px;font-size:10px">TW</div><div><div class="test-name" style="font-size:12px">Thomas W.</div><div class="test-role" style="font-size:11px">Steuerberater, Wien</div></div></div>
+                </div>
+            </div>
+
+            <div class="final-cta">
+                <p class="final-cta-sub">Dein nächster Schritt</p>
+                <h3>Lass uns gemeinsam schauen,<br>wie wir deine <span class="hl">Sichtbarkeit</span> verbessern.</h3>
+                <p>30 Minuten, kostenlos, ohne Verpflichtung. Du bekommst einen klaren Plan – speziell für deine Website und deine Branche.</p>
+                <a class="btn-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank" style="padding:16px 40px">Jetzt Termin vereinbaren →</a>
+                <div class="final-checks">
+                    <span>Kein Verkaufsgespräch</span>
+                    <span>Konkrete GEO-Maßnahmen sofort</span>
+                    <span>Regional &amp; persönlich</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="reset-link"><button onclick="resetCheck()">← Neue Domain prüfen</button></div>
     </div>
-    <div class="reset-link"><button onclick="resetCheck()">Neue Domain prüfen</button></div>
-  </div>
-  <footer>
-    <div class="footer-left">© 2026 Everfound · GEO-Check</div>
-    <div class="footer-right">
-      <a href="https://everfound.io/impressum" target="_blank">Impressum</a>
-      <a href="https://everfound.io/datenschutz" target="_blank">Datenschutz</a>
-      <a href="https://everfound.io/agb" target="_blank">AGB</a>
-    </div>
-  </footer>
+
+    <footer class="page-footer">
+        <div class="footer-left">© 2026 Everfound · GEO-Check</div>
+        <div class="footer-right">
+            <a href="https://everfound.io/impressum" target="_blank">Impressum</a>
+            <a href="https://everfound.io/datenschutz" target="_blank">Datenschutz</a>
+            <a href="https://everfound.io/agb" target="_blank">AGB</a>
+        </div>
+    </footer>
 </div>
 
+
+<!-- ════ EXIT POPUP ════ -->
 <div class="overlay" id="exit-overlay">
-  <div class="popup">
-    <button class="popup-close" onclick="closePopup()">×</button>
-    <p style="font-size:13px;color:var(--text3);margin-bottom:8px">Kurze Frage bevor du gehst</p>
-    <h3>Bevor du weitermachst – was fehlt dir noch?</h3>
-    <div class="popup-opts">
-      <div class="popup-opt" onclick="selOpt(this, 'Momentan kein Thema für mein Unternehmen')"><span>⏳</span> Momentan kein Thema</div>
-      <div class="popup-opt" onclick="selOpt(this, 'Ich brauche mehr Infos über GEO')"><span>🔎</span> Infos über GEO</div>
-      <div class="popup-opt" onclick="selOpt(this, 'Ich bin unsicher wegen Kosten')"><span>💰</span> Unsicher wegen Kosten</div>
-      <div class="popup-opt" onclick="selOpt(this, 'Ich möchte erst intern besprechen')"><span>🙋</span> Intern besprechen</div>
-      <div class="popup-opt" onclick="selOpt(this, 'Lieber per E-Mail kontaktiert werden')"><span>✉️</span> Kontakt per E-Mail</div>
-      <div class="popup-opt" onclick="selOpt(this, 'Etwas anderes')"><span>💬</span> Etwas anderes</div>
+    <div class="popup">
+        <button class="popup-close" onclick="closePopup()">×</button>
+        <p>Kurze Frage bevor du gehst</p>
+        <h3>Was fehlt dir noch?</h3>
+        <div class="popup-opts">
+            <div class="popup-opt" onclick="selOpt(this,'Momentan kein Thema')"><span>⏳</span> Momentan kein Thema</div>
+            <div class="popup-opt" onclick="selOpt(this,'Mehr Infos über GEO')"><span>🔎</span> Mehr Infos über GEO</div>
+            <div class="popup-opt" onclick="selOpt(this,'Unsicher wegen Kosten')"><span>💰</span> Unsicher wegen Kosten</div>
+            <div class="popup-opt" onclick="selOpt(this,'Intern besprechen')"><span>🙋</span> Intern besprechen</div>
+            <div class="popup-opt" onclick="selOpt(this,'Kontakt per E-Mail')"><span>✉️</span> Kontakt per E-Mail</div>
+            <div class="popup-opt" onclick="selOpt(this,'Etwas anderes')"><span>💬</span> Etwas anderes</div>
+        </div>
+        <button class="btn-feedback" id="btn-fb" onclick="sendExitFeedback()">Antwort absenden</button>
+        <p class="popup-note">Deine Antwort hilft uns, den Check zu verbessern.</p>
     </div>
-    <button class="btn-feedback" id="btn-fb" onclick="sendExitFeedback()">Antwort absenden</button>
-    <p class="popup-note">Deine Antwort hilft uns, den Check zu verbessern.</p>
-  </div>
 </div>
 
 <script>
-var STEPS=[
-  {l:'Website-Quellcode wird geladen',p:1},{l:'Schema-Markup & strukturierte Daten',p:1},{l:'Meta-Informationen & Seitenstruktur',p:1},
-  {l:'Google PageSpeed-Daten abrufen',p:2},{l:'Technische GEO-Faktoren bewerten',p:2},{l:'Crawlbarkeit & Indexierung prüfen',p:2},
-  {l:'KI-Sichtbarkeit messen',p:3},{l:'Regionale Auffindbarkeit analysieren',p:3},{l:'Branchenkontext & Autorität prüfen',p:3},{l:'Mitbewerber-Recherche abschließen',p:3}
-];
-var curStep=0,timerIv=null,timerSec=0,resultsData=null,exitShown=false;
-
-function $(id){return document.getElementById(id)}
-function showScreen(id){
-  ['s-landing','s-loading','s-results'].forEach(function(s){document.getElementById(s).classList.remove('active');});
-  document.getElementById(id).classList.add('active');window.scrollTo(0,0);
-}
-
-function startTimer(){timerSec=0;clearInterval(timerIv);timerIv=setInterval(function(){timerSec++;$('l-timer').textContent=Math.floor(timerSec/60)+':'+String(timerSec%60).padStart(2,'0');},1000);}
-function stopTimer(){clearInterval(timerIv);}
-function renderSteps(){
-  var list=$('step-list');list.innerHTML='';
-  var start=Math.max(0,curStep-1),end=Math.min(STEPS.length,start+3);
-  for(var i=start;i<end;i++){
-    var st=i<curStep?'done':i===curStep?'active':'idle';
-    var icon=st==='done'?'&#10003;':st==='active'?'<div class="spi"></div>':'';
-    list.innerHTML+='<li class="step-item '+st+'"><span class="step-icon">'+icon+'</span><span>'+STEPS[i].l+'</span></li>';
-  }
-}
-function updatePhase(p){for(var i=1;i<=3;i++){$('ps'+i).className='phase-seg'+(i<p?' done':i===p?' active':'');$('pl'+i).className='phase-lbl'+(i<p?' done':i===p?' active':'');}}
-function advanceStep(){if(curStep<STEPS.length){updatePhase(STEPS[curStep].p);renderSteps();curStep++;}}
-function startSteps(){curStep=0;renderSteps();updatePhase(1);var t=0;[700,900,1000,1300,1100,1000,1800,2000,1800,2000].forEach(function(ms){t+=ms;setTimeout(advanceStep,t);});}
-
-// ── API-Calls Backend ──
-function apiFetch(path,opts){
-  return fetch(path,opts).then(function(r){return r.json();}).catch(function(){return null;});
-}
-
-function parseHTML(html){
-  if(!html)return null;
-  var schema=html.indexOf('"@context"')>-1&&html.indexOf('"@type"')>-1;
-  var micro=/itemtype=["']https?:\/\/(www\.)?schema\.org/.test(html);
-  schema=schema||micro;
-  var types=[],rx=/"@type"\s*:\s*"([A-Za-z]{3,40})"/g,m;
-  while((m=rx.exec(html))!==null){if(types.indexOf(m[1])<0)types.push(m[1]);}
-  return{schema:schema,types:types.slice(0,6),
-    title:/<title[^>]*>[^<]{4,}/i.test(html),
-    metaDesc:/<meta[^>]+(name=["']description["'][^>]+content=["'][^"']{10,}|content=["'][^"']{10,}["'][^>]+name=["']description["'])/i.test(html),
-    viewport:/<meta[^>]+name=["']viewport["']/i.test(html),
-    wordCount:html.replace(/<[^>]+>/g,' ').split(/\s+/).filter(function(w){return w.length>3;}).length};
-}
-function parsePSI(psi){
-  if(!psi||!psi.lighthouseResult||psi.error)return null;
-  var lh=psi.lighthouseResult,cats=lh.categories||{},au=lh.audits||{};
-  return{perf:Math.round((cats.performance&&cats.performance.score||0)*100),seo:Math.round((cats.seo&&cats.seo.score||0)*100),
-    lcp:(au['largest-contentful-paint']&&au['largest-contentful-paint'].displayValue)||'?',
-    cls:(au['cumulative-layout-shift']&&au['cumulative-layout-shift'].displayValue)||'?'};
-}
-function buildTechFactors(hd,psi){
-  function st(s){return s>=7?'gut':s>=5?'opt':s>=3.5?'opt':'kritisch';}
-  var hasSchema=hd?hd.schema:false,types=hd?hd.types:[];
-  var ss=hasSchema?(types.length>=3?9:types.length>=1?7.5:6.5):1;
-  var afs=psi?(psi.seo/10):(hd&&hd.title&&hd.metaDesc?6.5:4.5);afs=parseFloat(afs.toFixed(1));
-  var perfS=psi?(psi.perf/10):(hd&&hd.viewport?5.5:3);perfS=parseFloat(perfS.toFixed(1));
-  var extS=hd?(hd.wordCount>800?5:hd.wordCount>300?4:3):3.5;extS=parseFloat(extS.toFixed(1));
-  var eatS=psi?parseFloat(Math.min(8.5,(psi.seo+psi.perf)/20).toFixed(1)):4.5;
-  return[
-    {name:'Schema Markup',score:ss,status:st(ss),finding:hasSchema?(types.length?'Gefunden: '+types.join(', '):'Schema vorhanden'):'Keine strukturierten Daten gefunden',tip:'Schema-Typen implementieren: Article, FAQPage, HowTo, Organization, LocalBusiness.',source:hd?'real':'est'},
-    {name:'Answer-First Struktur',score:afs,status:st(afs),finding:psi?'SEO-Score: '+psi.seo+'/100':'Klare Antworten in den ersten 40–60 Wörtern prüfen',tip:'Nutze FAQ-Stil H2/H3 und TL;DR-Blöcke.',source:psi?'real':'est'},
-    {name:'KI-Crawlbarkeit',score:perfS,status:st(perfS),finding:psi?'Performance: '+psi.perf+'/100 | LCP: '+psi.lcp+' | CLS: '+psi.cls:(hd&&hd.viewport?'Viewport vorhanden':'Viewport fehlt'),tip:'KI-Crawler in robots.txt erlauben, llms.txt hinzufügen.',source:psi?'real':'est'},
-    {name:'Externe Autorität',score:extS,status:st(extS),finding:hd&&hd.wordCount>0?'Ca. '+hd.wordCount+' Wörter sichtbarer Text':'Externe Verlinkung prüfen',tip:'Erwähnungen auf Branchenportalen und Presseartikeln aufbauen.',source:hd?'real':'est'},
-    {name:'E-E-A-T Signale',score:eatS,status:st(eatS),finding:'Expertise und Vertrauen teilweise sichtbar. Autorensignale stärken.',tip:'Autorenprofile, Zertifizierungen und Referenzprojekte prominent darstellen.',source:psi?'real':'est'}
-  ];
-}
-
-async function startCheck(){
-  var raw=$('domain-input').value.trim();
-  var domain=raw.replace(/^https?:\/\//,'').replace(/^www\./,'').split('/')[0];
-  if(!domain||domain.indexOf('.')<0){showErr('Bitte gib eine gültige Domain ein – z.B. deine-website.at');return;}
-  hideErr();
-  $('l-domain').textContent=domain;$('l-domain2').textContent=domain;
-  $('l-link').textContent=domain;$('l-link').href='https://'+domain;
-  $('l-timer').textContent='0:00';
-  
-  $('check-btn').disabled=true;
-  showScreen('s-loading');startTimer();startSteps();
-
-  try{
-    var both=await Promise.all([
-      apiFetch('/api/fetchhtml?url='+encodeURIComponent(domain)),
-      apiFetch('/api/pagespeed?url='+encodeURIComponent('https://'+domain))
-    ]);
-    var hd=parseHTML(both[0]&&both[0].html?both[0].html:null);
-    var psi=parsePSI(both[1]);
-    var techFactors=buildTechFactors(hd,psi);
-    var techSummary=techFactors.map(function(f){return f.name+': '+f.score+'/10 ('+f.finding+')';}).join(' | ');
-
-    var ai=await apiFetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({domain:domain,techSummary:techSummary})});
-    if(!ai||ai.error)throw new Error(ai&&ai.error?ai.error:'Analyse fehlgeschlagen – bitte erneut versuchen.');
-
-    stopTimer();curStep=STEPS.length;renderSteps();updatePhase(4);
-    await new Promise(function(r){setTimeout(r,400);});
-    renderResults(domain,techFactors,ai);
-    showScreen('s-results');
-
-    // Exit Popup Logic (Checkt ob Email-Gate weg ist)
-    setTimeout(function(){
-      document.addEventListener('mouseleave',function handler(e){
-        if(e.clientY<=0&&!exitShown){
-          if($('email-gate').style.display!=='none'){return;}
-          exitShown=true;$('exit-overlay').classList.add('show');document.removeEventListener('mouseleave',handler);
-        }
-      });
-    },3000);
-  }catch(e){
-    stopTimer();$('check-btn').disabled=false;showScreen('s-landing');showErr(e.message||'Fehler – bitte erneut versuchen.');
-  }
-}
-
-function scoreColor(s){return s>=7?'var(--green)':s>=5?'var(--amber)':s>=3.5?'var(--coral)':'var(--red)';}
-function badgeHTML(st){
-  if(st==='gut')return '<span class="badge badge-gut">GUT</span>';
-  if(st==='kritisch')return '<span class="badge badge-kritisch">KRITISCH</span>';
-  return '<span class="badge badge-opt">OPTIMIERUNGSBEDARF</span>';
-}
-function factorHTML(f,locked){
-  var s=f.score,pct=Math.round(s/10*100),col=scoreColor(s);
-  var real=f.source==='real'?'<span class="factor-real">echt</span>':'';
-  return '<div class="factor-row'+(locked?' locked':'')+'">'+
-    '<div class="factor-top"><div class="factor-left"><span class="factor-name">'+f.name+real+'</span>'+badgeHTML(f.status)+'</div>'+
-    '<div class="factor-score" style="color:'+col+'">'+s+'<span class="denom">/10</span></div></div>'+
-    '<p class="factor-desc">'+f.finding+'</p>'+
-    '<div class="factor-bar"><div class="factor-bar-fill" style="width:'+pct+'%;background:'+col+'"></div></div>'+
-  '</div>';
-}
-
-function renderResults(domain,techFactors,ai){
-  resultsData={domain:domain,techFactors:techFactors,ai:ai};
-  var sc=ai.score||5;
-  $('r-domain-hdr').textContent=domain;
-  var cls=sc>=7?'good':sc>=5?'ok':'bad';
-  var line1, line2;
-  if(sc>=7){ line1='Gute Nachricht –'; line2='<span class="good">deine Website wird von KI gefunden.</span>'; } 
-  else if(sc>=5){ line1='Noch Luft nach oben:'; line2='<span class="ok">KI-Suchen zeigen dich nur eingeschränkt.</span>'; } 
-  else { line1='Handlungsbedarf:'; line2='<span class="bad">KI-Tools kennen deine Website kaum.</span>'; }
-  
-  $('r-headline').innerHTML=line1+'<br>'+line2;
-  $('r-summary').textContent=ai.summary||'';
-  $('ring-c').style.stroke=scoreColor(sc);
-  setTimeout(function(){$('ring-c').style.strokeDashoffset=314-(314*(sc/10));},100);
-  $('r-score-num').textContent=parseFloat(sc).toFixed(1);
-  $('r-score-num').style.color=scoreColor(sc);
-
-  var allF=techFactors.concat(ai.geo_factors||[]);
-  var bHtml='';
-  allF.slice(0,6).forEach(function(f){var col=scoreColor(f.score);bHtml+='<div class="sbar-row"><span class="sbar-lbl">'+f.name+'</span><div class="sbar"><div class="sbar-fill" style="width:'+Math.round(f.score/10*100)+'%;background:'+col+'"></div></div><span class="sbar-val" style="color:'+col+'">'+f.score+'</span></div>';});
-  $('score-bars').innerHTML=bHtml;
-
-  if(ai.competitor_warning){$('warn-text').innerHTML=ai.competitor_warning;$('warn-banner').style.display='flex';}
-
-  var vHtml='',lHtml='';
-  allF.slice(0,10).forEach(function(f,i){if(i<6)vHtml+=factorHTML(f,false);else lHtml+=factorHTML(f,true);});
-  $('factors-visible').innerHTML=vHtml;
-  $('factors-locked').innerHTML=lHtml;
-}
-
-function unlockContent(ai,domain){
-  var sc=ai.score||5;
-  var cbody=$('comp-body');cbody.innerHTML='';
-  var comps=(ai.competitors||[]).filter(function(c){return !c.you;});
-  var rows=comps.concat([{domain:ai.website_name||domain,score:sc,top_factor:'Topical Authority',ki:'Selten',you:true}]);
-  rows.sort(function(a,b){return (b.score||0)-(a.score||0);});
-  rows.forEach(function(c,i){
-    var isYou=c.you;var kiCls=c.ki==='Regelmäßig'?'ki-reg':c.ki==='Oft'?'ki-oft':'ki-sel';
-    cbody.innerHTML+='<tr class="'+(isYou?'you':'')+'"><td style="text-align:center">'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1))+'</td>'+
-      '<td style="color:'+(isYou?'var(--teal)':'var(--text)')+';">'+(isYou?'▶ ':'')+c.domain+(isYou?' (du)':'')+'</td>'+
-      '<td style="font-weight:700;color:'+scoreColor(c.score||sc)+'">'+(c.score||parseFloat(sc).toFixed(1))+' / 10</td>'+
-      '<td>'+(c.top_factor||'—')+'</td>'+
-      '<td><span class="ki-badge '+kiCls+'">'+(c.ki||'—')+'</span></td></tr>';
-  });
-  if(ai.comp_note)$('comp-note').textContent=ai.comp_note;
-  $('c-lost').textContent=ai.lost_monthly||'5-8';
-  $('c-year').textContent=ai.lost_yearly||'~65';
-  $('rec-title').textContent='Was '+domain+' jetzt braucht';
-  var rout=$('rec-out');rout.innerHTML='';
-  (ai.actions||[]).forEach(function(a,i){
-    var locked=i>=3;
-    rout.innerHTML+='<div class="rec-row'+(locked?' locked':'')+'">'+
-      '<div class="rec-left"><h4>'+a.name+'</h4><p>'+a.desc+'</p></div>'+
-      (a.priority==='hoch'?'<span class="badge-hoch">HOCH</span>':'<span class="badge badge-opt">MITTEL</span>')+
-    '</div>';
-  });
-  if((ai.actions||[]).length>3){
-    rout.innerHTML+='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px;text-align:center;margin-top:8px">'+
-      '<div style="font-size:24px;margin-bottom:10px">🔒</div>'+
-      '<div style="font-family:Hubot Sans,sans-serif;font-size:18px;font-weight:400;margin-bottom:6px">+ '+((ai.actions||[]).length-3)+' weitere priorisierte Ma\u00dfnahmen</div>'+
-      '<div style="font-size:13px;color:var(--text3);margin-bottom:16px">Inklusive einem persönlichen Umsetzungsplan<br>– du bekommst ihn im Gespräch mit uns.</div>'+
-      '<a class="btn-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank">Termin vereinbaren →</a></div>';
-  }
-  $('unlocked').style.display='block';
-  $('unlocked').scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-function unlockResults() {
-  var email = document.getElementById('email-input').value.trim();
-  var name = document.getElementById('name-input').value.trim();
-  if (!email || email.indexOf('@') < 0) { document.getElementById('email-input').style.borderColor = 'red'; return; }
-
-  var ai = resultsData.ai;
-  var domain = resultsData.domain;
-  var scoreValue = ai.score || 0;
-
-  var detailsText = "🤖 KI-REPORT FÜR: " + domain + "\n";
-  detailsText += "====================================\n";
-  detailsText += "GESAMT-SCORE: " + scoreValue + " / 10\n\n";
-  detailsText += "EINZEL-METRIKEN:\n";
-  
-  // Diese Schleife findet die Faktoren aus den eben generierten Zeilen
-  document.querySelectorAll('.factor-row').forEach(function(row) {
-    var nameSpan = row.querySelector('.factor-name');
-    var scoreSpan = row.querySelector('.factor-score');
-    if (nameSpan && scoreSpan) {
-      detailsText += "• " + nameSpan.textContent.replace('echt', '').trim() + ": " + scoreSpan.textContent.trim() + "\n";
-    }
-  });
-
-  detailsText += "\nVERGLEICH MIT MITBEWERBERN:\n" + (ai.comp_note || "");
-  detailsText += "\n\nAKTIONSEMPFEHLUNGEN:\n";
-  if (ai.actions) { ai.actions.forEach(function(a) { detailsText += "-> " + a.name + "\n"; }); }
-
-  var xhr = new XMLHttpRequest();
-  var url = 'https://api.hsforms.com/submissions/v3/integration/submit/147422560/d9bb3a83-b30e-4d4e-a33b-7e7da348489d';
-  var data = {
-    "fields": [
-      { "name": "email", "value": email },
-      { "name": "firstname", "value": name },
-      { "name": "website", "value": domain },
-      { "name": "ki_score", "value": scoreValue },
-      { "name": "analyse_details", "value": detailsText }
-    ]
-  };
-  xhr.open('POST', url, true); xhr.setRequestHeader('Content-Type', 'application/json'); xhr.send(JSON.stringify(data));
-
-  $('email-gate').style.display = 'none';
-  document.querySelectorAll('.factor-row.locked').forEach(function(r) { r.classList.remove('locked'); });
-  if (typeof unlockContent === 'function') { unlockContent(ai, domain); }
-}
-
-let selectedExitReason = "";
-
-function selOpt(el) {
-  // Alle anderen Optionen zurücksetzen
-  document.querySelectorAll('.popup-opt').forEach(function(o){
-    o.classList.remove('selected'); 
-    o.style.borderColor = 'var(--border)';
-  });
-  // Gewählte Option markieren
-  el.classList.add('selected'); 
-  el.style.borderColor = 'var(--teal)';
-  
-  // Den Text direkt aus dem Feld holen (Emojis werden automatisch ignoriert)
-  selectedExitReason = el.innerText.replace(/[⏳🔎💰🙋✉️💬]/g, '').trim();
-  
-  // Senden-Button hell machen
-  $('btn-fb').classList.add('on');
-}
-
-function sendExitFeedback() {
-  var email = $('email-input').value.trim();
-  
-  // Sicherheits-Check: Ohne Email oder Grund schicken wir nichts
-  if (!email || !selectedExitReason) { 
-    closePopup(); 
-    return; 
-  }
-  
-  var xhr = new XMLHttpRequest();
-  var url = 'https://api.hsforms.com/submissions/v3/integration/submit/147422560/d9bb3a83-b30e-4d4e-a33b-7e7da348489d';
-  
-  var data = {
-    "fields": [
-      { "name": "email", "value": email },
-      { "name": "abbruchgrund", "value": selectedExitReason }
-    ]
-  };
-
-  xhr.open('POST', url, true);
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.send(JSON.stringify(data));
-
-  alert("Vielen Dank für dein Feedback!"); 
-  closePopup();
-}
-
-function closePopup(){$('exit-overlay').classList.remove('show');}
-function showErr(m){$('err').textContent=m;$('err').style.display='block';}
-function hideErr(){$('err').style.display='none';}
-function resetCheck(){showScreen('s-landing');$('check-btn').disabled=false;$('domain-input').value='';hideErr();resultsData=null;exitShown=false;$('exit-overlay').classList.remove('show');$('unlocked').style.display='none';$('email-gate').style.display='block';}
+    var STEPS=[
+        {l:'Website-Quellcode wird geladen',p:1},{l:'Schema-Markup & strukturierte Daten',p:1},{l:'Meta-Informationen & Seitenstruktur',p:1},
+        {l:'Google PageSpeed-Daten abrufen',p:2},{l:'Technische GEO-Faktoren bewerten',p:2},{l:'Crawlbarkeit & Indexierung prüfen',p:2},
+        {l:'KI-Sichtbarkeit messen',p:3},{l:'Regionale Auffindbarkeit analysieren',p:3},{l:'Branchenkontext & Autorität prüfen',p:3},{l:'Mitbewerber-Recherche abschließen',p:3}
+    ];
+    var curStep=0,timerIv=null,timerSec=0,resultsData=null,exitShown=false;
+    function $(id){return document.getElementById(id)}
+    function showScreen(id){['s-landing','s-loading','s-results'].forEach(function(s){document.getElementById(s).classList.remove('active');});document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+    function startTimer(){timerSec=0;clearInterval(timerIv);timerIv=setInterval(function(){timerSec++;$('l-timer').textContent=Math.floor(timerSec/60)+':'+String(timerSec%60).padStart(2,'0');},1000);}
+    function stopTimer(){clearInterval(timerIv);}
+    function renderSteps(){var list=$('step-list');list.innerHTML='';var start=Math.max(0,curStep-1),end=Math.min(STEPS.length,start+3);for(var i=start;i<end;i++){var st=i<curStep?'done':i===curStep?'active':'idle';var icon=st==='done'?'&#10003;':st==='active'?'<div class="spi"></div>':'';list.innerHTML+='<li class="step-item '+st+'"><span class="step-icon">'+icon+'</span><span>'+STEPS[i].l+'</span></li>';}}
+    function updatePhase(p){for(var i=1;i<=3;i++){$('ps'+i).className='phase-seg'+(i<p?' done':i===p?' active':'');$('pl'+i).className='phase-lbl'+(i<p?' done':i===p?' active':'');}}
+    function advanceStep(){if(curStep<STEPS.length){updatePhase(STEPS[curStep].p);renderSteps();curStep++;}}
+    function startSteps(){curStep=0;renderSteps();updatePhase(1);var t=0;[700,900,1000,1300,1100,1000,1800,2000,1800,2000].forEach(function(ms){t+=ms;setTimeout(advanceStep,t);});}
+    function apiFetch(path,opts){return fetch(path,opts).then(function(r){return r.json();}).catch(function(){return null;});}
+    function parseHTML(html){if(!html)return null;var schema=html.indexOf('"@context"')>-1&&html.indexOf('"@type"')>-1;var micro=/itemtype=["']https?:\/\/(www\.)?schema\.org/.test(html);schema=schema||micro;var types=[],rx=/"@type"\s*:\s*"([A-Za-z]{3,40})"/g,m;while((m=rx.exec(html))!==null){if(types.indexOf(m[1])<0)types.push(m[1]);}return{schema:schema,types:types.slice(0,6),title:/<title[^>]*>[^<]{4,}/i.test(html),metaDesc:/<meta[^>]+(name=["']description["'][^>]+content=["'][^"']{10,}|content=["'][^"']{10,}["'][^>]+name=["']description["'])/i.test(html),viewport:/<meta[^>]+name=["']viewport["']/i.test(html),wordCount:html.replace(/<[^>]+>/g,' ').split(/\s+/).filter(function(w){return w.length>3;}).length};}
+    function parsePSI(psi){if(!psi||!psi.lighthouseResult||psi.error)return null;var lh=psi.lighthouseResult,cats=lh.categories||{},au=lh.audits||{};return{perf:Math.round((cats.performance&&cats.performance.score||0)*100),seo:Math.round((cats.seo&&cats.seo.score||0)*100),lcp:(au['largest-contentful-paint']&&au['largest-contentful-paint'].displayValue)||'?',cls:(au['cumulative-layout-shift']&&au['cumulative-layout-shift'].displayValue)||'?'};}
+    function buildTechFactors(hd,psi){function st(s){return s>=7?'gut':s>=5?'opt':s>=3.5?'opt':'kritisch';}var hasSchema=hd?hd.schema:false,types=hd?hd.types:[];var ss=hasSchema?(types.length>=3?9:types.length>=1?7.5:6.5):1;var afs=psi?(psi.seo/10):(hd&&hd.title&&hd.metaDesc?6.5:4.5);afs=parseFloat(afs.toFixed(1));var perfS=psi?(psi.perf/10):(hd&&hd.viewport?5.5:3);perfS=parseFloat(perfS.toFixed(1));var extS=hd?(hd.wordCount>800?5:hd.wordCount>300?4:3):3.5;extS=parseFloat(extS.toFixed(1));var eatS=psi?parseFloat(Math.min(8.5,(psi.seo+psi.perf)/20).toFixed(1)):4.5;return[{name:'Schema Markup',score:ss,status:st(ss),finding:hasSchema?(types.length?'Gefunden: '+types.join(', '):'Schema vorhanden'):'Keine strukturierten Daten gefunden',tip:'Schema-Typen implementieren.',source:hd?'real':'est'},{name:'Answer-First Struktur',score:afs,status:st(afs),finding:psi?'SEO-Score: '+psi.seo+'/100':'Klare Antworten in den ersten 40–60 Wörtern prüfen',tip:'FAQ-Stil H2/H3 und TL;DR-Blöcke nutzen.',source:psi?'real':'est'},{name:'KI-Crawlbarkeit',score:perfS,status:st(perfS),finding:psi?'Performance: '+psi.perf+'/100 | LCP: '+psi.lcp+' | CLS: '+psi.cls:(hd&&hd.viewport?'Viewport vorhanden':'Viewport fehlt'),tip:'KI-Crawler in robots.txt erlauben, llms.txt hinzufügen.',source:psi?'real':'est'},{name:'Externe Autorität',score:extS,status:st(extS),finding:hd&&hd.wordCount>0?'Ca. '+hd.wordCount+' Wörter sichtbarer Text':'Externe Verlinkung prüfen',tip:'Erwähnungen auf Branchenportalen aufbauen.',source:hd?'real':'est'},{name:'E-E-A-T Signale',score:eatS,status:st(eatS),finding:'Expertise und Vertrauen teilweise sichtbar. Autorensignale stärken.',tip:'Autorenprofile und Zertifizierungen prominent darstellen.',source:psi?'real':'est'}];}
+    async function startCheck(){var raw=$('domain-input').value.trim();var domain=raw.replace(/^https?:\/\//,'').replace(/^www\./,'').split('/')[0];if(!domain||domain.indexOf('.')<0){showErr('Bitte gib eine gültige Domain ein – z.B. deine-website.at');return;}hideErr();$('l-domain').textContent=domain;$('l-domain2').textContent=domain;$('l-timer').textContent='0:00';$('check-btn').disabled=true;showScreen('s-loading');startTimer();startSteps();try{var both=await Promise.all([apiFetch('/api/fetchhtml?url='+encodeURIComponent(domain)),apiFetch('/api/pagespeed?url='+encodeURIComponent('https://'+domain))]);var hd=parseHTML(both[0]&&both[0].html?both[0].html:null);var psi=parsePSI(both[1]);var techFactors=buildTechFactors(hd,psi);var techSummary=techFactors.map(function(f){return f.name+': '+f.score+'/10 ('+f.finding+')';}).join(' | ');var ai=await apiFetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({domain:domain,techSummary:techSummary})});if(!ai||ai.error)throw new Error(ai&&ai.error?ai.error:'Analyse fehlgeschlagen – bitte erneut versuchen.');stopTimer();curStep=STEPS.length;renderSteps();updatePhase(4);await new Promise(function(r){setTimeout(r,400);});renderResults(domain,techFactors,ai);showScreen('s-results');setTimeout(function(){document.addEventListener('mouseleave',function handler(e){if(e.clientY<=0&&!exitShown){if($('email-gate').style.display!=='none'){return;}exitShown=true;$('exit-overlay').classList.add('show');document.removeEventListener('mouseleave',handler);}});},3000);}catch(e){stopTimer();$('check-btn').disabled=false;showScreen('s-landing');showErr(e.message||'Fehler – bitte erneut versuchen.');}}
+    function scoreColor(s){return s>=7?'var(--green)':s>=5?'var(--amber)':'var(--red)';}
+    function badgeHTML(st){if(st==='gut')return'<span class="badge badge-gut">GUT</span>';if(st==='kritisch')return'<span class="badge badge-kritisch">KRITISCH</span>';return'<span class="badge badge-opt">OPTIMIERUNGSBEDARF</span>';}
+    function factorHTML(f,locked){var s=f.score,pct=Math.round(s/10*100),col=scoreColor(s);var real=f.source==='real'?'<span class="factor-real">echt</span>':'';return'<div class="factor-row'+(locked?' locked':'')+'"><div class="factor-top"><div class="factor-left"><span class="factor-name">'+f.name+real+'</span>'+badgeHTML(f.status)+'</div><div class="factor-score" style="color:'+col+'">'+s+'<span class="denom">/10</span></div></div><p class="factor-desc">'+f.finding+'</p><div class="factor-bar"><div class="factor-bar-fill" style="width:'+pct+'%;background:'+col+'"></div></div></div>';}
+    function renderResults(domain,techFactors,ai){resultsData={domain:domain,techFactors:techFactors,ai:ai};var sc=ai.score||5;$('r-domain-hdr').textContent=domain;var line1,line2;if(sc>=7){line1='Gute Nachricht –';line2='<span class="good">deine Website wird von KI gefunden.</span>';}else if(sc>=5){line1='Noch Luft nach oben:';line2='<span class="ok">KI-Suchen zeigen dich nur eingeschränkt.</span>';}else{line1='Handlungsbedarf:';line2='<span class="bad">KI-Tools kennen deine Website kaum.</span>';}$('r-headline').innerHTML=line1+'<br>'+line2;$('r-summary').textContent=ai.summary||'';$('ring-c').style.stroke=scoreColor(sc);setTimeout(function(){$('ring-c').style.strokeDashoffset=314-(314*(sc/10));},100);$('r-score-num').textContent=parseFloat(sc).toFixed(1);$('r-score-num').style.color=scoreColor(sc);var allF=techFactors.concat(ai.geo_factors||[]);var bHtml='';allF.slice(0,6).forEach(function(f){var col=scoreColor(f.score);bHtml+='<div class="sbar-row"><span class="sbar-lbl">'+f.name+'</span><div class="sbar"><div class="sbar-fill" style="width:'+Math.round(f.score/10*100)+'%;background:'+col+'"></div></div><span class="sbar-val" style="color:'+col+'">'+f.score+'</span></div>';});$('score-bars').innerHTML=bHtml;if(ai.competitor_warning){$('warn-text').innerHTML=ai.competitor_warning;$('warn-banner').style.display='flex';}var vHtml='',lHtml='';allF.slice(0,10).forEach(function(f,i){if(i<6)vHtml+=factorHTML(f,false);else lHtml+=factorHTML(f,true);});$('factors-visible').innerHTML=vHtml;$('factors-locked').innerHTML=lHtml;}
+    function unlockContent(ai,domain){var sc=ai.score||5;var cbody=$('comp-body');cbody.innerHTML='';var comps=(ai.competitors||[]).filter(function(c){return!c.you;});var rows=comps.concat([{domain:ai.website_name||domain,score:sc,top_factor:'Topical Authority',ki:'Selten',you:true}]);rows.sort(function(a,b){return(b.score||0)-(a.score||0);});rows.forEach(function(c,i){var isYou=c.you;var kiCls=c.ki==='Regelmäßig'?'ki-reg':c.ki==='Oft'?'ki-oft':'ki-sel';cbody.innerHTML+='<tr class="'+(isYou?'you':'')+'"><td style="text-align:center">'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1))+'</td><td style="color:'+(isYou?'var(--teal)':'var(--text)')+';">'+(isYou?'▶ ':'')+c.domain+(isYou?' (du)':'')+'</td><td style="font-family:Fragment Mono,monospace;font-weight:600;color:'+scoreColor(c.score||sc)+'">'+(c.score||parseFloat(sc).toFixed(1))+' / 10</td><td>'+(c.top_factor||'—')+'</td><td><span class="ki-badge '+kiCls+'">'+(c.ki||'—')+'</span></td></tr>';});if(ai.comp_note)$('comp-note').textContent=ai.comp_note;$('c-lost').textContent=ai.lost_monthly||'5-8';$('c-year').textContent=ai.lost_yearly||'~65';$('rec-title').textContent='Was '+domain+' jetzt braucht';var rout=$('rec-out');rout.innerHTML='';(ai.actions||[]).forEach(function(a,i){var locked=i>=3;rout.innerHTML+='<div class="rec-row'+(locked?' locked':'')+'"><div class="rec-left"><h4>'+a.name+'</h4><p>'+a.desc+'</p></div>'+(a.priority==='hoch'?'<span class="badge-hoch">HOCH</span>':'<span class="badge badge-opt">MITTEL</span>')+'</div>';});if((ai.actions||[]).length>3){rout.innerHTML+='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px;text-align:center;margin-top:8px"><div style="font-size:22px;margin-bottom:10px">🔒</div><div style="font-size:17px;font-weight:700;margin-bottom:6px">+ '+((ai.actions||[]).length-3)+' weitere priorisierte Ma\u00dfnahmen</div><div style="font-size:13px;color:var(--text3);margin-bottom:18px">Inklusive einem persönlichen Umsetzungsplan – du bekommst ihn im Gespräch mit uns.</div><a class="btn-cta" href="https://meetings-eu1.hubspot.com/nwanek" target="_blank">Termin vereinbaren →</a></div>';}$('unlocked').style.display='block';$('unlocked').scrollIntoView({behavior:'smooth',block:'start'});}
+    function unlockResults(){var email=document.getElementById('email-input').value.trim();var name=document.getElementById('name-input').value.trim();if(!email||email.indexOf('@')<0){document.getElementById('email-input').style.borderColor='var(--red)';return;}var ai=resultsData.ai,domain=resultsData.domain,scoreValue=ai.score||0;var detailsText="KI-REPORT: "+domain+"\nSCORE: "+scoreValue+"/10\n\nFAKTOREN:\n";document.querySelectorAll('.factor-row').forEach(function(row){var n=row.querySelector('.factor-name'),s=row.querySelector('.factor-score');if(n&&s)detailsText+="• "+n.textContent.replace('echt','').trim()+": "+s.textContent.trim()+"\n";});detailsText+="\nMITBEWERBER:\n"+(ai.comp_note||"")+"\n\nMASSNAHMEN:\n";if(ai.actions)ai.actions.forEach(function(a){detailsText+="-> "+a.name+"\n";});var xhr=new XMLHttpRequest();xhr.open('POST','https://api.hsforms.com/submissions/v3/integration/submit/147422560/d9bb3a83-b30e-4d4e-a33b-7e7da348489d',true);xhr.setRequestHeader('Content-Type','application/json');xhr.send(JSON.stringify({"fields":[{"name":"email","value":email},{"name":"firstname","value":name},{"name":"website","value":domain},{"name":"ki_score","value":scoreValue},{"name":"analyse_details","value":detailsText}]}));$('email-gate').style.display='none';document.querySelectorAll('.factor-row.locked').forEach(function(r){r.classList.remove('locked');});if(typeof unlockContent==='function')unlockContent(ai,domain);}
+    let selectedExitReason="";
+    function selOpt(el,reason){document.querySelectorAll('.popup-opt').forEach(function(o){o.classList.remove('selected');});el.classList.add('selected');selectedExitReason=reason;$('btn-fb').classList.add('on');}
+    function sendExitFeedback(){var emailEl=$('email-input');var email=emailEl?emailEl.value.trim():'';if(!email||!selectedExitReason){closePopup();return;}var xhr=new XMLHttpRequest();xhr.open('POST','https://api.hsforms.com/submissions/v3/integration/submit/147422560/d9bb3a83-b30e-4d4e-a33b-7e7da348489d',true);xhr.setRequestHeader('Content-Type','application/json');xhr.send(JSON.stringify({"fields":[{"name":"email","value":email},{"name":"abbruchgrund","value":selectedExitReason}]}));alert("Vielen Dank für dein Feedback!");closePopup();}
+    function closePopup(){$('exit-overlay').classList.remove('show');}
+    function showErr(m){$('err').textContent=m;$('err').style.display='block';}
+    function hideErr(){$('err').style.display='none';}
+    function resetCheck(){showScreen('s-landing');$('check-btn').disabled=false;$('domain-input').value='';hideErr();resultsData=null;exitShown=false;$('exit-overlay').classList.remove('show');$('unlocked').style.display='none';$('email-gate').style.display='block';}
 </script>
 </body>
 </html>
