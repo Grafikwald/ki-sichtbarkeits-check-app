@@ -169,7 +169,7 @@ Antworte EXAKT in diesem JSON-Format (ohne Markdown, ohne Backticks):
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash',
+      model: 'gemini-2.5-flash',
       contents: prompt,
       config: {
         tools: [{ googleSearch: {} }]
