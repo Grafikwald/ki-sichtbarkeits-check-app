@@ -2009,12 +2009,14 @@
                 .then(function (r) {
                     if (!r.ok) {
                         return r.text().then(function (txt) {
+                            console.error('API Error (' + path + '):', r.status, txt);
                             return { error: 'http_error', status: r.status, details: txt };
                         });
                     }
                     return r.json();
                 })
                 .catch(function (err) {
+                    console.error('Fetch Failed (' + path + '):', err.message);
                     return { error: 'fetch_failed', message: err.message };
                 });
         }

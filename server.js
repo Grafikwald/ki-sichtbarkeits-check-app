@@ -40,6 +40,8 @@ app.get('/api/pagespeed', async (req, res) => {
 
       if (!response.ok) {
         const errorBody = await response.text();
+        console.error(`PageSpeed API Error [${response.status}]:`, errorBody);
+
         // Only retry on transient server errors
         if ((response.status === 500 || response.status === 503) && attempt < MAX_RETRIES) {
           await new Promise(r => setTimeout(r, attempt * 2000));
@@ -58,6 +60,7 @@ app.get('/api/pagespeed', async (req, res) => {
 
     } catch (e) {
       clearTimeout(timeout);
+      console.error('PageSpeed Proxy Exception:', e.message);
 
       if (e.name === 'AbortError') {
         if (attempt < MAX_RETRIES) {
@@ -166,7 +169,7 @@ Antworte EXAKT in diesem JSON-Format (ohne Markdown, ohne Backticks):
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-2.0-flash',
       contents: prompt,
       config: {
         tools: [{ googleSearch: {} }]
@@ -182,6 +185,7 @@ Antworte EXAKT in diesem JSON-Format (ohne Markdown, ohne Backticks):
     res.json(JSON.parse(match[0]));
 
   } catch (e) {
+    console.error('Gemini Analysis Error:', e);
     res.status(500).json({ error: e.message || 'Interner Serverfehler' });
   }
 });
