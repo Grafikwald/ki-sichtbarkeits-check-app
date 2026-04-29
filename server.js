@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const fetch = require('node-fetch');
 const cors = require('cors');
@@ -22,60 +21,23 @@ app.get('/api/pagespeed', async (req, res) => {
   const { url } = req.query;
   if (!url) return res.status(400).json({ error: 'url parameter required' });
 
-  const key = process.env.GOOGLE_PSI_KEY || '';
-  const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed`
-    + `?url=${encodeURIComponent(url)}&strategy=mobile&category=performance&category=seo`
-    + (key ? '&key=' + key : '');
+  try {
+    const key = process.env.GOOGLE_PSI_KEY || '';
+    const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&strategy=mobile&category=performance&category=seo${key ? '&key=' + key : ''}`;
 
-  const MAX_RETRIES = 3;
-  const TIMEOUT_MS = 30000;
-
-  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
+    const timeout = setTimeout(() => controller.abort(), 20000);
 
-    try {
-      const response = await fetch(apiUrl, { signal: controller.signal });
-      clearTimeout(timeout);
+    const response = await fetch(apiUrl, { signal: controller.signal });
+    clearTimeout(timeout);
 
-      if (!response.ok) {
-        const errorBody = await response.text();
-        console.error(`PageSpeed API Error [${response.status}]:`, errorBody);
-
-        // Only retry on transient server errors
-        if ((response.status === 500 || response.status === 503) && attempt < MAX_RETRIES) {
-          await new Promise(r => setTimeout(r, attempt * 2000));
-          continue;
-        }
-
-        return res.status(200).json({
-          error: 'pagespeed_unavailable',
-          status: response.status,
-          details: errorBody
-        });
-      }
-
-      const data = await response.json();
-      return res.json(data);
-
-    } catch (e) {
-      clearTimeout(timeout);
-      console.error('PageSpeed Proxy Exception:', e.message);
-
-      if (e.name === 'AbortError') {
-        if (attempt < MAX_RETRIES) {
-          await new Promise(r => setTimeout(r, attempt * 2000));
-          continue;
-        }
-        return res.status(200).json({
-          error: 'pagespeed_unavailable',
-          message: 'Request timed out after all retries.'
-        });
-      }
-
-      // Non-abort errors: don't retry
-      return res.status(200).json({ error: 'pagespeed_unavailable', message: e.message });
+    if (!response.ok) {
+      return res.status(200).json({ error: 'pagespeed_unavailable' });
     }
+    const data = await response.json();
+    res.json(data);
+  } catch (e) {
+    res.status(200).json({ error: 'pagespeed_unavailable' });
   }
 });
 
@@ -104,7 +66,7 @@ app.get('/api/fetchhtml', async (req, res) => {
 
 // ─── Gemini API Proxy ───
 app.post('/api/analyze', async (req, res) => {
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY; 
   if (!apiKey) {
     return res.status(500).json({ error: 'GEMINI_API_KEY not configured on server' });
   }
@@ -115,7 +77,7 @@ app.post('/api/analyze', async (req, res) => {
   const ai = new GoogleGenAI({ apiKey: apiKey });
 
   // HIER IST DER NEUE PROMPT EINGEBAUT:
-  const prompt = `Du bist ein hochkarätiger GEO-Experte (Generative Engine Optimization) der Agentur "Everfound". Analysiere die KI-Sichtbarkeit für die Domain: ${domain}
+  const prompt = `Du bist ein hochkarätiger GEO-Experte (Generative Engine Optimization) der Agentur "Grafikwald". Analysiere die KI-Sichtbarkeit für die Domain: ${domain}
 
 Bereits gemessene technische Werte: ${techSummary || 'keine Daten verfügbar'}
 
@@ -135,20 +97,20 @@ Antworte EXAKT in diesem JSON-Format (ohne Markdown, ohne Backticks):
 {
   "website_name": "Realer Unternehmensname",
   "website_desc": "2 Sätze, was das Unternehmen konkret macht",
-  "score": "Berechne den Score realistisch basierend auf dem Durchschnitt der technischen Faktoren und deiner Recherche von 0.0 bis 10.0",
-  "rating": "Einschätzung basierend auf dem Score: z.B. kaum sichtbar, optimierungsbedarf, mittel, gut",
+  "score": 4.7,
+  "rating": "kaum sichtbar",
   "summary": "2 konkrete Sätze, warum der Score so ausfällt",
   "competitor_warning": "Dein Hauptwettbewerber liegt in einigen Metriken vor dir. [echte-domain.at] wird von KI-Systemen bereits aktiv empfohlen...",
   "geo_factors": [
-    {"name": "[Individueller Faktor 1]", "score": "Realistischer Wert basierend auf der Recherche", "status": "opt", "finding": "[Echte Beobachtung]", "tip": "[Spezifischer Tipp]"},
-    {"name": "[Individueller Faktor 2]", "score": "Realistischer Wert basierend auf der Recherche", "status": "kritisch", "finding": "[Echte Beobachtung]", "tip": "[Spezifischer Tipp]"},
-    {"name": "[Individueller Faktor 3]", "score": "Realistischer Wert basierend auf der Recherche", "status": "mittel", "finding": "[Echte Beobachtung]", "tip": "[Spezifischer Tipp]"},
-    {"name": "[Individueller Faktor 4]", "score": "Realistischer Wert basierend auf der Recherche", "status": "opt", "finding": "[Echte Beobachtung]", "tip": "[Spezifischer Tipp]"},
-    {"name": "[Individueller Faktor 5]", "score": "Realistischer Wert basierend auf der Recherche", "status": "gut", "finding": "[Echte Beobachtung]", "tip": "[Spezifischer Tipp]"}
+    {"name": "[Individueller Faktor 1]", "score": 5.0, "status": "opt", "finding": "[Echte Beobachtung]", "tip": "[Spezifischer Tipp]"},
+    {"name": "[Individueller Faktor 2]", "score": 4.5, "status": "kritisch", "finding": "[Echte Beobachtung]", "tip": "[Spezifischer Tipp]"},
+    {"name": "[Individueller Faktor 3]", "score": 6.0, "status": "mittel", "finding": "[Echte Beobachtung]", "tip": "[Spezifischer Tipp]"},
+    {"name": "[Individueller Faktor 4]", "score": 5.5, "status": "opt", "finding": "[Echte Beobachtung]", "tip": "[Spezifischer Tipp]"},
+    {"name": "[Individueller Faktor 5]", "score": 7.5, "status": "gut", "finding": "[Echte Beobachtung]", "tip": "[Spezifischer Tipp]"}
   ],
   "competitors": [
-    {"domain": "[echte-konkurrenz1.at]", "score": "Realistischer Wert basierend auf der Recherche", "top_factor": "[Grund für Ranking]", "ki": "Oft"},
-    {"domain": "[echte-konkurrenz2.at]", "score": "Realistischer Wert basierend auf der Recherche", "top_factor": "[Grund für Ranking]", "ki": "Regelmäßig"}
+    {"domain": "[echte-konkurrenz1.at]", "score": 7.4, "top_factor": "[Grund für Ranking]", "ki": "Oft"},
+    {"domain": "[echte-konkurrenz2.at]", "score": 6.8, "top_factor": "[Grund für Ranking]", "ki": "Regelmäßig"}
   ],
   "comp_note": "Warum diese beiden Wettbewerber KI-technisch besser aufgestellt sind.",
   "lost_monthly": "[Realistische Schätzung, z.B. 4-8]",
@@ -172,12 +134,12 @@ Antworte EXAKT in diesem JSON-Format (ohne Markdown, ohne Backticks):
       model: 'gemini-2.5-flash',
       contents: prompt,
       config: {
-        tools: [{ googleSearch: {} }]
+        tools: [{ googleSearch: {} }] 
       }
     });
 
     const text = response.text;
-
+    
     // Wir extrahieren das JSON sicherheitshalber
     const match = text.match(/\{[\s\S]*\}/);
     if (!match) return res.status(500).json({ error: 'Keine gültige JSON-Antwort generiert' });
@@ -185,7 +147,7 @@ Antworte EXAKT in diesem JSON-Format (ohne Markdown, ohne Backticks):
     res.json(JSON.parse(match[0]));
 
   } catch (e) {
-    console.error('Gemini Analysis Error:', e);
+    console.error("Gemini API Error:", e);
     res.status(500).json({ error: e.message || 'Interner Serverfehler' });
   }
 });
@@ -214,18 +176,19 @@ app.post('/api/subscribe', async (req, res) => {
         }
       })
     });
-
+    
     // 409 bedeutet, der Kontakt ist schon in deinem CRM. Das ist auch okay!
     if (response.ok || response.status === 409) {
       return res.json({ ok: true });
     }
-
-    if (response.ok || response.status === 409) {
-      return res.json({ ok: true });
-    }
-    res.status(200).json({ ok: false });
+    
+    // Falls es doch einen Fehler gibt, schreiben wir ihn ins Railway-Log
+    const errorText = await response.text();
+    console.error("HubSpot API Fehler:", errorText);
+    res.status(200).json({ ok: false, error: errorText });
   } catch (e) {
-    res.status(200).json({ ok: false });
+    console.error("Server Fehler:", e.message);
+    res.status(200).json({ ok: false, error: e.message });
   }
 });
 
